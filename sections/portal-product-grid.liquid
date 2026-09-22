@@ -1,0 +1,90 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{% if section.settings.quick_add %}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+<div class="portal-products portal-pad" id="produtos">
+  <div class="portal-section-heading"><div><p class="portal-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2></div>{% render 'portal-link', label: section.settings.label, url: section.settings.collection.url %}</div>
+  <ul class="portal-products__grid" role="list">
+    {% for product in section.settings.collection.products limit: section.settings.count %}
+      {% liquid
+        assign quick_add = 'none'
+        if section.settings.quick_add
+          assign quick_add = 'standard'
+        endif
+        assign secondary = false
+        if product.media[1].media_type == 'image'
+          assign secondary = true
+        endif
+      %}
+      <li class="portal-products__item">{% render 'card-product', card_product: product, media_aspect_ratio: 'portrait', show_secondary_image: secondary, show_vendor: section.settings.show_vendor, quick_add: quick_add, section_id: section.id, portal_card: true %}<p class="portal-products__error" role="alert" hidden></p></li>
+    {% else %}
+      {% for i in (1..4) %}<li class="portal-product-empty"><div class="portal-product-empty__image" aria-hidden="true">{% render 'portal-glyph', type: 'portal' %}</div><p>{{ 'portal.content.product_pending' | t }}</p></li>{% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+{% schema %}
+{
+  "name": "Portal · Produtos",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Coleção"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Chegaram ao Portal"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sobretítulo",
+      "default": "Lote atual"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do link",
+      "default": "Ver todos os itens"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "label": "Quantidade de produtos",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostrar fornecedor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "label": "Ativar compra rápida",
+      "default": true
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Produtos"
+    }
+  ]
+}
+{% endschema %}

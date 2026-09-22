@@ -1,0 +1,86 @@
+<div class="portal-selection portal-pad">
+  <div class="portal-selection__copy">{% render 'portal-editorial-copy', content: section.settings, button_class: 'portal-button portal-button--outline' %}</div>
+  <div class="portal-selection__products">
+    {% for block in section.blocks %}
+      {% assign product = block.settings.product %}
+      <div {{ block.shopify_attributes }}>
+        {% if product != blank %}
+          <a class="portal-selection__product" href="{{ product.url }}"><div class="portal-selection__image">{% render 'portal-image', image: product.featured_image, sizes: '(min-width: 768px) 20vw, 33vw' %}</div><span>{{ product.title | escape }}</span></a>
+        {% else %}<div class="portal-selection__image portal-image-placeholder" aria-hidden="true"></div><p class="portal-secondary">{{ 'portal.content.product_pending' | t }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Portal · Seleção",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sobretítulo",
+      "default": "Seleção do Portal"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Para seguir o rito"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>[TEXTO A DEFINIR]</p>"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do link",
+      "default": "Ver a seleção"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Destino do link"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produto",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produto"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Portal · Seleção",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
+<portal-header class="portal-header-shell">
+  <div class="header-wrapper portal-header-wrapper">
+    <header class="portal-header">
+      {% render 'header-drawer', portal_drawer: true %}
+      <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {% if settings.logo != blank %}{{ settings.logo | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '180px', loading: 'eager' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="180" height="64" alt="{{ shop.name | escape }}">{% endif %}
+      </a>
+      {% render 'header-dropdown-menu' %}
+      <div class="portal-header__actions">
+        {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
+        {% if shop.customer_accounts_enabled %}<a class="header__icon header__icon--account link focus-inset portal-header__account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"><span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span><span class="portal-header__account-label">{{ 'customer.account.title' | t }}</span></a>{% endif %}
+        <a class="header__icon header__icon--cart link focus-inset" href="{{ routes.cart_url }}" id="cart-icon-bubble">{% render 'portal-cart-icon' %}</a>
+      </div>
+    </header>
+  </div>
+</portal-header>
+{% schema %}
+{
+  "name": "Portal · Header",
+  "class": "section-header portal-header-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu principal",
+      "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "menu_type_desktop",
+      "label": "Navegação",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "Menu com submenus"
+        }
+      ],
+      "default": "dropdown"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "Cores dos menus",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Seletor de país",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Seletor de idioma",
+      "default": false
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Header"
+    }
+  ]
+}
+{% endschema %}

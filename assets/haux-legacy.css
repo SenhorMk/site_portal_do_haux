@@ -1,0 +1,407 @@
+/* ============================================================
+   FONTES CUSTOMIZADAS PORTAL DO HAUX 
+   ============================================================ */
+@font-face {
+  font-family: 'Frequen';
+  src: url('{{ "Frequen.ttf" | asset_url }}') format('truetype');
+}
+@font-face {
+  font-family: 'Vertigon';
+  src: url('{{ "Vertigon.otf" | asset_url }}') format('opentype');
+}
+@font-face {
+  font-family: 'ZABOODLA';
+  src: url('{{ "ZABOODLA.TTF" | asset_url }}') format('truetype');
+}
+
+/* ============================================================
+   PORTAL DO HAUX — HEADER COMPLETO 
+   Estrutura: Logo + Busca + Ícones (topo) | Nav com dropdown (baixo)
+   ============================================================ */
+
+/* ─── PORTAL DO HAUX — VERSÃO FINAL CORRIGIDA ─── */
+
+:root {
+  --haux-bege: #f4f1ea;
+  --haux-verde: #2b3a1a;
+  --haux-ouro: #b89f5d;
+  --haux-terra: #5d4037;
+}
+
+/* === ESCONDE MENU NATIVO E BUSCA NATIVA (substituídos) === */
+.header__inline-menu,
+nav.header__inline-menu {
+  display: none !important;
+}
+
+/* Esconde ícone de busca nativo (temos o nosso campo) */
+.header__icon--search,
+.header__search {
+  display: none !important;
+}
+
+/* === HEADER LAYOUT === */
+.header-wrapper {
+  background: var(--haux-bege) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+header.header {
+  background: var(--haux-bege) !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 10px 4% !important;
+  gap: 16px !important;
+  flex-wrap: nowrap !important;
+  min-height: unset !important;
+}
+
+/* Logo — esquerda */
+.header__heading,
+a.header__heading-link {
+  order: 1 !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+}
+
+.header__heading-logo {
+  width: 85px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* Busca customizada — centro */
+.haux-search-form {
+  order: 2 !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  max-width: 460px !important;
+  margin: 0 auto !important;
+  position: relative !important;
+}
+
+.haux-search-input {
+  width: 100% !important;
+  height: 44px !important;
+  padding: 0 46px 0 0px !important; /* Sem padding esquerdo para visual sublinhado limpo */
+  border: none !important;
+  border-bottom: 1px solid rgba(93,64,55,0.4) !important;
+  border-radius: 0 !important; /* SHARP */
+  background: transparent !important;
+  font-family: 'Frequen', sans-serif !important;
+  font-size: 1.1rem !important;
+  color: var(--haux-verde) !important;
+  outline: none !important;
+  transition: border-color 0.2s !important;
+}
+
+.haux-search-input::placeholder {
+  color: rgba(93,64,55,0.6) !important;
+  font-style: normal !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem !important;
+}
+
+.haux-search-input:focus {
+  border-bottom-color: var(--haux-verde) !important;
+}
+
+.haux-search-btn {
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  height: 44px !important; /* Acompanha a altura do input */
+  width: 44px !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--haux-terra) !important;
+  transition: color 0.2s !important;
+}
+
+.haux-search-btn:hover {
+  color: var(--haux-ouro) !important;
+}
+
+/* Ícones — direita, espaçamento uniforme */
+.header__icons {
+  order: 3 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.header__icon {
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: color 0.2s !important;
+}
+
+.header__icon svg,
+.header__icon .svg-wrapper svg,
+.header__icon span svg {
+  width: 22px !important;
+  height: 22px !important;
+  color: var(--haux-verde) !important;
+  transition: color 0.2s !important;
+}
+
+.header__icon:hover svg,
+.header__icon:hover .svg-wrapper svg {
+  color: var(--haux-ouro) !important;
+}
+
+.cart-count-bubble {
+  width: 15px !important;
+  height: 15px !important;
+  font-size: 0.6rem !important;
+}
+
+@media screen and (min-width: 990px) {
+  header-drawer { display: none !important; }
+}
+
+/* === BARRA NAV SECUNDÁRIA === */
+
+#haux-nav-bar {
+  background: var(--haux-bege);
+  border-top: 1px solid rgba(184,159,93,0.22);
+  border-bottom: 1px solid rgba(184,159,93,0.28);
+  position: relative;
+  z-index: 300;
+  width: 100%;
+}
+
+#haux-nav-bar ul {
+  display: flex;
+  align-items: stretch;
+  justify-content: center; /* Centraliza no meio da tela */
+  gap: 16px; /* Distância menor para caber mais botões sem quebrar linha */
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 2%;
+  max-width: 1350px; /* Mais largo para acomodar os novos links */
+  height: 52px; /* Um pouco mais alto para respirar */
+}
+
+#haux-nav-bar li {
+  position: relative;
+  display: flex;
+}
+
+#haux-nav-bar li > a,
+#haux-nav-bar li > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px; /* Reduzido levemente para caber os 8 botões */
+  /* TROQUE A FONTE AQUI! 
+     Opções disponíveis que subimos: 'Frequen', 'Vertigon', 'ZABOODLA' 
+     (ou deixe 'Cormorant Garamond' se preferir a antiga) */
+  font-family: 'Frequen', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--haux-terra);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.22s ease, color 0.22s ease;
+  border-radius: 3px; /* Suaviza as pontas da caixa no hover */
+}
+
+/* RESTAURANDO A INVERSÃO DE CORES NO HOVER COMO SOLICITADO */
+#haux-nav-bar li > a:hover,
+#haux-nav-bar li > span:hover,
+#haux-nav-bar li.haux-open > span {
+  background-color: var(--haux-verde);
+  color: var(--haux-bege);
+  text-decoration: none;
+}
+
+#haux-nav-bar .haux-arrow {
+  width: 11px;
+  height: 11px;
+  transition: transform 0.22s;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+}
+
+#haux-nav-bar li.haux-open .haux-arrow {
+  transform: rotate(180deg);
+}
+
+/* Sem linhas verticais entre os botões */
+#haux-nav-bar li + li {
+  border-left: none; 
+}
+
+/* Dropdown */
+#haux-nav-bar .haux-drop {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  background: var(--haux-bege);
+  border: 1px solid rgba(184,159,93,0.25);
+  border-top: 2px solid var(--haux-ouro);
+  z-index: 400;
+  box-shadow: 0 8px 24px rgba(43,58,26,0.10);
+}
+
+#haux-nav-bar li.haux-open .haux-drop {
+  display: block;
+}
+
+#haux-nav-bar .haux-drop a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 10px;
+  /* TROQUE A FONTE AQUI PARA O SUBMENU! */
+  font-family: 'Frequen', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--haux-terra);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184,159,93,0.12);
+  background: transparent;
+  transition: background 0.18s, color 0.18s;
+  text-align: center;
+}
+
+#haux-nav-bar .haux-drop a:last-child {
+  border-bottom: none;
+}
+
+/* HOVER NO DROPDOWN MINIMALISTA */
+#haux-nav-bar .haux-drop a:hover {
+  background: rgba(43,58,26,0.05);
+  color: var(--haux-verde);
+}
+
+/* /* Esconde o ícone de lupa extra no computador */
+@media screen and (min-width: 990px) {
+  .small-hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Garante que ele apareça e fique alinhado no mobile */
+@media screen and (max-width: 989px) {
+  .small-hide-desktop {
+    display: flex !important;
+  }
+  
+  /* Ajusta o tamanho do seu SVG caso ele fique muito grande */
+  .header__icon--search svg {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  /* Faz a barra de pesquisa customizada sumir no mobile */
+  .haux-search-form {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   PORTAL DO HAUX — PREMIUM PRODUCT PAGE & BUTTONS
+   ============================================================ */
+.product-form__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Primary "Add to Cart" Button */
+.product-form__submit.button, 
+.product-form__submit.button--primary {
+  background-color: var(--haux-verde) !important;
+  color: var(--haux-bege) !important;
+  font-family: 'Frequen', sans-serif !important;
+  font-size: 1.1rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 18px 24px !important;
+  border-radius: 0 !important; /* SHARP MINIMALIST */
+  border: 1px solid var(--haux-verde) !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+}
+
+.product-form__submit.button:hover,
+.product-form__submit.button--primary:hover {
+  background-color: var(--haux-bege) !important;
+  color: var(--haux-verde) !important;
+  transform: none !important; /* Sem bounce */
+  box-shadow: none !important;
+}
+
+/* Dynamic Checkout Button (Buy It Now) */
+.shopify-payment-button__button {
+  border-radius: 0 !important;
+  font-family: 'Frequen', sans-serif !important;
+  font-size: 1.1rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+  padding: 18px 24px !important;
+}
+
+.shopify-payment-button__button--unbranded {
+  background-color: transparent !important;
+  border: 1px solid var(--haux-terra) !important;
+  color: var(--haux-terra) !important;
+}
+
+.shopify-payment-button__button--unbranded:hover {
+  background-color: var(--haux-terra) !important;
+  color: var(--haux-bege) !important;
+}
+
+/* Product Page Clean Layout Tweaks */
+.product__info-wrapper {
+  padding-left: 2rem;
+}
+
+@media screen and (min-width: 990px) {
+  .product__info-wrapper {
+    padding-left: 5rem;
+  }
+}
+
+.product__title h1 {
+  font-family: 'Frequen', sans-serif !important;
+  color: var(--haux-terra) !important;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.price {
+  color: var(--haux-verde);
+  font-size: 1.6rem;
+  font-weight: 500;
+}

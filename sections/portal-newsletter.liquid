@@ -1,0 +1,44 @@
+<div class="portal-newsletter portal-pad" id="newsletter">
+  {% render 'portal-glyph', type: 'tapestry', class: 'portal-newsletter__glyph' %}
+  <div class="portal-newsletter__copy"><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2><div class="portal-prose rte">{{ section.settings.text }}</div></div>
+  {% assign form_id = 'PortalNewsletter-' | append: section.id %}
+  {% form 'customer', id: form_id, class: 'portal-newsletter__form' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <div class="portal-newsletter__field"><label for="Email-{{ section.id }}">{{ 'newsletter.label' | t }}</label><input id="Email-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" autocomplete="email" autocapitalize="off" required placeholder="{{ 'newsletter.label' | t }}" {% if form.errors %}aria-invalid="true" aria-describedby="Error-{{ section.id }}"{% elsif form.posted_successfully? %}aria-describedby="Success-{{ section.id }}"{% endif %}></div>
+    <button class="portal-button portal-button--warm" type="submit" name="commit">{{ 'newsletter.button_label' | t }}</button>
+    {% if form.errors %}<div id="Error-{{ section.id }}" class="portal-newsletter__message" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+    {% if form.posted_successfully? %}<p id="Success-{{ section.id }}" class="portal-newsletter__message" role="status">{{ 'newsletter.success' | t }}</p>{% endif %}
+  {% endform %}
+</div>
+{% schema %}
+{
+  "name": "Portal · Newsletter",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Avisamos quando um lote novo chega"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>[INFORMAÇÃO A DEFINIR: frequência e conteúdo]</p>"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index",
+      "collection"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Newsletter"
+    }
+  ]
+}
+{% endschema %}

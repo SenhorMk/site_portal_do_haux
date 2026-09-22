@@ -1,0 +1,186 @@
+{%- liquid
+  assign eyebrow = collection.metafields.portal.eyebrow.value | default: section.settings.eyebrow
+  assign glyph = collection.metafields.portal.glyph.value | default: section.settings.glyph
+  if glyph == 'nenhum'
+    assign glyph = null
+  endif
+  assign hero = collection.image
+  if collection.metafields.portal.image.value != blank
+    assign hero = collection.metafields.portal.image.value
+  endif
+  unless section.settings.show_image
+    assign hero = null
+  endunless
+  assign has_description = false
+  if section.settings.show_description and collection.description != blank
+    assign has_description = true
+  endif
+-%}
+
+<div class="portal-collection-head{% if hero != blank %} portal-collection-head--media{% endif %} portal-pad">
+  {%- if section.settings.show_breadcrumb -%}
+    <nav class="portal-breadcrumb" aria-label="{{ 'portal.collection.breadcrumb' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'portal.collection.home' | t }}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ collection.title | escape }}</span>
+    </nav>
+  {%- endif -%}
+
+  <div class="portal-collection-head__inner">
+    <div class="portal-collection-head__copy">
+      <div class="portal-collection-head__title">
+        {%- if glyph != blank -%}
+          {% render 'portal-glyph', type: glyph, class: 'portal-collection-head__glyph' %}
+        {%- endif -%}
+        <div>
+          {%- if eyebrow != blank -%}
+            <p class="portal-eyebrow">{{ eyebrow | escape }}</p>
+          {%- endif -%}
+          <h1 class="portal-heading portal-heading--editorial">{{ collection.title | escape }}</h1>
+        </div>
+      </div>
+      {%- if has_description -%}
+        <div class="portal-prose portal-collection-head__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if hero != blank -%}
+      <div class="portal-collection-head__media">
+        {% render 'portal-image', image: hero, sizes: '(min-width: 1024px) 60vw, 100vw', priority: true %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if section.settings.menu != blank -%}
+  <nav class="portal-collection-nav" aria-label="{{ 'portal.collection.categories' | t }}">
+    <ul class="portal-collection-nav__list" role="list">
+      {%- if section.settings.show_all_link -%}
+        {%- liquid
+          assign all_url = routes.all_products_collection_url
+          assign all_current = false
+          if collection.url == all_url
+            assign all_current = true
+          endif
+        -%}
+        <li>
+          <a
+            class="portal-collection-nav__link"
+            href="{{ all_url }}"
+            {% if all_current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- 'portal.collection.all' | t -}}
+          </a>
+        </li>
+      {%- endif -%}
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          <a
+            class="portal-collection-nav__link"
+            href="{{ link.url }}"
+            {% if link.url == collection.url %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title | escape -}}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Portal · Coleção topo",
+  "class": "portal-section portal-collection-head-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "default": true,
+      "label": "Mostrar caminho de navegação"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sobretítulo padrão",
+      "info": "Cada coleção pode substituir pelo metafield portal.eyebrow."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Mostrar a descrição da coleção"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Mostrar a imagem da coleção",
+      "info": "Usa a imagem da coleção na Shopify ou o metafield portal.image."
+    },
+    {
+      "type": "select",
+      "id": "glyph",
+      "label": "Glifo padrão",
+      "info": "Cada coleção pode substituir pelo metafield portal.glyph.",
+      "default": "nenhum",
+      "options": [
+        {
+          "value": "nenhum",
+          "label": "Nenhum"
+        },
+        {
+          "value": "portal",
+          "label": "Portal"
+        },
+        {
+          "value": "flecha",
+          "label": "Flecha"
+        },
+        {
+          "value": "sopro",
+          "label": "Sopro"
+        },
+        {
+          "value": "ciclo",
+          "label": "Ciclo"
+        },
+        {
+          "value": "erva",
+          "label": "Erva"
+        },
+        {
+          "value": "estrela",
+          "label": "Estrela"
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu de categorias",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_link",
+      "default": true,
+      "label": "Incluir o link Todos"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Coleção topo"
+    }
+  ]
+}
+{% endschema %}

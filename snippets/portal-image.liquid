@@ -1,0 +1,27 @@
+{% doc %}
+  Responsive Shopify image, with an optional mobile crop. Empty slots retain layout.
+  @param {image} [image] - Desktop image
+  @param {image} [mobile_image] - Mobile art direction
+  @param {string} [sizes] - Responsive desktop sizes
+  @param {boolean} [priority] - Eager high-priority loading for the hero only
+{% enddoc %}
+{% liquid
+  assign desktop = image | default: mobile_image
+  assign loading = 'lazy'
+  assign fetch_priority = 'auto'
+  if priority
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  endif
+  assign image_sizes = sizes | default: '100vw'
+%}
+{% if desktop != blank %}
+  <picture class="portal-picture">
+    {% if mobile_image != blank %}
+      <source media="(max-width: 767px)" sizes="100vw" srcset="{{ mobile_image | image_url: width: 390 }} 390w, {{ mobile_image | image_url: width: 780 }} 780w, {{ mobile_image | image_url: width: 1170 }} 1170w" width="{{ mobile_image.width }}" height="{{ mobile_image.height }}">
+    {% endif %}
+    {{ desktop | image_url: width: 2800 | image_tag: widths: '360, 540, 720, 990, 1440, 1920, 2400, 2800', sizes: image_sizes, loading: loading, fetchpriority: fetch_priority, class: 'portal-image' }}
+  </picture>
+{% else %}
+  <div class="portal-image-placeholder" aria-hidden="true"></div>
+{% endif %}

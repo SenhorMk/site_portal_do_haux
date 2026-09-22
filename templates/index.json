@@ -1,0 +1,278 @@
+{
+  "sections": {
+    "hero": {
+      "type": "portal-hero",
+      "settings": {}
+    },
+    "categories": {
+      "type": "portal-category-mosaic",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "category",
+          "settings": {
+            "title": "Medicinas",
+            "glyph": "erva",
+            "theme": "dark",
+            "link": "/collections/rapes"
+          }
+        },
+        "b2": {
+          "type": "category",
+          "settings": {
+            "title": "Ferramentas",
+            "glyph": "flecha",
+            "theme": "dark",
+            "link": "/collections/kuripes"
+          }
+        },
+        "b3": {
+          "type": "category",
+          "settings": {
+            "title": "Defumação",
+            "glyph": "sopro",
+            "theme": "light",
+            "link": "#defumacao"
+          }
+        },
+        "b4": {
+          "type": "category",
+          "settings": {
+            "title": "Vestir",
+            "glyph": "portal",
+            "theme": "dark",
+            "link": "/collections/roupas"
+          }
+        },
+        "b5": {
+          "type": "category",
+          "settings": {
+            "title": "Experiências",
+            "glyph": "estrela",
+            "theme": "light",
+            "link": "#experiencias",
+            "eyebrow": "Em breve"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ]
+    },
+    "products": {
+      "type": "portal-product-grid",
+      "settings": {
+        "collection": "rapes"
+      }
+    },
+    "origin": {
+      "type": "portal-origin",
+      "settings": {}
+    },
+    "tools": {
+      "type": "portal-tools",
+      "settings": {
+        "link": "/collections/kuripes"
+      }
+    },
+    "immersive": {
+      "type": "portal-immersive",
+      "settings": {}
+    },
+    "selection": {
+      "type": "portal-selection",
+      "settings": {
+        "text": "<p>Uma medicina, uma ferramenta e uma defumação. Cada item leva para a sua própria página.</p>"
+      },
+      "blocks": {
+        "b1": {
+          "type": "product",
+          "settings": {}
+        },
+        "b2": {
+          "type": "product",
+          "settings": {}
+        },
+        "b3": {
+          "type": "product",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "pillars": {
+      "type": "portal-brand-pillars",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "pillar",
+          "settings": {
+            "glyph": "portal"
+          }
+        },
+        "b2": {
+          "type": "pillar",
+          "settings": {
+            "glyph": "erva"
+          }
+        },
+        "b3": {
+          "type": "pillar",
+          "settings": {
+            "glyph": "sopro"
+          }
+        },
+        "b4": {
+          "type": "pillar",
+          "settings": {
+            "glyph": "ciclo"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "inside": {
+      "type": "portal-inside",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "entry",
+          "settings": {
+            "eyebrow": "Medicina",
+            "heading": "O que esta categoria reúne"
+          }
+        },
+        "b2": {
+          "type": "entry",
+          "settings": {
+            "eyebrow": "Ferramenta",
+            "heading": "Kuripes e tepis na loja"
+          }
+        },
+        "b3": {
+          "type": "entry",
+          "settings": {
+            "eyebrow": "Defumação",
+            "heading": "Resina, erva seca e spray"
+          }
+        },
+        "b4": {
+          "type": "glyph",
+          "settings": {
+            "glyph": "portal",
+            "name": "Portal",
+            "meaning": "passagem"
+          }
+        },
+        "b5": {
+          "type": "glyph",
+          "settings": {
+            "glyph": "flecha",
+            "name": "Flecha",
+            "meaning": "caminho"
+          }
+        },
+        "b6": {
+          "type": "glyph",
+          "settings": {
+            "glyph": "sopro",
+            "name": "Sopro",
+            "meaning": "movimento"
+          }
+        },
+        "b7": {
+          "type": "glyph",
+          "settings": {
+            "glyph": "ciclo",
+            "name": "Ciclo",
+            "meaning": "retorno"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7"
+      ]
+    },
+    "motion": {
+      "type": "portal-motion",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "video",
+          "settings": {
+            "title": "O peso de um kuripe",
+            "category": "Ferramentas"
+          }
+        },
+        "b2": {
+          "type": "video",
+          "settings": {
+            "title": "Dois borrifos",
+            "category": "Defumação"
+          }
+        },
+        "b3": {
+          "type": "video",
+          "settings": {
+            "title": "A peneira",
+            "category": "Medicinas"
+          }
+        },
+        "b4": {
+          "type": "video",
+          "settings": {
+            "title": "Como seu pedido sai",
+            "category": "Do Portal"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "experiences": {
+      "type": "portal-experiences",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "portal-newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "categories",
+    "products",
+    "origin",
+    "tools",
+    "immersive",
+    "selection",
+    "pillars",
+    "inside",
+    "motion",
+    "experiences",
+    "newsletter"
+  ]
+}

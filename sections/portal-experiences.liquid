@@ -1,0 +1,44 @@
+<div class="portal-experiences portal-pad" id="experiencias"><div class="portal-experiences__copy">{% render 'portal-glyph', type: 'estrela' %}<div><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2><div class="portal-prose rte">{{ section.settings.text }}</div></div></div>{% render 'portal-link', label: section.settings.label, url: section.settings.link, class: 'portal-button portal-button--outline' %}</div>
+{% schema %}
+{
+  "name": "Portal · Experiências",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Experiências — em breve"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>[INFORMAÇÃO A DEFINIR]</p>"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do link",
+      "default": "Quero saber quando abrir"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Destino do link",
+      "default": "#newsletter"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Experiências"
+    }
+  ]
+}
+{% endschema %}

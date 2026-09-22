@@ -1,0 +1,66 @@
+<footer class="portal-footer portal-pad" id="footer">
+  <div class="portal-footer__grid"><div class="portal-footer__brand"><a class="portal-logo" href="{{ routes.root_url }}">{% if settings.logo != blank %}{{ settings.logo | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '180px', loading: 'lazy', alt: shop.name }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="180" height="64" alt="{{ shop.name | escape }}" loading="lazy">{% endif %}</a><div class="portal-prose rte">{{ section.settings.text }}</div></div>
+    {% for block in section.blocks %}<div {{ block.shopify_attributes }}>{% if block.settings.menu.links.size > 0 %}<h2 class="portal-eyebrow">{{ block.settings.heading | escape }}</h2><nav aria-label="{{ block.settings.heading | escape }}"><ul role="list">{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul></nav>{% endif %}</div>{% endfor %}
+  </div>
+  <div class="portal-footer__legal"><span>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if section.settings.registration != blank %} · {{ section.settings.registration | escape }}{% endif %}</span>{% if section.settings.legal != blank %}<span>{{ section.settings.legal | escape }}</span>{% endif %}{% if section.settings.payments %}<ul class="portal-footer__payments" role="list">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{% endfor %}</ul>{% endif %}</div>
+</footer>
+{% schema %}
+{
+  "name": "Portal · Footer",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>[DESCRIÇÃO INSTITUCIONAL A DEFINIR]</p>"
+    },
+    {
+      "type": "text",
+      "id": "registration",
+      "label": "CNPJ confirmado"
+    },
+    {
+      "type": "text",
+      "id": "legal",
+      "label": "Informação legal confirmada"
+    },
+    {
+      "type": "checkbox",
+      "id": "payments",
+      "label": "Mostrar meios de pagamento ativos na Shopify",
+      "default": false
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Menu"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Portal · Footer"
+    }
+  ]
+}
+{% endschema %}

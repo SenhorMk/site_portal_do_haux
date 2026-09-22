@@ -1,0 +1,20 @@
+{
+  "type": "header",
+  "name": "Portal · Cabeçalho",
+  "sections": {
+    "announcement": {
+      "type": "portal-announcement",
+      "settings": {}
+    },
+    "header": {
+      "type": "portal-header",
+      "settings": {
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

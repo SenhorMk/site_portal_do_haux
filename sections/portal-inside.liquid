@@ -1,0 +1,136 @@
+<portal-reveal class="portal-inside portal-pad" id="dentro-do-portal">
+  <div class="portal-inside__intro"><h2 class="portal-heading portal-heading--editorial">{{ section.settings.heading | escape }}</h2><div class="portal-prose rte">{{ section.settings.text }}</div></div>
+  <div class="portal-split"><div class="portal-inside__media portal-reveal-media">{% render 'portal-image', image: section.settings.image, sizes: '(min-width: 768px) 50vw, 100vw' %}</div>
+    <div class="portal-inside__entries portal-reveal-copy">
+      {% for block in section.blocks %}{% if block.type == 'entry' %}<article class="portal-inside__entry" {{ block.shopify_attributes }}><p class="portal-eyebrow">{{ block.settings.eyebrow | escape }}</p><h3 class="portal-heading">{{ block.settings.heading | escape }}</h3><div class="portal-prose rte">{{ block.settings.text }}</div></article>{% endif %}{% endfor %}
+      <div class="portal-alphabet"><h3 class="portal-eyebrow">{{ section.settings.alphabet_heading | escape }}</h3><p class="portal-secondary">{{ section.settings.alphabet_text | escape }}</p><dl class="portal-alphabet__grid">
+        {% for block in section.blocks %}{% if block.type == 'glyph' %}<div {{ block.shopify_attributes }}><dt>{% render 'portal-glyph', type: block.settings.glyph, class: 'portal-draw' %}<span>{{ block.settings.name | escape }}</span></dt><dd>{{ block.settings.meaning | escape }}</dd></div>{% endif %}{% endfor %}
+      </dl></div>
+    </div>
+  </div>
+</portal-reveal>
+{% schema %}
+{
+  "name": "Portal · Dentro",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Dentro do Portal"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Para quem está entrando neste universo agora.</p>"
+    },
+    {
+      "type": "text",
+      "id": "alphabet_heading",
+      "label": "Título do alfabeto",
+      "default": "Alfabeto do Portal"
+    },
+    {
+      "type": "textarea",
+      "id": "alphabet_text",
+      "label": "Descrição do alfabeto",
+      "default": "Quatro símbolos do nosso alfabeto e o que eles significam dentro desta marca."
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "entry",
+      "name": "Entrada editorial",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Sobretítulo",
+          "default": "Categoria"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Título da entrada"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>[TEXTO A DEFINIR]</p>"
+        }
+      ]
+    },
+    {
+      "type": "glyph",
+      "name": "Símbolo autoral",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "glyph",
+          "label": "Glifo",
+          "options": [
+            {
+              "value": "portal",
+              "label": "Portal"
+            },
+            {
+              "value": "flecha",
+              "label": "Flecha"
+            },
+            {
+              "value": "sopro",
+              "label": "Sopro"
+            },
+            {
+              "value": "ciclo",
+              "label": "Ciclo"
+            },
+            {
+              "value": "erva",
+              "label": "Erva"
+            },
+            {
+              "value": "estrela",
+              "label": "Estrela"
+            }
+          ],
+          "default": "portal"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nome"
+        },
+        {
+          "type": "text",
+          "id": "meaning",
+          "label": "Significado na marca"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 7,
+  "presets": [
+    {
+      "name": "Portal · Dentro"
+    }
+  ]
+}
+{% endschema %}

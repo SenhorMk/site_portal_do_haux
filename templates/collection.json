@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "head": {
+      "type": "portal-collection-header",
+      "settings": {
+        "show_breadcrumb": true,
+        "show_description": true,
+        "show_image": true,
+        "glyph": "nenhum",
+        "menu": "main-menu",
+        "show_all_link": true
+      }
+    },
+    "grid": {
+      "type": "portal-collection",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "quick_add": true,
+        "show_secondary_image": true,
+        "show_vendor": false
+      }
+    },
+    "editorial": {
+      "type": "portal-collection-editorial",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "portal-newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "head",
+    "grid",
+    "editorial",
+    "newsletter"
+  ]
+}

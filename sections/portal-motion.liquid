@@ -1,0 +1,82 @@
+<portal-carousel class="portal-motion" role="region" aria-roledescription="{{ 'portal.video.carousel' | t }}" aria-label="{{ section.settings.heading | escape }}">
+  <div class="portal-section-heading"><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2><div class="portal-motion__controls" hidden><button type="button" class="portal-arrow" data-direction="-1" aria-label="{{ 'portal.video.previous' | t }}" aria-controls="PortalVideos-{{ section.id }}"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button><button type="button" class="portal-arrow" data-direction="1" aria-label="{{ 'portal.video.next' | t }}" aria-controls="PortalVideos-{{ section.id }}"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></div></div>
+  <div class="portal-motion__track" id="PortalVideos-{{ section.id }}" role="group" tabindex="0" aria-label="{{ 'portal.video.browse' | t }}">
+    {% for block in section.blocks %}<article class="portal-motion__card" {{ block.shopify_attributes }}>
+      <div class="portal-motion__media">
+        {% if block.settings.video != blank %}
+          {% assign poster = block.settings.poster | default: block.settings.video.preview_image | image_url: width: 780 %}
+          {{ block.settings.video | video_tag: image_size: '780x', controls: true, autoplay: false, muted: true, loop: false, preload: 'none', loading: 'lazy', poster: poster }}
+        {% else %}{% render 'portal-image', image: block.settings.poster, sizes: '(min-width: 768px) 30vw, 85vw' %}{% endif %}
+      </div><p class="portal-eyebrow">{{ block.settings.category | escape }}</p><h3 class="portal-heading">{{ block.settings.title | escape }}</h3>
+    </article>{% endfor %}
+  </div>
+</portal-carousel>
+{% schema %}
+{
+  "name": "Portal · Movimento",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Portal em movimento"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Vídeo",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vídeo hospedado na Shopify"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Capa do vídeo"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "[VÍDEO A PRODUZIR]"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Categoria"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Portal · Movimento",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

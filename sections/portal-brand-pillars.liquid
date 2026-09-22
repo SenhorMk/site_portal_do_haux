@@ -1,0 +1,82 @@
+<div class="portal-pillars portal-pad"><ul class="portal-pillars__grid" role="list">
+  {% for block in section.blocks %}<li class="portal-pillar" {{ block.shopify_attributes }}>{% render 'portal-glyph', type: block.settings.glyph %}<p>{{ block.settings.text | escape }}</p></li>{% endfor %}
+</ul></div>
+{% schema %}
+{
+  "name": "Portal · Pilares",
+  "tag": "section",
+  "class": "portal-section",
+  "settings": [],
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pilar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "glyph",
+          "label": "Glifo",
+          "options": [
+            {
+              "value": "portal",
+              "label": "Portal"
+            },
+            {
+              "value": "flecha",
+              "label": "Flecha"
+            },
+            {
+              "value": "sopro",
+              "label": "Sopro"
+            },
+            {
+              "value": "ciclo",
+              "label": "Ciclo"
+            },
+            {
+              "value": "erva",
+              "label": "Erva"
+            },
+            {
+              "value": "estrela",
+              "label": "Estrela"
+            }
+          ],
+          "default": "portal"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Atributo confirmado",
+          "default": "[ATRIBUTO A CONFIRMAR]"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Portal · Pilares",
+      "blocks": [
+        {
+          "type": "pillar"
+        },
+        {
+          "type": "pillar"
+        },
+        {
+          "type": "pillar"
+        },
+        {
+          "type": "pillar"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

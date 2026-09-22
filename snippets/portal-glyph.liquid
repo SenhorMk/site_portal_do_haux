@@ -1,0 +1,18 @@
+{% doc %}
+  Decorative marks from the approved Portal alphabet.
+  @param {string} [type] - portal, flecha, sopro, sopro-wide, ciclo, erva, estrela, filete, tapestry
+  @param {string} [class] - Optional presentation class
+{% enddoc %}
+<svg class="portal-glyph {{ class }}" viewBox="{% if type == 'sopro-wide' %}0 0 400 220{% elsif type == 'filete' %}0 0 120 260{% elsif type == 'tapestry' %}0 0 400 400{% else %}0 0 32 32{% endif %}" {% if type == 'sopro-wide' %}preserveAspectRatio="none"{% endif %} fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+  {% case type %}
+    {% when 'flecha' %}<path pathLength="1" d="M4 28 27 5M19 5h8v8"/>
+    {% when 'sopro' %}<path pathLength="1" d="M6 25a6 6 0 0 1 12 0M8 17a6 6 0 0 1 12 0M10 9a6 6 0 0 1 12 0"/>
+    {% when 'sopro-wide' %}<path d="M30 200a62 62 0 0 1 124 0m-50-36a62 62 0 0 1 124 0m-50-36a62 62 0 0 1 124 0"/>
+    {% when 'ciclo' %}<path pathLength="1" d="M16 4A12 12 0 1 1 7.5 8M16 1l3 3-3 3-3-3z"/>
+    {% when 'erva' %}<path pathLength="1" d="M16 29V9m0-4 3 3.5-3 3.5-3-3.5zM16 14l-5 3.5 5 3.5m0-2 5 3.5-5 3.5"/>
+    {% when 'estrela' %}<path pathLength="1" d="m16 3 2.6 10.4L29 16l-10.4 2.6L16 29l-2.6-10.4L3 16l10.4-2.6z"/>
+    {% when 'filete' %}<path pathLength="1" d="M60 0v260M60 112l24 18-24 18-24-18Z"/>
+    {% when 'tapestry' %}<path d="M290 120a44 44 0 1 0 0 88 34 34 0 1 1 0-88ZM200 232l36 36-36 36-36-36Z"/><circle cx="200" cy="268" r="3" fill="currentColor"/>
+    {% else %}<path pathLength="1" d="m16 3 13 13-13 13L3 16Zm0 7 6 6-6 6-6-6Z"/>
+  {% endcase %}
+</svg>

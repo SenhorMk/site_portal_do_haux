@@ -1,0 +1,40 @@
+{
+  "type": "footer",
+  "name": "Portal · Rodapé",
+  "sections": {
+    "footer": {
+      "type": "portal-footer",
+      "settings": {},
+      "blocks": {
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Loja",
+            "menu": "main-menu"
+          }
+        },
+        "help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Ajuda",
+            "menu": "footer"
+          }
+        },
+        "portal": {
+          "type": "menu",
+          "settings": {
+            "heading": "O Portal"
+          }
+        }
+      },
+      "block_order": [
+        "shop",
+        "help",
+        "portal"
+      ]
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

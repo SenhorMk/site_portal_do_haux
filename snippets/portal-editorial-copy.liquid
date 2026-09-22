@@ -1,0 +1,9 @@
+{% doc %}
+  Shared heading, copy and CTA for editorial sections.
+  @param {object} content - Section settings
+  @param {string} [button_class] - CTA treatment
+{% enddoc %}
+{% if content.eyebrow != blank %}<p class="portal-eyebrow">{{ content.eyebrow | escape }}</p>{% endif %}
+<h2 class="portal-heading portal-heading--editorial">{{ content.heading | escape }}</h2>
+<div class="portal-prose rte">{{ content.text }}</div>
+{% render 'portal-link', label: content.label, url: content.link, class: button_class %}

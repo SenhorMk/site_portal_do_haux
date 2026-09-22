@@ -1,0 +1,82 @@
+{%- liquid
+  assign heading = collection.metafields.portal.editorial_heading.value | default: section.settings.heading
+  assign text = collection.metafields.portal.editorial_text.value | default: section.settings.text
+  assign image = collection.metafields.portal.editorial_image.value | default: section.settings.image
+-%}
+
+{%- if heading != blank or text != blank -%}
+  <div class="portal-collection-editorial portal-pad">
+    <div class="portal-collection-editorial__inner">
+      {%- if image != blank -%}
+        <div class="portal-collection-editorial__media">
+          {% render 'portal-image', image: image, sizes: '(min-width: 768px) 40vw, 100vw' %}
+        </div>
+      {%- endif -%}
+      <div class="portal-collection-editorial__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="portal-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if heading != blank -%}
+          <h2 class="portal-heading">{{ heading | escape }}</h2>
+        {%- endif -%}
+        {%- if text != blank -%}
+          <div class="portal-prose rte">{{ text }}</div>
+        {%- endif -%}
+        {% render 'portal-link', label: section.settings.label, url: section.settings.link %}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Portal · Coleção texto",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Cada coleção pode substituir estes campos pelos metafields portal.editorial_heading, portal.editorial_text e portal.editorial_image."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sobretítulo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do link"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Destino do link"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Coleção texto"
+    }
+  ]
+}
+{% endschema %}

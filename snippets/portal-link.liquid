@@ -1,0 +1,7 @@
+{% doc %}
+  Render a configured editorial link; omit unconfigured destinations.
+  @param {string} [label] - Merchant-owned label
+  @param {string} [url] - Destination
+  @param {string} [class] - Visual treatment
+{% enddoc %}
+{% if label != blank and url != blank %}<a class="portal-link {{ class }}" href="{{ url }}">{{ label | escape }}</a>{% endif %}

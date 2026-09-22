@@ -1,0 +1,180 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+{%- if section.settings.quick_add -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- liquid
+  assign quick_add = 'none'
+  if section.settings.quick_add
+    assign quick_add = 'standard'
+  endif
+  assign eager_count = section.settings.columns_desktop
+-%}
+
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <div class="portal-collection portal-pad">
+    {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      <aside
+        class="portal-collection__toolbar facets-wrapper"
+        id="main-collection-filters"
+        data-id="{{ section.id }}"
+        aria-label="{{ 'portal.collection.toolbar' | t }}"
+      >
+        {% render 'facets',
+          results: collection,
+          enable_filtering: section.settings.enable_filtering,
+          enable_sorting: section.settings.enable_sorting,
+          filter_type: 'drawer',
+          paginate: paginate
+        %}
+      </aside>
+    {%- endif -%}
+
+    <div id="ProductGridContainer" class="portal-collection__results portal-products">
+      {%- if collection.products.size == 0 -%}
+        <div class="portal-collection__empty collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+          <div class="loading-overlay gradient"></div>
+          <p class="portal-collection__empty-text">{{ 'sections.collection_template.empty' | t }}</p>
+          <div class="portal-collection__empty-actions">
+            <a class="portal-button portal-button--outline" href="{{ collection.url }}">
+              {{- 'products.facets.clear_all' | t -}}
+            </a>
+            <a class="portal-link" href="{{ routes.all_products_collection_url }}">
+              {{- 'portal.collection.all_products' | t -}}
+            </a>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="collection">
+          <div class="loading-overlay gradient"></div>
+          <ul
+            id="product-grid"
+            data-id="{{ section.id }}"
+            role="list"
+            class="portal-collection__grid grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
+          >
+            {%- for product in collection.products -%}
+              {%- liquid
+                assign lazy_load = true
+                if forloop.index <= eager_count
+                  assign lazy_load = false
+                endif
+                assign secondary = false
+                if section.settings.show_secondary_image and product.media[1].media_type == 'image'
+                  assign secondary = true
+                endif
+              -%}
+              <li class="grid__item portal-products__item">
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: 'portrait',
+                  show_secondary_image: secondary,
+                  show_vendor: section.settings.show_vendor,
+                  lazy_load: lazy_load,
+                  quick_add: quick_add,
+                  section_id: section.id,
+                  portal_card: true
+                %}
+                <p class="portal-products__error" role="alert" hidden></p>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate, anchor: '' %}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Portal · Coleção",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 16,
+      "label": "Produtos por página"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Colunas no desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "Colunas no celular",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Filtros",
+      "info": "Os filtros vêm do app Search & Discovery da Shopify."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Ordenação"
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "default": true,
+      "label": "Adicionar pela listagem"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Trocar para a segunda foto ao passar o mouse"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Mostrar marca"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Coleção"
+    }
+  ]
+}
+{% endschema %}

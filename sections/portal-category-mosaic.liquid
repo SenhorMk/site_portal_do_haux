@@ -9,7 +9,7 @@
         endif
       %}
       <{{ tile_tag }} {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="portal-category portal-category--{{ block.settings.theme }}" {{ block.shopify_attributes }}>
-        {% render 'portal-image', image: block.settings.image, sizes: '(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw' %}
+        {% render 'portal-image', image: block.settings.image, mobile_image: block.settings.mobile_image, sizes:'(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw' %}
         {% render 'portal-glyph', type: block.settings.glyph, class: 'portal-category__glyph' %}
         <div class="portal-category__caption"><h3 class="portal-category__title">{{ block.settings.title | escape }}</h3>{% if block.settings.eyebrow != blank %}<span class="portal-eyebrow">{{ block.settings.eyebrow | escape }}</span>{% endif %}</div>
       </{{ tile_tag }}>
@@ -55,6 +55,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Imagem"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Imagem mobile",
+          "info": "Opcional. Usada em telas de até 767 px; sem ela, vale a imagem principal."
         },
         {
           "type": "text",

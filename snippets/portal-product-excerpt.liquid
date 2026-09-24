@@ -1,0 +1,16 @@
+{% doc %}
+  Short description beside the buy box. Long descriptions are trimmed and linked to the
+  full text in portal-product-details; short ones are shown whole (and not repeated below).
+  Keep the 240 limit in sync with sections/portal-product-details.liquid.
+{% enddoc %}
+{%- liquid
+  assign portal_plain = product.description | strip_html | strip_newlines | strip
+-%}
+{%- if portal_plain.size > 240 -%}
+  <div class="portal-product__excerpt">
+    <p>{{ portal_plain | truncate: 220 }}</p>
+    <a class="portal-link" href="#PortalProductAbout">{{ 'portal.product.read_more' | t }}</a>
+  </div>
+{%- elsif portal_plain != blank -%}
+  <div class="portal-product__excerpt rte">{{ product.description }}</div>
+{%- endif -%}

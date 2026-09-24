@@ -107,7 +107,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Adicionar ao carrinho",
+      "add_to_cart": "Adicionar à sacola",
       "description": "Descrição",
       "on_sale": "Promoção",
       "quantity": {
@@ -550,6 +550,9 @@
       "categories": "Categorias",
       "all": "Todos",
       "all_products": "Ver todos os produtos"
+    },
+    "product": {
+      "read_more": "Ler descrição completa"
     },
     "content": {
       "product_pending": "[PRODUTO A SELECIONAR]"

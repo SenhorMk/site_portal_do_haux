@@ -6,7 +6,8 @@
     <div class="portal-prose">{{ section.settings.text | escape | newline_to_br }}</div>
     <div class="portal-hero__actions">
       {% render 'portal-link', label: section.settings.label, url: section.settings.link, class: 'portal-button portal-button--warm' %}
-      {% render 'portal-link', label: section.settings.secondary_label, url: section.settings.secondary_link, class: 'portal-hero__secondary' %}
+      {% assign secondary_link = section.settings.secondary_link | default: '#colecao' %}
+      {% render 'portal-link', label: section.settings.secondary_label, url: secondary_link, class: 'portal-hero__secondary' %}
     </div>
   </div>
 </div>
@@ -60,7 +61,7 @@
       "type": "url",
       "id": "secondary_link",
       "label": "Destino secundário",
-      "default": "#colecao"
+      "info": "Vazio: leva à seção Coleção desta página."
     },
     {
       "type": "select",

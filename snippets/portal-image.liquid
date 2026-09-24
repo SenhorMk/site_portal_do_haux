@@ -1,5 +1,6 @@
 {% doc %}
-  Responsive Shopify image, with an optional mobile crop. Empty slots retain layout.
+  Responsive Shopify image, with an optional mobile crop. Empty slots retain layout
+  as a plain surface; the striped marker only appears in the theme editor.
   @param {image} [image] - Desktop image
   @param {image} [mobile_image] - Mobile art direction
   @param {string} [sizes] - Responsive desktop sizes
@@ -23,5 +24,5 @@
     {{ desktop | image_url: width: 2800 | image_tag: widths: '360, 540, 720, 990, 1440, 1920, 2400, 2800', sizes: image_sizes, loading: loading, fetchpriority: fetch_priority, class: 'portal-image' }}
   </picture>
 {% else %}
-  <div class="portal-image-placeholder" aria-hidden="true"></div>
+  <div class="portal-image-placeholder{% if request.design_mode %} portal-image-placeholder--editor{% endif %}" aria-hidden="true"></div>
 {% endif %}

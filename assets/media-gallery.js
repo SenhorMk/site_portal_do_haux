@@ -22,6 +22,8 @@ if (!customElements.get('media-gallery')) {
       }
 
       onSlideChanged(event) {
+        // Stacked desktop layouts report no current slide (the slider is mobile-only there).
+        if (!event.detail?.currentElement) return;
         const thumbnail = this.elements.thumbnails.querySelector(
           `[data-target="${event.detail.currentElement.dataset.mediaId}"]`
         );

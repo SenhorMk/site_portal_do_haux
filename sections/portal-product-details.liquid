@@ -1,0 +1,192 @@
+{%- liquid
+  assign plain = product.description | strip_html | strip_newlines | strip
+  assign show_about = false
+  if section.settings.show_description and plain.size > 240
+    assign show_about = true
+  endif
+  assign spec_count = 0
+  assign panel_count = 0
+  assign editorial_count = 0
+  for block in section.blocks
+    case block.type
+      when 'attribute'
+        if block.settings.value != blank
+          assign spec_count = spec_count | plus: 1
+        endif
+      when 'panel'
+        if block.settings.content != blank
+          assign panel_count = panel_count | plus: 1
+        endif
+      when 'editorial'
+        if block.settings.heading != blank or block.settings.text != blank
+          assign editorial_count = editorial_count | plus: 1
+        endif
+    endcase
+  endfor
+-%}
+
+{%- if show_about or spec_count > 0 or panel_count > 0 -%}
+  <div class="portal-product-details portal-pad">
+    {%- if show_about -%}
+      <section class="portal-product-details__group" id="PortalProductAbout" aria-labelledby="PortalProductAbout-{{ section.id }}">
+        <h2 class="portal-heading" id="PortalProductAbout-{{ section.id }}">{{ section.settings.description_heading | escape }}</h2>
+        <div class="portal-prose rte">{{ product.description }}</div>
+      </section>
+    {%- endif -%}
+
+    {%- if spec_count > 0 -%}
+      <section class="portal-product-details__group" aria-labelledby="PortalProductSpecs-{{ section.id }}">
+        <h2 class="portal-heading" id="PortalProductSpecs-{{ section.id }}">{{ section.settings.specs_heading | escape }}</h2>
+        <dl class="portal-specs">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'attribute' and block.settings.value != blank -%}
+              <div class="portal-specs__row" {{ block.shopify_attributes }}>
+                <dt>{{ block.settings.label | escape }}</dt>
+                <dd>{{ block.settings.value }}</dd>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      </section>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'panel' and block.settings.content != blank -%}
+        <section class="portal-product-details__group" aria-labelledby="PortalProductPanel-{{ block.id }}" {{ block.shopify_attributes }}>
+          <h2 class="portal-heading" id="PortalProductPanel-{{ block.id }}">{{ block.settings.heading | escape }}</h2>
+          <div class="portal-prose rte">{{ block.settings.content }}</div>
+        </section>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{%- if editorial_count > 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'editorial' -%}
+      {%- if block.settings.heading != blank or block.settings.text != blank -%}
+        <div class="portal-product-editorial portal-pad" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="portal-product-editorial__media">
+              {% render 'portal-image', image: block.settings.image, sizes: '(min-width: 768px) 45vw, 100vw' %}
+            </div>
+          {%- endif -%}
+          <div class="portal-product-editorial__copy">
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="portal-eyebrow">{{ block.settings.eyebrow | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="portal-heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="portal-prose rte">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Portal · Detalhes",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Mostrar a descrição completa",
+      "info": "Descrições curtas já aparecem inteiras ao lado do botão de compra e não se repetem aqui."
+    },
+    {
+      "type": "text",
+      "id": "description_heading",
+      "label": "Título da descrição",
+      "default": "Sobre este produto"
+    },
+    {
+      "type": "text",
+      "id": "specs_heading",
+      "label": "Título das características",
+      "default": "Características"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "attribute",
+      "name": "Característica",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nome",
+          "default": "Característica"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valor",
+          "info": "Conecte a um metafield do produto. Sem valor, a linha não aparece."
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "Texto do produto",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Modo de uso"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Conteúdo",
+          "info": "Conecte a um metafield do produto. Sem conteúdo, o bloco não aparece."
+        }
+      ]
+    },
+    {
+      "type": "editorial",
+      "name": "Editorial",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagem"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Sobretítulo"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Detalhes"
+    }
+  ]
+}
+{% endschema %}

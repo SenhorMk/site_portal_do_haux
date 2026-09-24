@@ -1,12 +1,12 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
 {{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
-<portal-header class="portal-header-shell">
+<portal-header class="portal-header-shell"{% if template.name == 'index' %} data-overlay{% endif %}>
   <div class="header-wrapper portal-header-wrapper">
     <header class="portal-header">
       {% render 'header-drawer', portal_drawer: true %}
       <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        {% if settings.logo != blank %}{{ settings.logo | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '180px', loading: 'eager' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="180" height="64" alt="{{ shop.name | escape }}">{% endif %}
+        {% if settings.logo != blank %}{{ settings.logo | image_url: width: 330 | image_tag: widths: '110, 220, 330', sizes: '110px', loading: 'eager' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="{{ shop.name | escape }}">{% endif %}
       </a>
       {% render 'header-dropdown-menu' %}
       <div class="portal-header__actions">

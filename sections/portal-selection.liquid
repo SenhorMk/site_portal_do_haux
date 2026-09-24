@@ -6,7 +6,7 @@
       <div {{ block.shopify_attributes }}>
         {% if product != blank %}
           <a class="portal-selection__product" href="{{ product.url }}"><div class="portal-selection__image">{% render 'portal-image', image: product.featured_image, sizes: '(min-width: 768px) 20vw, 33vw' %}</div><span>{{ product.title | escape }}</span></a>
-        {% else %}<div class="portal-selection__image portal-image-placeholder" aria-hidden="true"></div><p class="portal-secondary">{{ 'portal.content.product_pending' | t }}</p>{% endif %}
+        {% else %}<div class="portal-selection__image portal-image-placeholder{% if request.design_mode %} portal-image-placeholder--editor{% endif %}" aria-hidden="true"></div><p class="portal-secondary">{{ 'portal.content.product_pending' | t }}</p>{% endif %}
       </div>
     {% endfor %}
   </div>

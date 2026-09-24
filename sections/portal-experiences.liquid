@@ -1,4 +1,4 @@
-<div class="portal-experiences portal-pad" id="experiencias"><div class="portal-experiences__copy">{% render 'portal-glyph', type: 'estrela' %}<div><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2><div class="portal-prose rte">{{ section.settings.text }}</div></div></div>{% render 'portal-link', label: section.settings.label, url: section.settings.link, class: 'portal-button portal-button--outline' %}</div>
+<div class="portal-experiences portal-pad" id="experiencias"><div class="portal-experiences__copy">{% render 'portal-glyph', type: 'estrela' %}<div><h2 class="portal-heading">{{ section.settings.heading | escape }}</h2><div class="portal-prose rte">{{ section.settings.text }}</div></div></div>{% assign experiences_link = section.settings.link | default: '#newsletter' %}{% render 'portal-link', label: section.settings.label, url: experiences_link, class: 'portal-button portal-button--outline' %}</div>
 {% schema %}
 {
   "name": "Portal · Experiências",
@@ -27,7 +27,7 @@
       "type": "url",
       "id": "link",
       "label": "Destino do link",
-      "default": "#newsletter"
+      "info": "Vazio: leva ao cadastro da newsletter nesta página."
     }
   ],
   "enabled_on": {

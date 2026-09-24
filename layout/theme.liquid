@@ -1,8 +1,17 @@
 <!doctype html>
 {%- liquid
   assign portal_template = false
-  if template.name == 'index' or template.name == 'collection'
-    assign portal_template = true
+  case template.name
+    when 'index', 'collection', 'product', 'search', 'cart'
+      assign portal_template = true
+  endcase
+  assign portal_drawer = false
+  if settings.cart_type == 'drawer' or portal_template
+    assign portal_drawer = true
+  endif
+  # The cart page already lists the cart; a Portal drawer there would load cart.js twice.
+  if template.name == 'cart' and settings.cart_type != 'drawer'
+    assign portal_drawer = false
   endif
 -%}
 <html class="js" lang="{{ request.locale.iso_code }}">
@@ -271,7 +280,7 @@
     {% endif %}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {%- if settings.cart_type == 'drawer' or portal_template -%}
+    {%- if portal_drawer -%}
       {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
       {{ 'component-cart.css' | asset_url | stylesheet_tag }}
       {{ 'component-totals.css' | asset_url | stylesheet_tag }}
@@ -311,12 +320,12 @@
     </script>
   </head>
 
-  <body class="{% if portal_template %}portal portal-{% if template.name == 'index' %}home{% else %}collection{% endif %} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body class="{% if portal_template %}portal portal-{% if template.name == 'index' %}home{% else %}{{ template.name }}{% endif %} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
-    {%- if settings.cart_type == 'drawer' or portal_template -%}
+    {%- if portal_drawer -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
@@ -382,7 +391,7 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if settings.cart_type == 'drawer' or portal_template -%}
+    {%- if portal_drawer -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
   </body>

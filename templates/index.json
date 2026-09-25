@@ -1,51 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "portal-hero",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/Feixe_oca.jpg",
+        "heading": "A floresta atravessa o Portal",
+        "text": "Rapés, kuripes, tepis, defumadores, ervas e objetos de rito.",
+        "label": "Ver a loja",
+        "link": "shopify://collections/all",
+        "secondary_label": "Conhecer as ferramentas",
+        "secondary_link": "",
+        "overlay": "balanced",
+        "alignment": "left",
+        "graphics": true
+      }
     },
     "categories": {
       "type": "portal-category-mosaic",
-      "settings": {},
       "blocks": {
         "b1": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Medicinas_mesa.jpg",
             "title": "Medicinas",
+            "link": "/collections/rapes",
             "glyph": "erva",
-            "link": "/collections/rapes"
+            "eyebrow": ""
           }
         },
         "b2": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Ferramental.jpg",
             "title": "Ferramentas",
+            "link": "/collections/kuripes",
             "glyph": "flecha",
-            "link": "/collections/kuripes"
+            "eyebrow": ""
           }
         },
         "b3": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Defumador.jpg",
             "title": "Defumação",
+            "link": "#defumacao",
             "glyph": "sopro",
-            "link": "#defumacao"
+            "eyebrow": ""
           }
         },
         "b4": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Pulseira_Image_Icon_1.png",
             "title": "Vestir",
+            "link": "/collections/roupas",
             "glyph": "portal",
-            "link": "/collections/roupas"
+            "eyebrow": ""
           }
         },
         "b5": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Noite_fogueira.jpg",
             "title": "Experiências",
-            "glyph": "estrela",
             "link": "#experiencias",
+            "glyph": "estrela",
             "eyebrow": "Em breve"
           }
         }
@@ -56,79 +84,127 @@
         "b3",
         "b4",
         "b5"
-      ]
+      ],
+      "settings": {
+        "heading": "Categorias",
+        "label": "Ver a loja inteira",
+        "link": "shopify://collections/all"
+      }
     },
     "products": {
       "type": "portal-product-grid",
       "settings": {
-        "collection": "rapes"
+        "collection": "rapes",
+        "heading": "Chegaram ao Portal",
+        "eyebrow": "Lote atual",
+        "label": "Ver todos os itens",
+        "count": 4,
+        "show_vendor": false,
+        "quick_add": true
       }
     },
     "origin": {
       "type": "portal-origin",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/Peneira_ervas.jpg",
+        "eyebrow": "Nossa origem",
+        "heading": "Quem prepara, assina",
+        "text": "<p>[TEXTO INSTITUCIONAL A DEFINIR]</p>",
+        "label": "Conhecer nossa origem",
+        "link": "",
+        "graphics": true
+      }
     },
     "tools": {
       "type": "portal-tools",
       "settings": {
-        "link": "/collections/kuripes"
+        "image": "shopify://shop_images/curipe_BambuBuzio_900x900_2.jpg",
+        "eyebrow": "Coleção · Ferramentas",
+        "heading": "Kuripes e tepis feitos um a um",
+        "text": "<p>[TEXTO A DEFINIR]</p>",
+        "label": "Ver a coleção",
+        "link": "/collections/kuripes",
+        "secondary": "",
+        "order": "image-first",
+        "graphics": true
       }
     },
     "immersive": {
       "type": "portal-immersive",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/Smoke_16x9_f25fab1a-e532-4e2f-90ac-8690096263c8.jpg",
+        "eyebrow": "Defumação",
+        "heading": "Limpar o ar sem acender nada",
+        "text": "<p>[TEXTO A DEFINIR]</p>",
+        "label": "Ver defumadores",
+        "link": "",
+        "graphics": true
+      }
     },
     "selection": {
       "type": "portal-selection",
-      "settings": {
-        "text": "<p>Uma medicina, uma ferramenta e uma defumação. Cada item leva para a sua própria página.</p>"
-      },
       "blocks": {
         "b1": {
           "type": "product",
-          "settings": {}
+          "settings": {
+            "product": "defumador-limpeza-e-descarrego"
+          }
         },
         "b2": {
           "type": "product",
-          "settings": {}
+          "settings": {
+            "product": ""
+          }
         },
         "b3": {
           "type": "product",
-          "settings": {}
+          "settings": {
+            "product": ""
+          }
         }
       },
       "block_order": [
         "b1",
         "b2",
         "b3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Seleção do Portal",
+        "heading": "Para seguir o rito",
+        "text": "<p>Uma medicina, uma ferramenta e uma defumação. Cada item leva para a sua própria página.</p>",
+        "label": "Ver a seleção",
+        "link": ""
+      }
     },
     "pillars": {
       "type": "portal-brand-pillars",
-      "settings": {},
       "blocks": {
         "b1": {
           "type": "pillar",
           "settings": {
-            "glyph": "portal"
+            "glyph": "portal",
+            "text": "[ATRIBUTO A CONFIRMAR]"
           }
         },
         "b2": {
           "type": "pillar",
           "settings": {
-            "glyph": "erva"
+            "glyph": "erva",
+            "text": "[ATRIBUTO A CONFIRMAR]"
           }
         },
         "b3": {
           "type": "pillar",
           "settings": {
-            "glyph": "sopro"
+            "glyph": "sopro",
+            "text": "[ATRIBUTO A CONFIRMAR]"
           }
         },
         "b4": {
           "type": "pillar",
           "settings": {
-            "glyph": "ciclo"
+            "glyph": "ciclo",
+            "text": "[ATRIBUTO A CONFIRMAR]"
           }
         }
       },
@@ -137,31 +213,34 @@
         "b2",
         "b3",
         "b4"
-      ]
+      ],
+      "settings": {}
     },
     "inside": {
       "type": "portal-inside",
-      "settings": {},
       "blocks": {
         "b1": {
           "type": "entry",
           "settings": {
             "eyebrow": "Medicina",
-            "heading": "O que esta categoria reúne"
+            "heading": "O que esta categoria reúne",
+            "text": "<p>[TEXTO A DEFINIR]</p>"
           }
         },
         "b2": {
           "type": "entry",
           "settings": {
             "eyebrow": "Ferramenta",
-            "heading": "Kuripes e tepis na loja"
+            "heading": "Kuripes e tepis na loja",
+            "text": "<p>[TEXTO A DEFINIR]</p>"
           }
         },
         "b3": {
           "type": "entry",
           "settings": {
             "eyebrow": "Defumação",
-            "heading": "Resina, erva seca e spray"
+            "heading": "Resina, erva seca e spray",
+            "text": "<p>[TEXTO A DEFINIR]</p>"
           }
         },
         "b4": {
@@ -205,11 +284,17 @@
         "b5",
         "b6",
         "b7"
-      ]
+      ],
+      "settings": {
+        "image": "shopify://shop_images/blog-3.jpg",
+        "heading": "Dentro do Portal",
+        "text": "<p>Para quem está entrando neste universo agora.</p>",
+        "alphabet_heading": "Alfabeto do Portal",
+        "alphabet_text": "Quatro símbolos do nosso alfabeto e o que eles significam dentro desta marca."
+      }
     },
     "motion": {
       "type": "portal-motion",
-      "settings": {},
       "blocks": {
         "b1": {
           "type": "video",
@@ -245,15 +330,26 @@
         "b2",
         "b3",
         "b4"
-      ]
+      ],
+      "settings": {
+        "heading": "Portal em movimento"
+      }
     },
     "experiences": {
       "type": "portal-experiences",
-      "settings": {}
+      "settings": {
+        "heading": "Experiências — em breve",
+        "text": "<p>[INFORMAÇÃO A DEFINIR]</p>",
+        "label": "Quero saber quando abrir",
+        "link": ""
+      }
     },
     "newsletter": {
       "type": "portal-newsletter",
-      "settings": {}
+      "settings": {
+        "heading": "Avisamos quando um lote novo chega",
+        "text": "<p>[INFORMAÇÃO A DEFINIR: frequência e conteúdo]</p>"
+      }
     }
   },
   "order": [

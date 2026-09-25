@@ -13,7 +13,6 @@
           "settings": {
             "title": "Medicinas",
             "glyph": "erva",
-            "theme": "dark",
             "link": "/collections/rapes"
           }
         },
@@ -22,7 +21,6 @@
           "settings": {
             "title": "Ferramentas",
             "glyph": "flecha",
-            "theme": "dark",
             "link": "/collections/kuripes"
           }
         },
@@ -31,7 +29,6 @@
           "settings": {
             "title": "Defumação",
             "glyph": "sopro",
-            "theme": "light",
             "link": "#defumacao"
           }
         },
@@ -40,7 +37,6 @@
           "settings": {
             "title": "Vestir",
             "glyph": "portal",
-            "theme": "dark",
             "link": "/collections/roupas"
           }
         },
@@ -49,7 +45,6 @@
           "settings": {
             "title": "Experiências",
             "glyph": "estrela",
-            "theme": "light",
             "link": "#experiencias",
             "eyebrow": "Em breve"
           }

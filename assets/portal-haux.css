@@ -174,18 +174,16 @@
 /* Categories: 3 + 2 desktop, 2 + full-width tablet, vertical tiles mobile. */
 .portal-categories { background: var(--portal-pergaminho); padding-block: 7.2rem 8rem; }
 .portal-categories__grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: var(--portal-gap); }
-.portal-category { position: relative; display: flex; align-items: flex-end; grid-column: span 2; min-height: 46rem; padding: 2.6rem; overflow: hidden; color: var(--portal-text); text-decoration: none; isolation: isolate; }
+.portal-category { position: relative; display: flex; align-items: flex-end; grid-column: span 2; min-height: 46rem; padding: 2.6rem; overflow: hidden; color: var(--portal-pergaminho); text-decoration: none; isolation: isolate; }
 .portal-category:nth-child(n+4) { grid-column: span 3; min-height: 38rem; }
 .portal-category > .portal-picture, .portal-category > .portal-image-placeholder { position: absolute; inset: 0; z-index: -2; }
-.portal-category::after { content: ''; position: absolute; inset: 40% 0 0; z-index: -1; background: linear-gradient(transparent,rgb(247 242 232 / 90%)); }
-.portal-category--light { color: var(--portal-pergaminho); }
-.portal-category--light::after { background: linear-gradient(transparent,rgb(20 35 26 / 90%)); }
-.portal-category--light .portal-image-placeholder { background-color: var(--portal-verde-ritual); }
-.portal-category:nth-child(5) .portal-image-placeholder { background-color: var(--portal-text); }
+.portal-category::after { content: ''; position: absolute; inset: 40% 0 0; z-index: -1; background: linear-gradient(transparent,rgb(20 35 26 / 90%)); }
+.portal-category .portal-image-placeholder { background-color: var(--portal-verde-ritual); }
 .portal-category__glyph { position: absolute; top: 2.2rem; left: 2.2rem; width: 2.6rem; height: 2.6rem; opacity: .75; }
 .portal-category__caption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.4rem; }
 .portal-category__title { margin: 0; font: 400 3.2rem/1.05 var(--portal-display); color: inherit; }
 .portal-category .portal-eyebrow { color: inherit; }
+.portal-category:focus-visible { outline-color: var(--portal-text); }
 
 /* Product data and forms remain owned by Rise. */
 .portal-products { background: var(--portal-ceramica); }
@@ -218,7 +216,6 @@
 
 /* Editorial sequence */
 .portal-origin { display: block; position: relative; overflow: hidden; color: var(--portal-pergaminho); background: var(--portal-mata); }
-.portal-origin__transition, .portal-origin__transition:empty { display: block; height: 12rem; background: linear-gradient(180deg,var(--portal-ceramica),var(--portal-mata)); }
 .portal-origin__media { height: 50rem; margin-block: 6.4rem; }
 .portal-origin__tapestry { position: absolute; inset: 20% 0 auto; width: 100%; height: 80%; opacity: .11; color: var(--portal-bronze); }
 .portal-origin .portal-eyebrow, .portal-origin .portal-link { color: var(--portal-urucum); }
@@ -369,7 +366,6 @@
   .portal-products .quick-add__submit { padding: 1.4rem .5rem; background: var(--portal-link); color: var(--portal-ceramica); letter-spacing: .07em; }
   .portal-products .quick-add__submit:hover { color: var(--portal-ceramica); background: var(--portal-text); }
   .portal-split, .portal-tools__grid, .portal-tools--text-first .portal-tools__grid { grid-template-columns: minmax(0,1fr); }
-  .portal-origin__transition { height: 10rem; }
   .portal-origin__media { height: 32rem; margin: 0; }
   .portal-editorial-copy { gap: 1.5rem; padding: 2.4rem var(--portal-gutter) 2.8rem; }
   .portal-tools { padding-block: 3rem; }

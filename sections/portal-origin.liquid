@@ -1,5 +1,4 @@
 <portal-reveal class="portal-origin" id="origem">
-  <div class="portal-origin__transition" aria-hidden="true"></div>
   {% if section.settings.graphics %}{% render 'portal-glyph', type: 'tapestry', class: 'portal-origin__tapestry' %}{% endif %}
   <div class="portal-split"><div class="portal-origin__media portal-reveal-media">{% render 'portal-image', image: section.settings.image, sizes: '(min-width: 768px) 50vw, 100vw' %}</div>
     <div class="portal-editorial-copy portal-reveal-copy">{% render 'portal-editorial-copy', content: section.settings %}</div>

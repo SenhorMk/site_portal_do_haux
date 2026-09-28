@@ -108,7 +108,7 @@
 .portal-header .header__icon--search, .portal-header .header__icon--cart, .portal-header .header__icon--account { width: auto; min-width: 4.4rem; gap: .8rem; }
 .portal-header .header__icon--account { color: var(--portal-header-muted); }
 .portal-header .header__icon--search .portal-header__label { width: auto; height: auto; position: static; }
-.portal-header :is(.header__icon--cart, .header__icon--account) > .svg-wrapper, .portal-header .header__icon--cart > .cart-count-bubble { display: none; }
+.portal-header .header__icon--cart > .svg-wrapper, .portal-header .header__icon--account .svg-wrapper, .portal-header .header__icon--cart > .cart-count-bubble { display: none; }
 .portal-header header-drawer { display: none; }
 .portal-header .menu-drawer { max-width: 100vw; }
 .portal-header .search-modal { background: var(--portal-ceramica); color: var(--portal-text); }
@@ -120,6 +120,36 @@
 .portal-header :is(.header__menu-item, .header__icon):is(:hover, :focus-visible) :is(span, .portal-header__label, .portal-header__cart-label, .portal-header__account-label),
 .portal-header .header__menu-item[aria-current="page"] > span, .portal-header .header__active-menu-item, .portal-header details[open] > .header__menu-item > span { background-size: 100% 1px; text-decoration: none; }
 .portal-header .header__submenu .header__menu-item > span { background: none; }
+
+/* Account: Shopify's <shopify-account> (sheet with sign-in, Orders, Profile). The plain link is the
+   fallback until the component is defined (no JS or the Shopify script did not load). */
+.portal-header shopify-account:not(:defined) { display: none; }
+.portal-header shopify-account:defined + .portal-header__account-fallback { display: none; }
+.portal-header shopify-account {
+  --shopify-account-color-background: var(--portal-ceramica);
+  --shopify-account-color-background-subdued: var(--portal-pergaminho);
+  --shopify-account-color-text: var(--portal-text);
+  --shopify-account-color-text-subdued: var(--portal-musgo);
+  --shopify-account-color-accent: var(--portal-link);
+  --shopify-account-color-accent-text: var(--portal-ceramica);
+  --shopify-account-color-border: var(--portal-border);
+  --shopify-account-font-heading: var(--portal-display);
+  --shopify-account-font-heading-weight: 400;
+  --shopify-account-font-body: var(--portal-body);
+  --shopify-account-font-body-weight: 400;
+  --shopify-account-radius-base: 0;
+  --shopify-account-radius-button: 0;
+  --shopify-account-radius-button-small: 0;
+  --shopify-account-radius-input: 0;
+  --shopify-account-radius-dialog: 0;
+  --shopify-account-signed-in-avatar-size: 3.6rem;
+  --shopify-account-signed-in-avatar-color-background: var(--portal-mata);
+  --shopify-account-signed-in-avatar-color-text: var(--portal-ceramica);
+}
+.portal-header shopify-account::part(signed-out-avatar) { display: inline-flex; align-items: center; justify-content: center; min-width: 4.4rem; min-height: 4.4rem; padding: 0; border: 0; background: none; color: var(--portal-header-muted); font: inherit; cursor: pointer; }
+.portal-header .portal-header__account-avatar { display: inline-flex; align-items: center; gap: .8rem; color: var(--portal-header-muted); }
+.portal-header shopify-account:is(:hover, :focus-within) .portal-header__account-label { background-size: 100% 1px; }
+.portal-header-shell[data-overlay]:not(.is-sticky):not(:has(details[open])) shopify-account { --shopify-account-signed-in-avatar-color-background: var(--portal-pergaminho); --shopify-account-signed-in-avatar-color-text: var(--portal-mata); }
 
 /* Home: transparent over the hero, solid as soon as it sticks or any header overlay opens. */
 .portal-header-shell[data-overlay] { --portal-logo-h: 10rem; --portal-header-pad: 1.8rem; }
@@ -141,7 +171,7 @@
 
 /* Layouts chosen by portal-haux.js. */
 .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) :is(.portal-header__label, .portal-header__cart-label) { display: none; }
-.portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) :is(.header__icon--cart, .header__icon--account) > .svg-wrapper, .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .header__icon--cart > .cart-count-bubble { display: flex; }
+.portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .header__icon--cart > .svg-wrapper, .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .header__icon--account .svg-wrapper, .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .header__icon--cart > .cart-count-bubble { display: flex; }
 .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .portal-header__account-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .portal-header-shell:is([data-layout="tablet"],[data-layout="compact"]) .portal-header__actions { gap: .4rem; }
 .portal-header-shell[data-layout="tablet"] .list-menu--inline { gap: .6rem; }
@@ -320,7 +350,7 @@
 }
 @media (max-width: 989px) {
   .portal-header-shell:not([data-layout]) :is(.portal-header__label, .portal-header__cart-label) { display: none; }
-  .portal-header-shell:not([data-layout]) :is(.header__icon--cart, .header__icon--account) > .svg-wrapper, .portal-header-shell:not([data-layout]) .header__icon--cart > .cart-count-bubble { display: flex; }
+  .portal-header-shell:not([data-layout]) .header__icon--cart > .svg-wrapper, .portal-header-shell:not([data-layout]) .header__icon--account .svg-wrapper, .portal-header-shell:not([data-layout]) .header__icon--cart > .cart-count-bubble { display: flex; }
   .portal-header-shell:not([data-layout]) .portal-header__account-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .portal-header-shell:not([data-layout]) header-drawer { display: block; }
   .portal-header-shell:not([data-layout]) .header__inline-menu { display: none; }

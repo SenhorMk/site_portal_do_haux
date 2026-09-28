@@ -174,6 +174,14 @@
     }
   }
 
+  // Open the Shopify account sheet just below the header, whether transparent, solid or sticky.
+  document.addEventListener('open', (event) => {
+    const account = event.target;
+    if (!(account instanceof HTMLElement) || !account.matches('.portal-header shopify-account')) return;
+    const header = account.closest('.portal-header-wrapper') || account;
+    account.style.setProperty('--shopify-account-dialog-position-top', `${Math.max(0, Math.round(header.getBoundingClientRect().bottom))}px`);
+  }, true);
+
   for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel]]) {
     if (!customElements.get(name)) customElements.define(name, component);
   }

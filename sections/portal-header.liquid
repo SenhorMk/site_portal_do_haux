@@ -11,7 +11,23 @@
       {% render 'header-dropdown-menu' %}
       <div class="portal-header__actions">
         {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
-        {% if shop.customer_accounts_enabled %}<a class="header__icon header__icon--account link focus-inset portal-header__account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"><span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span><span class="portal-header__account-label">{{ 'customer.account.title' | t }}</span></a>{% endif %}
+        {%- if shop.customer_accounts_enabled -%}
+          {%- liquid
+            assign account_menu = section.settings.customer_account_menu.handle | default: 'customer-account-main-menu'
+            capture account_content
+              echo '<span class="svg-wrapper" aria-hidden="true">'
+              echo 'icon-account.svg' | inline_asset_content
+              echo '</span><span class="portal-header__account-label">'
+              echo 'customer.account.title' | t
+              echo '</span>'
+            endcapture
+          -%}
+          <shopify-account class="header__icon header__icon--account portal-header__account" menu="{{ account_menu }}">
+            {%- unless customer -%}<span slot="signed-out-avatar" class="portal-header__account-avatar">{{ account_content }}</span>{%- endunless -%}
+          </shopify-account>
+          {%- comment -%} Shown only until <shopify-account> is defined (no JS or the component failed to load). {%- endcomment -%}
+          <a class="header__icon header__icon--account link focus-inset portal-header__account portal-header__account-fallback" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">{{ account_content }}</a>
+        {%- endif -%}
         <a class="header__icon header__icon--cart link focus-inset" href="{{ routes.cart_url }}" id="cart-icon-bubble">{% render 'portal-cart-icon' %}</a>
       </div>
     </header>
@@ -27,6 +43,12 @@
       "id": "menu",
       "label": "Menu principal",
       "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "customer_account_menu",
+      "label": "Menu da conta do cliente",
+      "info": "Usado no acesso à conta do header. Sem escolha, vale o menu customer-account-main-menu, o mesmo das páginas de conta."
     },
     {
       "type": "select",

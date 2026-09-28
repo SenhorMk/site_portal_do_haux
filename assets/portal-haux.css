@@ -179,6 +179,9 @@
 .portal-header-shell[data-layout="compact"] header-drawer { display: block; }
 .portal-header-shell[data-layout="compact"] .header__inline-menu { display: none; }
 @media (max-width: 767px) { .portal-header-shell[data-layout="compact"] .header__icon--account { display: none; } }
+/* Below 768px the account lives in the drawer. Rise's .medium-hide (!important) would drop it at 750-767px,
+   where the header link is already hidden, so the drawer link is kept up to the Portal breakpoint. */
+@media (min-width: 750px) and (max-width: 767px) { .portal-header .menu-drawer__account.medium-hide { display: inline-flex !important; } }
 .portal.overflow-hidden-desktop { overflow: hidden; }
 .portal .drawer { z-index: 20; }
 

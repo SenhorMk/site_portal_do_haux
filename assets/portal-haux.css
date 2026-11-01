@@ -110,10 +110,10 @@
 .portal-header .portal-nav__link { display: flex; justify-content: flex-start; gap: 1rem; min-height: 4.4rem; padding: .8rem 1.2rem; color: var(--portal-text); font-size: 1.4rem; font-weight: 400; letter-spacing: 0; text-transform: none; white-space: normal; }
 .portal-header .portal-nav__link:is(:hover, :focus-visible, .is-active) { background: var(--portal-pergaminho); color: var(--portal-link); text-decoration: none; }
 .portal-nav__swatch { flex: none; width: 1.1rem; height: 1.1rem; border: 1px solid rgb(36 26 20 / 25%); transform: rotate(45deg); }
-.portal-nav__swatch--guardiao { background: #d9622b; }
-.portal-nav__swatch--luz { background: #f0b04f; }
-.portal-nav__swatch--harmonia { background: #7a4b98; }
-.portal-nav__swatch--purificacao { background: #123d1f; }
+.portal-header .header__submenu .portal-nav__link > .portal-nav__swatch--guardiao { background: #d9622b; }
+.portal-header .header__submenu .portal-nav__link > .portal-nav__swatch--luz { background: #f0b04f; }
+.portal-header .header__submenu .portal-nav__link > .portal-nav__swatch--harmonia { background: #7a4b98; }
+.portal-header .header__submenu .portal-nav__link > .portal-nav__swatch--purificacao { background: #123d1f; }
 .portal-header__actions { display: flex; align-items: center; gap: 1.6rem; }
 .portal-header .header__icon { display: inline-flex; align-items: center; justify-content: center; width: 4.4rem; height: 4.4rem; color: var(--portal-header-fg); text-decoration: none; opacity: .86; }
 .portal-header .header__icon .svg-wrapper { width: 2rem; height: 2rem; }

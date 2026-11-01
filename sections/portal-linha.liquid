@@ -1,0 +1,166 @@
+{%- liquid
+  assign linha = section.settings.linha
+  assign art_asset = 'portal-linha-' | append: linha | append: '.webp'
+  assign instagram_handle = section.settings.instagram | remove: '@'
+  assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+
+<div class="portal-linha portal-linha--{{ linha }}">
+  <div class="portal-linha__hero">
+    <nav class="portal-breadcrumb" aria-label="{{ 'portal.collection.breadcrumb' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'portal.collection.home' | t }}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ collection.title | escape }}</span>
+    </nav>
+    <div class="portal-linha__intro">
+      {% render 'portal-linha-sigilo', linha: linha, class: 'portal-linha__sigilo' %}
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="portal-linha__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="portal-linha__title">{{ collection.title | escape }}</h1>
+      {%- if section.settings.tagline != blank -%}
+        <p class="portal-linha__tagline">{{ section.settings.tagline | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta != blank -%}
+        <a class="portal-linha__cta" href="#produtos">{{ section.settings.cta | escape }}</a>
+      {%- endif -%}
+    </div>
+    <div class="portal-linha__art">
+      {%- if section.settings.art != blank -%}
+        {{ section.settings.art | image_url: width: 2000 | image_tag: widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: '', loading: 'eager' }}
+      {%- else -%}
+        <img src="{{ art_asset | asset_url }}" width="1800" height="450" alt="" loading="eager">
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="portal-linha__body">
+    <div class="portal-linha__sentido">
+      <div class="portal-linha__story">
+        {%- if section.settings.story_eyebrow != blank -%}
+          <p class="portal-linha__eyebrow">{{ section.settings.story_eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.story_heading != blank -%}
+          <h2 class="portal-linha__heading">{{ section.settings.story_heading | escape }}</h2>
+        {%- endif -%}
+        <div class="portal-linha__text rte">{{ section.settings.story }}</div>
+      </div>
+      {%- if section.blocks.size > 0 -%}
+        <div class="portal-linha__ervas">
+          {%- if section.settings.herbs_heading != blank -%}
+            <p class="portal-linha__eyebrow">{{ section.settings.herbs_heading | escape }}</p>
+          {%- endif -%}
+          <ul class="portal-linha__ervas-list" role="list">
+            {%- for block in section.blocks -%}
+              <li class="portal-linha__erva" {{ block.shopify_attributes }}>
+                {% render 'portal-linha-erva', tipo: block.settings.icon %}
+                <span>{{ block.settings.name | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="portal-linha__ficha">
+      <div class="portal-linha__ficha-item">
+        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'portal' %}{{ section.settings.composition_heading | escape }}</h2>
+        <div class="rte">{{ section.settings.composition }}</div>
+      </div>
+      <div class="portal-linha__ficha-item">
+        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'sopro' %}{{ section.settings.usage_heading | escape }}</h2>
+        <div class="rte">{{ section.settings.usage }}</div>
+      </div>
+      <div class="portal-linha__ficha-item">
+        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'ciclo' %}{{ section.settings.contact_heading | escape }}</h2>
+        {%- if instagram_handle != blank -%}
+          <p><a href="https://www.instagram.com/{{ instagram_handle | escape }}/" rel="noopener" target="_blank">@{{ instagram_handle | escape }}</a></p>
+        {%- endif -%}
+        {%- if section.settings.phone != blank -%}
+          <p><a href="tel:{{ phone_digits }}">{{ section.settings.phone | escape }}</a></p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.label_image != blank -%}
+      <div class="portal-linha__rotulo">
+        {{ section.settings.label_image | image_url: width: 2000 | image_tag: widths: '750, 1100, 1500, 2000', sizes: '(min-width: 1400px) 1320px, 100vw', loading: 'lazy' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="portal-linha__produtos" id="produtos">
+    <p class="portal-eyebrow">{{ section.settings.products_eyebrow | escape }}</p>
+    <h2 class="portal-heading">{{ section.settings.products_heading | escape }}</h2>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Portal · Linha",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "linha",
+      "label": "Identidade da linha",
+      "options": [
+        { "value": "guardiao", "label": "Portal do Guardião" },
+        { "value": "luz", "label": "Portal da Luz" },
+        { "value": "harmonia", "label": "Portal da Harmonia" },
+        { "value": "purificacao", "label": "Portal da Purificação" }
+      ],
+      "default": "guardiao"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Sobretítulo", "default": "Defumador de ambiente" },
+    { "type": "text", "id": "tagline", "label": "Frase da linha" },
+    { "type": "text", "id": "cta", "label": "Texto do botão", "default": "Ver produtos da linha" },
+    { "type": "image_picker", "id": "art", "label": "Arte botânica", "info": "Opcional. Substitui a arte já incluída no tema." },
+    { "type": "header", "content": "O sentido da linha" },
+    { "type": "text", "id": "story_eyebrow", "label": "Sobretítulo", "default": "O sentido da linha" },
+    { "type": "text", "id": "story_heading", "label": "Título" },
+    { "type": "richtext", "id": "story", "label": "Texto" },
+    { "type": "text", "id": "herbs_heading", "label": "Título das ervas", "default": "As ervas" },
+    { "type": "header", "content": "Ficha da linha" },
+    { "type": "text", "id": "composition_heading", "label": "Título da composição", "default": "Composição" },
+    { "type": "richtext", "id": "composition", "label": "Composição" },
+    { "type": "text", "id": "usage_heading", "label": "Título do modo de uso", "default": "Modo de uso" },
+    { "type": "richtext", "id": "usage", "label": "Modo de uso" },
+    { "type": "text", "id": "contact_heading", "label": "Título do contato", "default": "Contato" },
+    { "type": "text", "id": "instagram", "label": "Instagram", "default": "@portaldohauxoficial" },
+    { "type": "text", "id": "phone", "label": "Telefone", "default": "+55 42 99164-0888" },
+    { "type": "image_picker", "id": "label_image", "label": "Rótulo completo", "info": "Opcional. Mostra a arte inteira do rótulo abaixo da ficha." },
+    { "type": "header", "content": "Produtos" },
+    { "type": "text", "id": "products_eyebrow", "label": "Sobretítulo", "default": "Para levar para casa" },
+    { "type": "text", "id": "products_heading", "label": "Título", "default": "Produtos da linha" }
+  ],
+  "blocks": [
+    {
+      "type": "erva",
+      "name": "Erva",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nome" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Símbolo",
+          "options": [
+            { "value": "capim-limao", "label": "Capim-limão" },
+            { "value": "lavanda", "label": "Lavanda" },
+            { "value": "alecrim", "label": "Alecrim" },
+            { "value": "jasmim", "label": "Jasmim" },
+            { "value": "eucalipto", "label": "Eucalipto" },
+            { "value": "arruda", "label": "Arruda" },
+            { "value": "patchouli", "label": "Patchouli" },
+            { "value": "canela", "label": "Canela" },
+            { "value": "cravo", "label": "Cravo" }
+          ],
+          "default": "alecrim"
+        }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["collection"] },
+  "presets": [{ "name": "Portal · Linha" }]
+}
+{% endschema %}

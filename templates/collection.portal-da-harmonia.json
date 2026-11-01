@@ -1,0 +1,114 @@
+{
+  "sections": {
+    "linha": {
+      "type": "portal-linha",
+      "blocks": {
+        "erva-1": {
+          "type": "erva",
+          "settings": {
+            "name": "Capim-limão",
+            "icon": "capim-limao"
+          }
+        },
+        "erva-2": {
+          "type": "erva",
+          "settings": {
+            "name": "Lavanda",
+            "icon": "lavanda"
+          }
+        },
+        "erva-3": {
+          "type": "erva",
+          "settings": {
+            "name": "Alecrim",
+            "icon": "alecrim"
+          }
+        }
+      },
+      "block_order": [
+        "erva-1",
+        "erva-2",
+        "erva-3"
+      ],
+      "settings": {
+        "linha": "harmonia",
+        "tagline": "Serenidade, equilíbrio e harmonização",
+        "story_heading": "Encontro em equilíbrio",
+        "story": "<p>Uma combinação delicada entre o frescor das ervas e a suavidade floral.</p><p>Sua fragrância acolhedora convida à serenidade, ao equilíbrio e à tranquilidade, criando uma atmosfera propícia ao descanso, à contemplação e à harmonização das energias.</p>",
+        "composition": "<p>Álcool, água, propilenoglicol e essências de capim-limão, lavanda e alecrim.</p>",
+        "usage": "<p>Borrife suavemente, preenchendo o ambiente.</p><p>Faça movimentos conscientes, acompanhados de intenção e rezo, permitindo que a fragrância envolva o espaço e desperte simbolicamente a força das ervas e o propósito de cada portal.</p>"
+      }
+    },
+    "grid": {
+      "type": "portal-collection",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "enable_filtering": false,
+        "enable_sorting": false,
+        "quick_add": true,
+        "show_secondary_image": true,
+        "show_vendor": false
+      }
+    },
+    "linhas": {
+      "type": "portal-linhas",
+      "blocks": {
+        "portal-do-guardiao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal do Guardião",
+            "tagline": "Proteção, firmeza e força ancestral",
+            "linha": "guardiao",
+            "handle": "portal-do-guardiao"
+          }
+        },
+        "portal-da-luz": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Luz",
+            "tagline": "Elevação, clareza e conexão espiritual",
+            "linha": "luz",
+            "handle": "portal-da-luz"
+          }
+        },
+        "portal-da-harmonia": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Harmonia",
+            "tagline": "Serenidade, equilíbrio e harmonização",
+            "linha": "harmonia",
+            "handle": "portal-da-harmonia"
+          }
+        },
+        "portal-da-purificacao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Purificação",
+            "tagline": "Limpeza, descarrego e renovação",
+            "linha": "purificacao",
+            "handle": "portal-da-purificacao"
+          }
+        }
+      },
+      "block_order": [
+        "portal-do-guardiao",
+        "portal-da-luz",
+        "portal-da-harmonia",
+        "portal-da-purificacao"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "portal-newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "linha",
+    "grid",
+    "linhas",
+    "newsletter"
+  ]
+}

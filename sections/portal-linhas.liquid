@@ -1,0 +1,69 @@
+<div class="portal-linhas portal-pad">
+  <div class="portal-section-heading">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="portal-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="portal-heading">{{ section.settings.heading | escape }}</h2>
+    </div>
+  </div>
+  <ul class="portal-linhas__list" role="list">
+    {%- for block in section.blocks -%}
+      {%- if collection.handle == block.settings.handle -%}{%- continue -%}{%- endif -%}
+      <li {{ block.shopify_attributes }}>
+        <a class="portal-linhas__card portal-linha--{{ block.settings.linha }}" href="{{ routes.collections_url }}/{{ block.settings.handle | escape }}">
+          {% render 'portal-linha-sigilo', linha: block.settings.linha %}
+          <span class="portal-linhas__name">{{ block.settings.title | escape }}</span>
+          <span class="portal-linhas__tagline">{{ block.settings.tagline | escape }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Portal · Linhas",
+  "class": "portal-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Sobretítulo", "default": "Linhas de defumação" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Conheça os outros portais" }
+  ],
+  "blocks": [
+    {
+      "type": "linha",
+      "name": "Linha",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Nome" },
+        { "type": "text", "id": "tagline", "label": "Frase" },
+        {
+          "type": "select",
+          "id": "linha",
+          "label": "Identidade",
+          "options": [
+            { "value": "guardiao", "label": "Portal do Guardião" },
+            { "value": "luz", "label": "Portal da Luz" },
+            { "value": "harmonia", "label": "Portal da Harmonia" },
+            { "value": "purificacao", "label": "Portal da Purificação" }
+          ],
+          "default": "guardiao"
+        },
+        { "type": "text", "id": "handle", "label": "Identificador da coleção", "info": "A parte final do endereço da coleção. A coleção aberta no momento não aparece na lista." }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["index", "collection"] },
+  "presets": [
+    {
+      "name": "Portal · Linhas",
+      "blocks": [
+        { "type": "linha", "settings": { "title": "Portal do Guardião", "tagline": "Proteção, firmeza e força ancestral", "linha": "guardiao", "handle": "portal-do-guardiao" } },
+        { "type": "linha", "settings": { "title": "Portal da Luz", "tagline": "Elevação, clareza e conexão espiritual", "linha": "luz", "handle": "portal-da-luz" } },
+        { "type": "linha", "settings": { "title": "Portal da Harmonia", "tagline": "Serenidade, equilíbrio e harmonização", "linha": "harmonia", "handle": "portal-da-harmonia" } },
+        { "type": "linha", "settings": { "title": "Portal da Purificação", "tagline": "Limpeza, descarrego e renovação", "linha": "purificacao", "handle": "portal-da-purificacao" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

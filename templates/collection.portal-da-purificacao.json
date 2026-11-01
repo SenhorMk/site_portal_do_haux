@@ -1,0 +1,122 @@
+{
+  "sections": {
+    "linha": {
+      "type": "portal-linha",
+      "blocks": {
+        "erva-1": {
+          "type": "erva",
+          "settings": {
+            "name": "Alecrim",
+            "icon": "alecrim"
+          }
+        },
+        "erva-2": {
+          "type": "erva",
+          "settings": {
+            "name": "Eucalipto",
+            "icon": "eucalipto"
+          }
+        },
+        "erva-3": {
+          "type": "erva",
+          "settings": {
+            "name": "Lavanda",
+            "icon": "lavanda"
+          }
+        },
+        "erva-4": {
+          "type": "erva",
+          "settings": {
+            "name": "Arruda",
+            "icon": "arruda"
+          }
+        }
+      },
+      "block_order": [
+        "erva-1",
+        "erva-2",
+        "erva-3",
+        "erva-4"
+      ],
+      "settings": {
+        "linha": "purificacao",
+        "tagline": "Limpeza, descarrego e renovação",
+        "story_heading": "",
+        "story": "<p>Inspirado na força purificadora das ervas, reúne notas herbais frescas e marcantes em uma fragrância que evoca a renovação.</p><p>Um convite à limpeza energética, ao descarrego e à abertura de caminhos, preparando o ambiente para receber novas energias.</p>",
+        "composition": "<p>Álcool, água, propilenoglicol e essências de alecrim, eucalipto, lavanda e arruda.</p>",
+        "usage": "<p>Borrife suavemente, preenchendo o ambiente.</p><p>Faça movimentos conscientes, acompanhados de intenção e rezo, permitindo que a fragrância envolva o espaço e desperte simbolicamente a força das ervas e o propósito de cada portal.</p>"
+      }
+    },
+    "grid": {
+      "type": "portal-collection",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "enable_filtering": false,
+        "enable_sorting": false,
+        "quick_add": true,
+        "show_secondary_image": true,
+        "show_vendor": false
+      }
+    },
+    "linhas": {
+      "type": "portal-linhas",
+      "blocks": {
+        "portal-do-guardiao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal do Guardião",
+            "tagline": "Proteção, firmeza e força ancestral",
+            "linha": "guardiao",
+            "handle": "portal-do-guardiao"
+          }
+        },
+        "portal-da-luz": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Luz",
+            "tagline": "Elevação, clareza e conexão espiritual",
+            "linha": "luz",
+            "handle": "portal-da-luz"
+          }
+        },
+        "portal-da-harmonia": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Harmonia",
+            "tagline": "Serenidade, equilíbrio e harmonização",
+            "linha": "harmonia",
+            "handle": "portal-da-harmonia"
+          }
+        },
+        "portal-da-purificacao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Purificação",
+            "tagline": "Limpeza, descarrego e renovação",
+            "linha": "purificacao",
+            "handle": "portal-da-purificacao"
+          }
+        }
+      },
+      "block_order": [
+        "portal-do-guardiao",
+        "portal-da-luz",
+        "portal-da-harmonia",
+        "portal-da-purificacao"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "portal-newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "linha",
+    "grid",
+    "linhas",
+    "newsletter"
+  ]
+}

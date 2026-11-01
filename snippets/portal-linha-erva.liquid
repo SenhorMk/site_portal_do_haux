@@ -1,0 +1,17 @@
+{% doc %}
+  Herb marks from the label art.
+  @param {string} tipo - capim-limao, lavanda, alecrim, jasmim, eucalipto, arruda, patchouli, canela, cravo
+{% enddoc %}
+<svg class="portal-linha-erva" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {% case tipo %}
+    {% when 'capim-limao' %}<path d="M24 44V6M24 44C21 30 15 21 7 14M24 44c3-14 9-23 17-30M24 44C22 34 18 28 14 22M24 44c2-10 6-16 10-22"/>
+    {% when 'lavanda' %}<path d="M24 44V20M24 6l3 3-3 3-3-3ZM18 12l3 3-3 3-3-3ZM30 12l3 3-3 3-3-3ZM24 14l3 3-3 3-3-3ZM18 20l3 3-3 3-3-3ZM30 20l3 3-3 3-3-3ZM24 32l-8-6M24 38l8-6"/>
+    {% when 'alecrim' %}<path d="M24 45V4M24 12l-7-5M24 12l7-5M24 19l-9-6M24 19l9-6M24 26l-10-6M24 26l10-6M24 33l-9-6M24 33l9-6M24 40l-7-5M24 40l7-5"/>
+    {% when 'jasmim' %}<path d="m24 6 5 13-5 5-5-5ZM42 24l-13 5-5-5 5-5ZM24 42l-5-13 5-5 5 5ZM6 24l13-5 5 5-5 5Z"/>
+    {% when 'eucalipto' %}<path d="M24 45V4M24 14c-9-6-15-1-15 3 0 5 9 6 15-3ZM24 14c6-8 15-7 15-3 0 5-9 8-15 3ZM24 32c-9-6-15-1-15 3 0 5 9 6 15-3ZM24 26c6-8 15-7 15-3 0 5-9 8-15 3Z"/>
+    {% when 'arruda' %}<path d="M24 45V24M24 24 11 11M24 24l13-13M24 24V6M11 11l-4 1 1-4 3-1ZM37 11l4 1-1-4-3-1ZM24 6l-3-2 3-3 3 3ZM24 34l-9-6M24 34l9-6"/>
+    {% when 'patchouli' %}<path d="M24 4c11 8 15 16 15 23 0 10-7 17-15 17S9 37 9 27C9 20 13 12 24 4ZM24 4v40M24 18l-8-6M24 18l8-6M24 28l-11-7M24 28l11-7M24 38l-9-6M24 38l9-6"/>
+    {% when 'canela' %}<path d="M12 44V14a12 10 0 0 1 24 0v30"/><path d="M18 44V15a6 5 0 0 1 12 0v29M24 10c3 0 2 5 0 5"/>
+    {% else %}<path d="M24 45V22M24 24 13 13M24 24l11-11M24 22V9M24 3l5 5-5 5-5-5ZM9 8l5 2-2 5-5-2ZM39 8l-5 2 2 5 5-2Z"/>
+  {% endcase %}
+</svg>

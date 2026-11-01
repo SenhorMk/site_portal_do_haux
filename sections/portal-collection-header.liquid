@@ -76,6 +76,7 @@
         </li>
       {%- endif -%}
       {%- for link in section.settings.menu.links -%}
+        {%- if link.url == '#' -%}{%- continue -%}{%- endif -%}
         <li>
           <a
             class="portal-collection-nav__link"

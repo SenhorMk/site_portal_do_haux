@@ -1,0 +1,20 @@
+{% doc %}
+  One link inside a navigation panel. Links to a product line carry that line's color.
+  @param {link} link - Menu link
+{% enddoc %}
+{%- liquid
+  assign linha = ''
+  if link.url contains 'portal-do-guardiao'
+    assign linha = 'guardiao'
+  elsif link.url contains 'portal-da-luz'
+    assign linha = 'luz'
+  elsif link.url contains 'portal-da-harmonia'
+    assign linha = 'harmonia'
+  elsif link.url contains 'portal-da-purificacao'
+    assign linha = 'purificacao'
+  endif
+-%}
+<a href="{{ link.url }}" class="header__menu-item list-menu__item link focus-inset portal-nav__link{% if link.current %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
+  {%- if linha != blank -%}<span class="portal-nav__swatch portal-nav__swatch--{{ linha }}" aria-hidden="true"></span>{%- endif -%}
+  <span>{{ link.title | escape }}</span>
+</a>

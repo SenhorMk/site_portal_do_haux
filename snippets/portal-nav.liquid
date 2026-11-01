@@ -1,0 +1,54 @@
+{% doc %}
+  Desktop navigation, driven by the header menu. Up to three levels: a link with
+  its own sublinks opens as a labelled group inside the panel, not as a nested dropdown.
+{% enddoc %}
+<nav class="header__inline-menu portal-nav" aria-label="{{ 'sections.header.menu' | t }}">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      <li>
+        {%- if link.links != blank -%}
+          {%- liquid
+            assign has_groups = false
+            for childlink in link.links
+              if childlink.links != blank
+                assign has_groups = true
+              endif
+            endfor
+          -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}">
+              <summary id="HeaderMenu-{{ link.handle }}" class="header__menu-item list-menu__item link focus-inset portal-nav__item{% if link.child_active %} is-active{% endif %}">
+                <span>{{- link.title | escape -}}</span>
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </summary>
+              <ul id="HeaderMenu-MenuList-{{ forloop.index }}" class="header__submenu list-menu list-menu--disclosure motion-reduce portal-nav__panel{% if has_groups %} portal-nav__panel--wide{% endif %}" role="list" tabindex="-1">
+                {%- for childlink in link.links -%}
+                  {%- if childlink.links == blank -%}
+                    <li>{% render 'portal-nav-link', link: childlink %}</li>
+                  {%- else -%}
+                    <li class="portal-nav__group">
+                      {%- if childlink.url == '#' -%}
+                        <p class="portal-nav__group-title">{{ childlink.title | escape }}</p>
+                      {%- else -%}
+                        <a class="portal-nav__group-title link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                      {%- endif -%}
+                      <ul class="list-menu" role="list">
+                        {%- for grandchildlink in childlink.links -%}
+                          <li>{% render 'portal-nav-link', link: grandchildlink %}</li>
+                        {%- endfor -%}
+                      </ul>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </details>
+          </header-menu>
+        {%- else -%}
+          <a id="HeaderMenu-{{ link.handle }}" href="{{ link.url }}" class="header__menu-item list-menu__item link focus-inset portal-nav__item{% if link.current %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
+            <span>{{- link.title | escape -}}</span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

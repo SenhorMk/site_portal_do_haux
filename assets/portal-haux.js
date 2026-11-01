@@ -69,6 +69,44 @@
       this.resizeObserver.observe(this.wrapper);
       this.layout();
       this.scroll();
+      this.bindMenus();
+    }
+
+    bindMenus() {
+      // Panels open on hover with a mouse; click, touch and keyboard keep the native details behavior.
+      const signal = this.abort.signal;
+      const menus = [...this.querySelectorAll('.portal-nav details')];
+      menus.forEach((details) => {
+        const summary = details.querySelector('summary');
+        details.addEventListener('toggle', () => summary.setAttribute('aria-expanded', details.open), { signal });
+        details.addEventListener('pointerenter', (event) => {
+          if (event.pointerType !== 'mouse') return;
+          clearTimeout(this.menuTimer);
+          menus.forEach((menu) => { if (menu !== details) menu.open = false; });
+          if (!details.open) details.dataset.hoverOpened = '';
+          details.open = true;
+        }, { signal });
+        details.addEventListener('pointerleave', (event) => {
+          if (event.pointerType !== 'mouse') return;
+          this.menuTimer = setTimeout(() => {
+            details.open = false;
+            delete details.dataset.hoverOpened;
+          }, 160);
+        }, { signal });
+        summary.addEventListener('click', (event) => {
+          // The first click on a panel opened by hover must not close it under the pointer.
+          if (!('hoverOpened' in details.dataset)) return;
+          event.preventDefault();
+          delete details.dataset.hoverOpened;
+        }, { signal });
+      });
+      this.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const open = menus.find((menu) => menu.open);
+        if (!open) return;
+        open.open = false;
+        open.querySelector('summary').focus();
+      }, { signal });
     }
 
     fits(layout) {

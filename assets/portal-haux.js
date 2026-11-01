@@ -51,15 +51,17 @@
             if (drawer?.mainDetailsToggle?.open) drawer.closeMenuDrawer(new Event('close'), drawer.querySelector('summary'));
           }
           this.dataset.layout = layout;
+          // Resting height, measured before sticking (the home logo shrinks once sticky).
+          if (!this.classList.contains('is-sticky')) this.topHeight = this.wrapper.getBoundingClientRect().height;
           this.reserve();
+          this.scroll();
         });
       };
       this.scroll = () => {
         cancelAnimationFrame(this.scrollFrame);
         this.scrollFrame = requestAnimationFrame(() => {
-          // The hero on the home page, the header itself everywhere else.
-          const trigger = document.querySelector('.portal-hero') || this;
-          this.classList.toggle('is-sticky', trigger.getBoundingClientRect().bottom <= 0);
+          // Sticks once the resting header has scrolled out of view.
+          this.classList.toggle('is-sticky', this.getBoundingClientRect().top + (this.topHeight || 0) <= 0);
         });
       };
       window.addEventListener('scroll', this.scroll, { passive: true, signal: this.abort.signal });
@@ -121,8 +123,8 @@
     }
 
     reserve() {
-      // WAAPI reserves the header space without adding inline style attributes.
-      const height = this.wrapper.getBoundingClientRect().height;
+      // The home header overlays the hero, which reserves its own safe area in CSS.
+      const height = this.hasAttribute('data-overlay') ? 0 : this.topHeight;
       if (height === this.reservedHeight) return;
       this.reservedHeight = height;
       this.spacer?.cancel();
@@ -209,6 +211,14 @@
       for (const video of this.querySelectorAll('video')) video.pause();
     }
   }
+
+  // Open the Shopify account sheet just below the header, whether transparent, solid or sticky.
+  document.addEventListener('open', (event) => {
+    const account = event.target;
+    if (!(account instanceof HTMLElement) || !account.matches('.portal-header shopify-account')) return;
+    const header = account.closest('.portal-header-wrapper') || account;
+    account.style.setProperty('--shopify-account-dialog-position-top', `${Math.max(0, Math.round(header.getBoundingClientRect().bottom))}px`);
+  }, true);
 
   for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel]]) {
     if (!customElements.get(name)) customElements.define(name, component);

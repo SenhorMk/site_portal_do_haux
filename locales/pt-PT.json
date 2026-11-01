@@ -551,6 +551,9 @@
       "all": "Todos",
       "all_products": "Ver todos os produtos"
     },
+    "product": {
+      "read_more": "Ler descrição completa"
+    },
     "content": {
       "product_pending": "[PRODUTO A SELECIONAR]"
     },

@@ -1,8 +1,15 @@
 <!doctype html>
 {%- liquid
   assign portal_template = false
-  if template.name == 'index' or template.name == 'collection'
-    assign portal_template = true
+  case template.name
+    when 'index', 'collection', 'product', 'search', 'cart'
+      assign portal_template = true
+  endcase
+  # The Portal header runs on every template and opens the cart drawer.
+  assign portal_drawer = true
+  # The cart page already lists the cart; a Portal drawer there would load cart.js twice.
+  if template.name == 'cart' and settings.cart_type != 'drawer'
+    assign portal_drawer = false
   endif
 -%}
 <html class="js" lang="{{ request.locale.iso_code }}">
@@ -270,11 +277,13 @@
     {% endunless %}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-    {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-    {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-    {{ 'component-price.css' | asset_url | stylesheet_tag }}
-    {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+    {%- if portal_drawer -%}
+      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+      {{ 'component-price.css' | asset_url | stylesheet_tag }}
+      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
 
     {%- unless settings.type_body_font.system? or portal_template -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -308,12 +317,14 @@
     </script>
   </head>
 
-  <body class="{% if portal_template %}portal portal-{% if template.name == 'index' %}home{% else %}collection{% endif %} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body class="{% if portal_template %}portal portal-{% if template.name == 'index' %}home{% else %}{{ template.name }}{% endif %} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
-    {%- render 'cart-drawer' -%}
+    {%- if portal_drawer -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
 
     {% sections 'portal-header-group' %}
 
@@ -377,6 +388,8 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- if portal_drawer -%}
+      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
   </body>
 </html>

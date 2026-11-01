@@ -1,0 +1,18 @@
+{% doc %}
+  Category eyebrow for the product page: product type, else the first real collection.
+  Renders nothing when neither exists.
+{% enddoc %}
+{%- liquid
+  assign portal_label = product.type
+  if portal_label == blank
+    for portal_collection in product.collections
+      if portal_collection.handle != 'frontpage' and portal_collection.handle != 'all'
+        assign portal_label = portal_collection.title
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if portal_label != blank -%}
+  <p class="portal-eyebrow portal-product__eyebrow">{{ portal_label | escape }}</p>
+{%- endif -%}

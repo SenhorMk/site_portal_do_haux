@@ -1,0 +1,90 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.quick_add -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+{%- liquid
+  assign quick_add = 'none'
+  if section.settings.quick_add
+    assign quick_add = 'standard'
+  endif
+-%}
+<product-recommendations
+  class="portal-product-recs portal-products portal-pad"
+  data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <h2 class="portal-heading">{{ section.settings.heading | escape }}</h2>
+    <ul class="portal-collection__grid grid product-grid grid--4-col-desktop grid--2-col-tablet-down" role="list">
+      {%- for recommendation in recommendations.products -%}
+        {%- liquid
+          assign secondary = false
+          if section.settings.show_secondary_image and recommendation.media[1].media_type == 'image'
+            assign secondary = true
+          endif
+        -%}
+        <li class="grid__item portal-products__item">
+          {% render 'card-product',
+            card_product: recommendation,
+            media_aspect_ratio: 'portrait',
+            show_secondary_image: secondary,
+            quick_add: quick_add,
+            section_id: section.id,
+            portal_card: true
+          %}
+          <p class="portal-products__error" role="alert" hidden></p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</product-recommendations>
+
+{% schema %}
+{
+  "name": "Portal · Relacionados",
+  "class": "portal-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Você também pode gostar"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Quantidade de produtos"
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "default": true,
+      "label": "Adicionar pela listagem"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Trocar para a segunda foto ao passar o mouse"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "presets": [
+    {
+      "name": "Portal · Relacionados"
+    }
+  ]
+}
+{% endschema %}

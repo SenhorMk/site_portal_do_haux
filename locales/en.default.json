@@ -539,6 +539,9 @@
       "all": "All",
       "all_products": "See every product"
     },
+    "product": {
+      "read_more": "Read the full description"
+    },
     "content": {
       "product_pending": "[SELECT A PRODUCT]"
     },

@@ -663,10 +663,21 @@
 .portal-linha__tagline { margin: 0; color: var(--linha-text); font: 300 clamp(2rem,2.2vw,2.6rem)/1.35 var(--portal-display); text-wrap: balance; }
 .portal-linha__cta { display: inline-flex; align-items: center; justify-content: center; min-height: 4.8rem; margin-block-start: .8rem; padding: 1.2rem 2.8rem; background: var(--linha-accent); color: var(--linha-cta-text); font: 500 1.2rem/1.4 var(--portal-body); letter-spacing: .16em; text-transform: uppercase; text-decoration: none; transition: opacity 180ms var(--portal-ease); }
 .portal-linha__cta:hover { opacity: .86; }
+.portal-linha__stage { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); align-items: center; gap: clamp(2.4rem,4vw,6.4rem); max-width: 132rem; margin-inline: auto; padding-inline: var(--portal-gutter); }
+.portal-linha__stage .portal-linha__intro { max-width: none; margin-inline: 0; padding-inline: 0; }
+.portal-linha__frasco { display: flex; justify-content: center; margin-block-end: clamp(-16rem,-11vw,-8rem); }
+.portal-linha__frasco a { display: block; transition: transform 320ms var(--portal-ease); }
+.portal-linha__frasco a:hover { transform: translateY(-.6rem); }
+.portal-linha-frasco { display: block; width: auto; max-width: 100%; height: auto; }
+.portal-linha__frasco .portal-linha-frasco { height: clamp(44rem,46vw,66rem); filter: drop-shadow(0 2.4rem 2.4rem rgb(20 12 6 / 38%)); }
 .portal-linha__art { margin-block-start: -2rem; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 34%); mask-image: linear-gradient(to bottom, transparent, #000 34%); }
 .portal-linha__art img { display: block; width: 100%; height: clamp(22rem,27vw,42rem); object-fit: cover; object-position: center bottom; }
 .portal-linha__body { padding: var(--portal-section-space) var(--portal-gutter); }
-.portal-linha__sentido { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2fr); gap: clamp(3.2rem,6vw,8rem); max-width: 132rem; margin-inline: auto; }
+.portal-linha__sentido { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2fr); grid-template-rows: auto 1fr; grid-template-areas: 'story prancha' 'ervas prancha'; gap: clamp(3.2rem,4vw,5.6rem) clamp(3.2rem,6vw,8rem); max-width: 132rem; margin-inline: auto; }
+.portal-linha__story { grid-area: story; }
+.portal-linha__ervas { grid-area: ervas; }
+.portal-linha__prancha { grid-area: prancha; margin: 0; }
+.portal-linha__prancha img { display: block; width: 100%; height: auto; }
 .portal-linha__heading { margin: 1rem 0 0; color: var(--linha-title); font: 400 clamp(2.8rem,3vw,3.8rem)/1.15 var(--portal-display); }
 .portal-linha__text { margin-block-start: 1.8rem; color: var(--linha-text); font: 300 clamp(2rem,2.1vw,2.6rem)/1.5 var(--portal-display); }
 .portal-linha__text p { margin: 0 0 1.4rem; color: inherit; font: inherit; }
@@ -687,20 +698,38 @@
 .portal-linha__produtos .portal-eyebrow { margin-block-end: .9rem; }
 .portal-linhas { background: var(--portal-pergaminho); }
 .portal-linhas__list { display: grid; grid-template-columns: repeat(auto-fit,minmax(24rem,1fr)); gap: var(--portal-gap); margin: 0; padding: 0; list-style: none; }
-.portal-linhas__card { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; height: 100%; padding: 3.2rem 2.4rem; background: var(--linha-bg); color: var(--linha-text); text-align: center; text-decoration: none; transition: transform 220ms var(--portal-ease); }
-.portal-linhas__card:hover { transform: translateY(-.4rem); }
-.portal-linhas__card .portal-linha-sigilo { width: 8.8rem; height: auto; color: var(--linha-title); }
-.portal-linhas__name { color: var(--linha-title); font: 400 2.2rem/1.2 var(--portal-display); }
-.portal-linhas__tagline { font-size: 1.4rem; line-height: 1.5; }
+.portal-linhas__card { position: relative; display: flex; flex-direction: column; height: 100%; min-height: 56rem; overflow: hidden; background: var(--linha-bg); color: var(--linha-text); text-align: center; text-decoration: none; }
+.portal-linhas__card:focus-visible { outline: 2px solid var(--portal-text); outline-offset: 3px; }
+.portal-linhas__copy { position: relative; z-index: 1; display: flex; flex-direction: column; gap: .8rem; padding: 3.2rem 2rem 1.6rem; }
+.portal-linhas__name { color: var(--linha-title); font: 400 clamp(2.2rem,1.9vw,2.6rem)/1.15 var(--portal-display); text-wrap: balance; }
+.portal-linhas__tagline { font-size: 1.4rem; line-height: 1.5; text-wrap: balance; }
+.portal-linhas__stage { position: relative; display: flex; flex: 1; align-items: flex-end; justify-content: center; min-height: 0; padding-block-end: 2.4rem; }
+.portal-linhas__art { position: absolute; inset: auto 0 0; width: 100%; height: 62%; object-fit: cover; object-position: center bottom; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%); mask-image: linear-gradient(to bottom, transparent, #000 45%); }
+.portal-linhas__stage .portal-linha-frasco { position: relative; height: 36rem; filter: drop-shadow(0 1.4rem 1.4rem rgb(20 12 6 / 38%)); transition: transform 320ms var(--portal-ease); }
+.portal-linhas__card:is(:hover,:focus-visible) .portal-linha-frasco { transform: translateY(-.8rem); }
 @media (max-width: 989px) {
   .portal-linha__sentido, .portal-linha__ficha { grid-template-columns: minmax(0,1fr); }
+  .portal-linha__sentido { grid-template-rows: none; grid-template-areas: 'story' 'prancha' 'ervas'; }
+  .portal-linha__prancha { max-width: 56rem; margin-inline: auto; }
+  .portal-linha__stage { grid-template-columns: minmax(0,1fr); padding-inline: 0; }
+  .portal-linha__stage .portal-linha__intro { padding-inline: 2rem; }
+  .portal-linha__frasco { margin-block-end: -8rem; }
+  .portal-linha__frasco .portal-linha-frasco { height: clamp(36rem,58vw,52rem); }
+  .portal-linhas__list { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 749px) {
   .portal-linha .portal-breadcrumb { padding-inline: 1.6rem; }
   .portal-linha__body { padding: 4.8rem 1.6rem; }
   .portal-linha__art img { height: 20rem; }
+  .portal-linhas__card { min-height: 38rem; }
+  .portal-linhas__copy { padding: 2rem 1.2rem 1rem; }
+  .portal-linhas__name { font-size: 1.9rem; }
+  .portal-linhas__tagline { font-size: 1.3rem; }
+  .portal-linhas__stage { padding-block-end: 1.6rem; }
+  .portal-linhas__stage .portal-linha-frasco { height: 22rem; }
+  .portal-linhas__list > li:last-child:nth-child(odd) { grid-column: 1/-1; }
   .portal-linha__produtos { padding: 4.8rem 1.6rem 0; }
   .portal-linha__erva { padding: 1.2rem; gap: 1rem; font-size: 1.4rem; }
   .portal-linha-erva { width: 3.2rem; height: 3.2rem; }
 }
-@media (prefers-reduced-motion: reduce) { .portal-linhas__card { transition: none; } .portal-linhas__card:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .portal-linha__frasco a, .portal-linhas__stage .portal-linha-frasco { transition: none; } .portal-linha__frasco a:hover, .portal-linhas__card:is(:hover,:focus-visible) .portal-linha-frasco { transform: none; } }

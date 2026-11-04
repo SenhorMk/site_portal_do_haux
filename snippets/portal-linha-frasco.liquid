@@ -1,0 +1,17 @@
+{% doc %}
+  Cut-out bottle of a line. Uses the theme asset unless the merchant picked an image.
+  @param {string} linha - guardiao, luz, harmonia, purificacao
+  @param {object} [image] - Merchant image that replaces the theme asset
+  @param {string} [sizes] - Sizes attribute for a merchant image
+  @param {string} [alt] - Alternative text; empty when a neighbouring text already names the line
+  @param {string} [loading] - eager or lazy (default)
+{% enddoc %}
+{%- liquid
+  assign frasco_loading = loading | default: 'lazy'
+  assign frasco_asset = 'portal-linha-frasco-' | append: linha | append: '.webp'
+-%}
+{%- if image != blank -%}
+  {{ image | image_url: width: 900 | image_tag: class: 'portal-linha-frasco', widths: '300, 450, 600, 900', sizes: sizes, alt: alt, loading: frasco_loading }}
+{%- else -%}
+  <img class="portal-linha-frasco" src="{{ frasco_asset | asset_url }}" width="370" height="900" alt="{{ alt | escape }}" loading="{{ frasco_loading }}">
+{%- endif -%}

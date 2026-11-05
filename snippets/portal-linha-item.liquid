@@ -1,0 +1,51 @@
+{% doc %}
+  Product of a line: bottle, name, text and price. Without a product it shows as coming soon.
+  @param {string} linha - guardiao, luz, harmonia, purificacao
+  @param {string} kind - spray, oil or other
+  @param {object} [product] - Shopify product; blank means coming soon
+  @param {object} [image] - Merchant cut-out that replaces the theme asset
+  @param {string} title - Name shown when there is no product
+  @param {string} [text] - Short description
+  @param {string} [usage] - Rich text with usage
+  @param {string} [alert] - Rich text with cautions
+{% enddoc %}
+{%- liquid
+  assign item_title = title
+  if product != blank
+    assign item_title = product.title
+  endif
+  assign asset_prefix = 'portal-linha-frasco-'
+  if kind == 'oil'
+    assign asset_prefix = 'portal-linha-oleo-'
+  endif
+  assign item_asset = asset_prefix | append: linha | append: '.webp'
+-%}
+<article class="portal-linha-item portal-linha-item--{{ kind }}">
+  <div class="portal-linha-item__media">
+    {%- if image != blank -%}
+      {{ image | image_url: width: 800 | image_tag: widths: '300, 500, 800', sizes: '(min-width: 990px) 20vw, 40vw', alt: '', loading: 'lazy' }}
+    {%- elsif kind == 'other' and product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 800 | image_tag: widths: '300, 500, 800', sizes: '(min-width: 990px) 20vw, 40vw', alt: '', loading: 'lazy' }}
+    {%- else -%}
+      <img src="{{ item_asset | asset_url }}" width="340" height="900" alt="" loading="lazy">
+    {%- endif -%}
+  </div>
+  <div class="portal-linha-item__body">
+    <h3 class="portal-linha-item__title">{{ item_title | escape }}</h3>
+    {%- if text != blank -%}
+      <p class="portal-linha-item__text">{{ text | escape }}</p>
+    {%- endif -%}
+    {%- if usage != blank or alert != blank -%}
+      <div class="portal-linha-item__notes rte">{{ usage }}{{ alert }}</div>
+    {%- endif -%}
+    {%- if product != blank -%}
+      <p class="portal-linha-item__price">
+        {{- product.price | money -}}
+        {%- unless product.available %} <span>{{ 'products.product.sold_out' | t }}</span>{% endunless -%}
+      </p>
+      <a class="portal-linha__cta" href="{{ product.url }}">{{ 'portal.linha.view_product' | t }}</a>
+    {%- else -%}
+      <p class="portal-linha-item__soon">{{ 'portal.linha.coming_soon' | t }}</p>
+    {%- endif -%}
+  </div>
+</article>

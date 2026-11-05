@@ -7,21 +7,24 @@
           "type": "erva",
           "settings": {
             "name": "Capim-limão",
-            "icon": "capim-limao"
+            "icon": "capim-limao",
+            "note": "Folha longa de aroma cítrico, conhecida em muitos quintais do Brasil. É o frescor da linha."
           }
         },
         "erva-2": {
           "type": "erva",
           "settings": {
             "name": "Lavanda",
-            "icon": "lavanda"
+            "icon": "lavanda",
+            "note": "A flor que dá suavidade ao conjunto e deixa o fundo floral."
           }
         },
         "erva-3": {
           "type": "erva",
           "settings": {
             "name": "Alecrim",
-            "icon": "alecrim"
+            "icon": "alecrim",
+            "note": "Sustenta o aroma e liga o cítrico ao floral."
           }
         }
       },
@@ -33,24 +36,16 @@
       "settings": {
         "linha": "harmonia",
         "tagline": "Serenidade, equilíbrio e harmonização",
-        "story_heading": "Encontro em equilíbrio",
-        "story": "<p>Uma combinação delicada entre o frescor das ervas e a suavidade floral.</p><p>Sua fragrância acolhedora convida à serenidade, ao equilíbrio e à tranquilidade, criando uma atmosfera propícia ao descanso, à contemplação e à harmonização das energias.</p>",
+        "story_heading": "Quando o dia termina",
+        "story": "<p>O fim da tarde tem um ritmo próprio. A luz baixa, as vozes diminuem e a casa pede outro tom. O Portal da Harmonia foi feito para esse momento.</p><p>O capim-limão lembra o chá de fim de tarde, a lavanda traz a suavidade das flores e o alecrim dá sustentação às duas. A fragrância acolhedora convida à serenidade, ao equilíbrio e à tranquilidade, criando uma atmosfera propícia ao descanso e à contemplação.</p><p>Use ao chegar em casa, antes de dormir ou em um momento de pausa.</p>",
         "composition": "<p>Álcool, água, propilenoglicol e essências de capim-limão, lavanda e alecrim.</p>",
         "usage": "<p>Borrife suavemente, preenchendo o ambiente.</p><p>Faça movimentos conscientes, acompanhados de intenção e rezo, permitindo que a fragrância envolva o espaço e desperte simbolicamente a força das ervas e o propósito de cada portal.</p>",
-        "product": "defumador-liquido-portal-da-harmonia"
-      }
-    },
-    "grid": {
-      "type": "portal-collection",
-      "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "enable_filtering": false,
-        "enable_sorting": false,
-        "quick_add": true,
-        "show_secondary_image": true,
-        "show_vendor": false
+        "product": "defumador-liquido-portal-da-harmonia",
+        "spray_text": "Defumador de ambiente, 100 ml. Um borrifo leva as ervas para o espaço, sem fogo e sem fumaça.",
+        "oil_title": "Óleo essencial Portal da Harmonia, 30 ml",
+        "oil_text": "Encontro em equilíbrio. Um blend fresco, herbal e floral que acolhe, harmoniza e convida à serenidade.",
+        "oil_usage": "<p><strong>Modo de uso.</strong> Aromatizador: adicione 3 a 5 gotas. Uso corporal: sempre diluir em óleo vegetal. Banho aromático: diluir antes do uso.</p>",
+        "oil_alert": "<p><strong>Alerta de uso.</strong> Evite contato do óleo com olhos e mucosas. Não ingerir e manter fora do alcance de crianças.</p>"
       }
     },
     "linhas": {
@@ -108,7 +103,6 @@
   },
   "order": [
     "linha",
-    "grid",
     "linhas",
     "newsletter"
   ]

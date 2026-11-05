@@ -109,7 +109,7 @@
         "image": "shopify://shop_images/Peneira_ervas.jpg",
         "eyebrow": "Nossa origem",
         "heading": "Quem prepara, assina",
-        "text": "<p>[TEXTO INSTITUCIONAL A DEFINIR]</p>",
+        "text": "<p>Cada preparo do Portal do Haux tem nome, receita e rótulo próprios. Escolhemos as ervas pelo que elas carregam e escrevemos no frasco o que vai dentro. Se tiver dúvida sobre um produto, fale com a gente no @portaldohauxoficial.</p>",
         "label": "Conhecer nossa origem",
         "link": "",
         "graphics": true
@@ -121,7 +121,7 @@
         "image": "shopify://shop_images/curipe_BambuBuzio_900x900_2.jpg",
         "eyebrow": "Coleção · Ferramentas",
         "heading": "Kuripes e tepis feitos um a um",
-        "text": "<p>[TEXTO A DEFINIR]</p>",
+        "text": "<p>Cada peça é feita à mão, uma de cada vez, e por isso nenhuma é igual à outra. Escolha pela cor, pelo tamanho e pelo jeito como ela assenta na sua mão.</p>",
         "label": "Ver a coleção",
         "link": "/collections/kuripes",
         "secondary": "",
@@ -135,7 +135,7 @@
         "image": "shopify://shop_images/Smoke_16x9_f25fab1a-e532-4e2f-90ac-8690096263c8.jpg",
         "eyebrow": "Defumação",
         "heading": "Limpar o ar sem acender nada",
-        "text": "<p>[TEXTO A DEFINIR]</p>",
+        "text": "<p>O defumador líquido leva as ervas para um borrifo. Sem fogo, sem fumaça e sem cinza, ele cabe no apartamento, no escritório e na rotina. São quatro linhas, cada uma com suas ervas e sua força.</p>",
         "label": "Ver defumadores",
         "link": "/collections/defumador",
         "graphics": true
@@ -183,28 +183,28 @@
           "type": "pillar",
           "settings": {
             "glyph": "portal",
-            "text": "[ATRIBUTO A CONFIRMAR]"
+            "text": "Defumação sem fogo"
           }
         },
         "b2": {
           "type": "pillar",
           "settings": {
             "glyph": "erva",
-            "text": "[ATRIBUTO A CONFIRMAR]"
+            "text": "Ervas escritas no rótulo"
           }
         },
         "b3": {
           "type": "pillar",
           "settings": {
             "glyph": "sopro",
-            "text": "[ATRIBUTO A CONFIRMAR]"
+            "text": "Quatro linhas, quatro forças"
           }
         },
         "b4": {
           "type": "pillar",
           "settings": {
             "glyph": "ciclo",
-            "text": "[ATRIBUTO A CONFIRMAR]"
+            "text": "Feito para o rito do dia a dia"
           }
         }
       },
@@ -224,7 +224,7 @@
           "settings": {
             "eyebrow": "Medicina",
             "heading": "O que esta categoria reúne",
-            "text": "<p>[TEXTO A DEFINIR]</p>"
+            "text": "<p>Rapés e ervas para uso ritual. A página de cada produto diz o que ele leva e como se usa.</p>"
           }
         },
         "b2": {
@@ -232,7 +232,7 @@
           "settings": {
             "eyebrow": "Ferramenta",
             "heading": "Kuripes e tepis na loja",
-            "text": "<p>[TEXTO A DEFINIR]</p>"
+            "text": "<p>O kuripe serve para aplicar o rapé em si mesmo. O tepi serve para soprar o rapé em outra pessoa.</p>"
           }
         },
         "b3": {
@@ -240,7 +240,7 @@
           "settings": {
             "eyebrow": "Defumação",
             "heading": "Resina, erva seca e spray",
-            "text": "<p>[TEXTO A DEFINIR]</p>"
+            "text": "<p>Hoje a loja tem o defumador líquido, em quatro linhas. É a forma mais simples de começar: um borrifo e uma intenção.</p>"
           }
         },
         "b4": {
@@ -339,7 +339,7 @@
       "type": "portal-experiences",
       "settings": {
         "heading": "Experiências — em breve",
-        "text": "<p>[INFORMAÇÃO A DEFINIR]</p>",
+        "text": "<p>Estamos preparando encontros presenciais. Deixe seu contato para saber primeiro.</p>",
         "label": "Quero saber quando abrir",
         "link": ""
       }
@@ -348,7 +348,7 @@
       "type": "portal-newsletter",
       "settings": {
         "heading": "Avisamos quando um lote novo chega",
-        "text": "<p>[INFORMAÇÃO A DEFINIR: frequência e conteúdo]</p>"
+        "text": "<p>Um e-mail quando um lote novo chegar.</p>"
       }
     },
     "linhas": {

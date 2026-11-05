@@ -528,6 +528,11 @@
     }
   },
   "portal": {
+    "linha": {
+      "view_product": "Ver produto",
+      "coming_soon": "Em breve",
+      "scene_alt": "Defumador e óleo essencial do {{ title }} em cena"
+    },
     "header": {
       "search": "Search"
     },

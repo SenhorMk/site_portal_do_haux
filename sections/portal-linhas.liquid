@@ -11,10 +11,16 @@
     {%- for block in section.blocks -%}
       {%- if collection.handle == block.settings.handle -%}{%- continue -%}{%- endif -%}
       <li {{ block.shopify_attributes }}>
+        {%- assign art_asset = 'portal-linha-' | append: block.settings.linha | append: '.webp' -%}
         <a class="portal-linhas__card portal-linha--{{ block.settings.linha }}" href="{{ routes.collections_url }}/{{ block.settings.handle | escape }}">
-          {% render 'portal-linha-sigilo', linha: block.settings.linha %}
-          <span class="portal-linhas__name">{{ block.settings.title | escape }}</span>
-          <span class="portal-linhas__tagline">{{ block.settings.tagline | escape }}</span>
+          <span class="portal-linhas__copy">
+            <span class="portal-linhas__name">{{ block.settings.title | escape }}</span>
+            <span class="portal-linhas__tagline">{{ block.settings.tagline | escape }}</span>
+          </span>
+          <span class="portal-linhas__stage">
+            <img class="portal-linhas__art" src="{{ art_asset | asset_url }}" width="1800" height="450" alt="" loading="lazy">
+            {% render 'portal-linha-frasco', linha: block.settings.linha, image: block.settings.bottle, sizes: '(min-width: 990px) 12vw, 30vw', alt: '' %}
+          </span>
         </a>
       </li>
     {%- endfor -%}
@@ -49,7 +55,8 @@
           ],
           "default": "guardiao"
         },
-        { "type": "text", "id": "handle", "label": "Identificador da coleção", "info": "A parte final do endereço da coleção. A coleção aberta no momento não aparece na lista." }
+        { "type": "text", "id": "handle", "label": "Identificador da coleção", "info": "A parte final do endereço da coleção. A coleção aberta no momento não aparece na lista." },
+        { "type": "image_picker", "id": "bottle", "label": "Foto do frasco", "info": "Opcional. Use PNG ou WebP com fundo transparente. Substitui o frasco já incluído no tema." }
       ]
     }
   ],

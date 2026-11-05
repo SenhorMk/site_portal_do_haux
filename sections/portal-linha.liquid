@@ -3,6 +3,11 @@
   assign art_asset = 'portal-linha-' | append: linha | append: '.webp'
   assign instagram_handle = section.settings.instagram | remove: '@'
   assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+  assign featured = section.settings.product
+  assign cta_url = '#produtos'
+  if collection.all_products_count == 0 and featured != blank
+    assign cta_url = featured.url
+  endif
 -%}
 
 <div class="portal-linha portal-linha--{{ linha }}">
@@ -12,18 +17,30 @@
       <span aria-hidden="true">/</span>
       <span aria-current="page">{{ collection.title | escape }}</span>
     </nav>
-    <div class="portal-linha__intro">
-      {% render 'portal-linha-sigilo', linha: linha, class: 'portal-linha__sigilo' %}
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="portal-linha__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-      <h1 class="portal-linha__title">{{ collection.title | escape }}</h1>
-      {%- if section.settings.tagline != blank -%}
-        <p class="portal-linha__tagline">{{ section.settings.tagline | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.cta != blank -%}
-        <a class="portal-linha__cta" href="#produtos">{{ section.settings.cta | escape }}</a>
-      {%- endif -%}
+    <div class="portal-linha__stage">
+      <div class="portal-linha__intro">
+        {% render 'portal-linha-sigilo', linha: linha, class: 'portal-linha__sigilo' %}
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="portal-linha__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="portal-linha__title">{{ collection.title | escape }}</h1>
+        {%- if section.settings.tagline != blank -%}
+          <p class="portal-linha__tagline">{{ section.settings.tagline | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.cta != blank -%}
+          <a class="portal-linha__cta" href="{{ cta_url }}">{{ section.settings.cta | escape }}</a>
+        {%- endif -%}
+      </div>
+      <div class="portal-linha__frasco">
+        {%- assign frasco_alt = 'Frasco de ' | append: collection.title -%}
+        {%- if featured != blank -%}
+          <a href="{{ featured.url }}" aria-label="{{ featured.title | escape }}">
+            {% render 'portal-linha-frasco', linha: linha, image: section.settings.bottle, sizes: '(min-width: 990px) 26vw, 50vw', alt: '', loading: 'eager' %}
+          </a>
+        {%- else -%}
+          {% render 'portal-linha-frasco', linha: linha, image: section.settings.bottle, sizes: '(min-width: 990px) 26vw, 50vw', alt: frasco_alt, loading: 'eager' %}
+        {%- endif -%}
+      </div>
     </div>
     <div class="portal-linha__art">
       {%- if section.settings.art != blank -%}
@@ -60,6 +77,14 @@
           </ul>
         </div>
       {%- endif -%}
+      <figure class="portal-linha__prancha">
+        {%- if section.settings.plate != blank -%}
+          {{ section.settings.plate | image_url: width: 1100 | image_tag: widths: '500, 750, 1100', sizes: '(min-width: 990px) 40vw, 100vw', alt: '', loading: 'lazy' }}
+        {%- else -%}
+          {%- assign plate_asset = 'portal-linha-prancha-' | append: linha | append: '.webp' -%}
+          <img src="{{ plate_asset | asset_url }}" width="900" height="1125" alt="" loading="lazy">
+        {%- endif -%}
+      </figure>
     </div>
 
     <div class="portal-linha__ficha">
@@ -116,11 +141,14 @@
     { "type": "text", "id": "tagline", "label": "Frase da linha" },
     { "type": "text", "id": "cta", "label": "Texto do botão", "default": "Ver produtos da linha" },
     { "type": "image_picker", "id": "art", "label": "Arte botânica", "info": "Opcional. Substitui a arte já incluída no tema." },
+    { "type": "product", "id": "product", "label": "Produto da linha", "info": "O frasco leva para este produto. Se a coleção estiver vazia, o botão também." },
+    { "type": "image_picker", "id": "bottle", "label": "Foto do frasco", "info": "Opcional. Use PNG ou WebP com fundo transparente. Substitui o frasco já incluído no tema." },
     { "type": "header", "content": "O sentido da linha" },
     { "type": "text", "id": "story_eyebrow", "label": "Sobretítulo", "default": "O sentido da linha" },
     { "type": "text", "id": "story_heading", "label": "Título" },
     { "type": "richtext", "id": "story", "label": "Texto" },
     { "type": "text", "id": "herbs_heading", "label": "Título das ervas", "default": "As ervas" },
+    { "type": "image_picker", "id": "plate", "label": "Prancha botânica", "info": "Opcional. Formato vertical 4:5. Substitui a prancha já incluída no tema." },
     { "type": "header", "content": "Ficha da linha" },
     { "type": "text", "id": "composition_heading", "label": "Título da composição", "default": "Composição" },
     { "type": "richtext", "id": "composition", "label": "Composição" },

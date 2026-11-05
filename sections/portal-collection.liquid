@@ -42,9 +42,11 @@
           <div class="loading-overlay gradient"></div>
           <p class="portal-collection__empty-text">{{ 'sections.collection_template.empty' | t }}</p>
           <div class="portal-collection__empty-actions">
-            <a class="portal-button portal-button--outline" href="{{ collection.url }}">
-              {{- 'products.facets.clear_all' | t -}}
-            </a>
+            {%- if collection.all_products_count > 0 -%}
+              <a class="portal-button portal-button--outline" href="{{ collection.url }}">
+                {{- 'products.facets.clear_all' | t -}}
+              </a>
+            {%- endif -%}
             <a class="portal-link" href="{{ routes.all_products_collection_url }}">
               {{- 'portal.collection.all_products' | t -}}
             </a>

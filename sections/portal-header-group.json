@@ -4,7 +4,10 @@
   "sections": {
     "announcement": {
       "type": "portal-announcement",
-      "settings": {}
+      "settings": {
+        "text": "Defumação sem fogo: conheça as quatro linhas do Portal",
+        "link": "shopify://collections/defumador"
+      }
     },
     "header": {
       "type": "portal-header",

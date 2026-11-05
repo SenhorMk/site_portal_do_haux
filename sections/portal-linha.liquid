@@ -1,103 +1,127 @@
 {%- liquid
   assign linha = section.settings.linha
-  assign art_asset = 'portal-linha-' | append: linha | append: '.webp'
+  assign scene_asset = 'portal-linha-cena-' | append: linha | append: '.webp'
+  assign card_asset = 'portal-linha-card-' | append: linha | append: '.webp'
+  assign detail_asset = 'portal-linha-detalhe-' | append: linha | append: '.webp'
+  assign plate_asset = 'portal-linha-prancha-' | append: linha | append: '.webp'
   assign instagram_handle = section.settings.instagram | remove: '@'
   assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
-  assign featured = section.settings.product
-  assign cta_url = '#produtos'
-  if collection.all_products_count == 0 and featured != blank
-    assign cta_url = featured.url
-  endif
+  assign spray = section.settings.product
+  assign oil = section.settings.oil_product
+  assign spray_shown = false
+  assign oil_shown = false
 -%}
 
 <div class="portal-linha portal-linha--{{ linha }}">
   <div class="portal-linha__hero">
-    <nav class="portal-breadcrumb" aria-label="{{ 'portal.collection.breadcrumb' | t }}">
-      <a href="{{ routes.root_url }}">{{ 'portal.collection.home' | t }}</a>
-      <span aria-hidden="true">/</span>
-      <span aria-current="page">{{ collection.title | escape }}</span>
-    </nav>
-    <div class="portal-linha__stage">
-      <div class="portal-linha__intro">
-        {% render 'portal-linha-sigilo', linha: linha, class: 'portal-linha__sigilo' %}
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="portal-linha__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-        <h1 class="portal-linha__title">{{ collection.title | escape }}</h1>
-        {%- if section.settings.tagline != blank -%}
-          <p class="portal-linha__tagline">{{ section.settings.tagline | escape }}</p>
-        {%- endif -%}
-        {%- if section.settings.cta != blank -%}
-          <a class="portal-linha__cta" href="{{ cta_url }}">{{ section.settings.cta | escape }}</a>
-        {%- endif -%}
-      </div>
-      <div class="portal-linha__frasco">
-        {%- assign frasco_alt = 'Frasco de ' | append: collection.title -%}
-        {%- if featured != blank -%}
-          <a href="{{ featured.url }}" aria-label="{{ featured.title | escape }}">
-            {% render 'portal-linha-frasco', linha: linha, image: section.settings.bottle, sizes: '(min-width: 990px) 26vw, 50vw', alt: '', loading: 'eager' %}
-          </a>
-        {%- else -%}
-          {% render 'portal-linha-frasco', linha: linha, image: section.settings.bottle, sizes: '(min-width: 990px) 26vw, 50vw', alt: frasco_alt, loading: 'eager' %}
-        {%- endif -%}
-      </div>
-    </div>
-    <div class="portal-linha__art">
+    <div class="portal-linha__scene">
       {%- if section.settings.art != blank -%}
-        {{ section.settings.art | image_url: width: 2000 | image_tag: widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: '', loading: 'eager' }}
+        {{ section.settings.art | image_url: width: 2000 | image_tag: widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: section.settings.art.alt, loading: 'eager', fetchpriority: 'high' }}
       {%- else -%}
-        <img src="{{ art_asset | asset_url }}" width="1800" height="450" alt="" loading="eager">
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ card_asset | asset_url }}" width="800" height="1000">
+          <img src="{{ scene_asset | asset_url }}" width="1920" height="1280" alt="{{ 'portal.linha.scene_alt' | t: title: collection.title | escape }}" loading="eager" fetchpriority="high">
+        </picture>
+      {%- endif -%}
+    </div>
+    <div class="portal-linha__intro">
+      <nav class="portal-breadcrumb" aria-label="{{ 'portal.collection.breadcrumb' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'portal.collection.home' | t }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ collection.title | escape }}</span>
+      </nav>
+      {% render 'portal-linha-sigilo', linha: linha, class: 'portal-linha__sigilo' %}
+      <h1 class="portal-linha__title">{{ collection.title | escape }}</h1>
+      {%- if section.settings.tagline != blank -%}
+        <p class="portal-linha__tagline">{{ section.settings.tagline | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta != blank -%}
+        <a class="portal-linha__cta" href="#produtos">{{ section.settings.cta | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="portal-linha__capitulo">
+    <div class="portal-linha__capitulo-media">
+      {%- if section.settings.detail != blank -%}
+        {{ section.settings.detail | image_url: width: 1200 | image_tag: widths: '500, 800, 1200', sizes: '(min-width: 990px) 45vw, 100vw', alt: section.settings.detail.alt, loading: 'lazy' }}
+      {%- else -%}
+        <img src="{{ detail_asset | asset_url }}" width="1200" height="1500" alt="" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="portal-linha__capitulo-copy">
+      {%- if section.settings.story_heading != blank -%}
+        <h2 class="portal-linha__heading">{{ section.settings.story_heading | escape }}</h2>
+      {%- endif -%}
+      <div class="portal-linha__text rte">{{ section.settings.story }}</div>
+    </div>
+  </div>
+
+  <div class="portal-linha__ervas">
+    <figure class="portal-linha__prancha">
+      {%- if section.settings.plate != blank -%}
+        {{ section.settings.plate | image_url: width: 1100 | image_tag: widths: '500, 750, 1100', sizes: '(min-width: 990px) 40vw, 100vw', alt: '', loading: 'lazy' }}
+      {%- else -%}
+        <img src="{{ plate_asset | asset_url }}" width="900" height="1125" alt="" loading="lazy">
+      {%- endif -%}
+    </figure>
+    {%- if section.blocks.size > 0 -%}
+      <div class="portal-linha__ervas-copy">
+        {%- if section.settings.herbs_heading != blank -%}
+          <h2 class="portal-linha__heading">{{ section.settings.herbs_heading | escape }}</h2>
+        {%- endif -%}
+        <ul class="portal-linha__ervas-list" role="list">
+          {%- for block in section.blocks -%}
+            <li class="portal-linha__erva" {{ block.shopify_attributes }}>
+              {% render 'portal-linha-erva', tipo: block.settings.icon %}
+              <div>
+                <p class="portal-linha__erva-name">{{ block.settings.name | escape }}</p>
+                {%- if block.settings.note != blank -%}
+                  <p class="portal-linha__erva-note">{{ block.settings.note | escape }}</p>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="portal-linha__produtos" id="produtos">
+    <h2 class="portal-linha__heading">{{ section.settings.products_heading | escape }}</h2>
+    <div class="portal-linha__itens">
+      {%- for p in collection.products limit: 8 -%}
+        {%- if spray != blank and p.id == spray.id -%}
+          {%- assign spray_shown = true -%}
+          {% render 'portal-linha-item', linha: linha, kind: 'spray', product: p, image: section.settings.bottle, title: p.title, text: section.settings.spray_text %}
+        {%- elsif oil != blank and p.id == oil.id -%}
+          {%- assign oil_shown = true -%}
+          {% render 'portal-linha-item', linha: linha, kind: 'oil', product: p, image: section.settings.oil_bottle, title: p.title, text: section.settings.oil_text, usage: section.settings.oil_usage, alert: section.settings.oil_alert %}
+        {%- else -%}
+          {% render 'portal-linha-item', linha: linha, kind: 'other', product: p, title: p.title %}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if spray != blank and spray_shown == false -%}
+        {% render 'portal-linha-item', linha: linha, kind: 'spray', product: spray, image: section.settings.bottle, title: spray.title, text: section.settings.spray_text %}
+      {%- endif -%}
+      {%- if oil_shown == false and section.settings.oil_title != blank -%}
+        {% render 'portal-linha-item', linha: linha, kind: 'oil', product: oil, image: section.settings.oil_bottle, title: section.settings.oil_title, text: section.settings.oil_text, usage: section.settings.oil_usage, alert: section.settings.oil_alert %}
       {%- endif -%}
     </div>
   </div>
 
   <div class="portal-linha__body">
-    <div class="portal-linha__sentido">
-      <div class="portal-linha__story">
-        {%- if section.settings.story_eyebrow != blank -%}
-          <p class="portal-linha__eyebrow">{{ section.settings.story_eyebrow | escape }}</p>
-        {%- endif -%}
-        {%- if section.settings.story_heading != blank -%}
-          <h2 class="portal-linha__heading">{{ section.settings.story_heading | escape }}</h2>
-        {%- endif -%}
-        <div class="portal-linha__text rte">{{ section.settings.story }}</div>
-      </div>
-      {%- if section.blocks.size > 0 -%}
-        <div class="portal-linha__ervas">
-          {%- if section.settings.herbs_heading != blank -%}
-            <p class="portal-linha__eyebrow">{{ section.settings.herbs_heading | escape }}</p>
-          {%- endif -%}
-          <ul class="portal-linha__ervas-list" role="list">
-            {%- for block in section.blocks -%}
-              <li class="portal-linha__erva" {{ block.shopify_attributes }}>
-                {% render 'portal-linha-erva', tipo: block.settings.icon %}
-                <span>{{ block.settings.name | escape }}</span>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </div>
-      {%- endif -%}
-      <figure class="portal-linha__prancha">
-        {%- if section.settings.plate != blank -%}
-          {{ section.settings.plate | image_url: width: 1100 | image_tag: widths: '500, 750, 1100', sizes: '(min-width: 990px) 40vw, 100vw', alt: '', loading: 'lazy' }}
-        {%- else -%}
-          {%- assign plate_asset = 'portal-linha-prancha-' | append: linha | append: '.webp' -%}
-          <img src="{{ plate_asset | asset_url }}" width="900" height="1125" alt="" loading="lazy">
-        {%- endif -%}
-      </figure>
-    </div>
-
     <div class="portal-linha__ficha">
       <div class="portal-linha__ficha-item">
-        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'portal' %}{{ section.settings.composition_heading | escape }}</h2>
+        <h2 class="portal-linha__ficha-title">{{ section.settings.composition_heading | escape }}</h2>
         <div class="rte">{{ section.settings.composition }}</div>
       </div>
       <div class="portal-linha__ficha-item">
-        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'sopro' %}{{ section.settings.usage_heading | escape }}</h2>
+        <h2 class="portal-linha__ficha-title">{{ section.settings.usage_heading | escape }}</h2>
         <div class="rte">{{ section.settings.usage }}</div>
       </div>
       <div class="portal-linha__ficha-item">
-        <h2 class="portal-linha__ficha-title">{% render 'portal-glyph', type: 'ciclo' %}{{ section.settings.contact_heading | escape }}</h2>
+        <h2 class="portal-linha__ficha-title">{{ section.settings.contact_heading | escape }}</h2>
         {%- if instagram_handle != blank -%}
           <p><a href="https://www.instagram.com/{{ instagram_handle | escape }}/" rel="noopener" target="_blank">@{{ instagram_handle | escape }}</a></p>
         {%- endif -%}
@@ -106,17 +130,6 @@
         {%- endif -%}
       </div>
     </div>
-
-    {%- if section.settings.label_image != blank -%}
-      <div class="portal-linha__rotulo">
-        {{ section.settings.label_image | image_url: width: 2000 | image_tag: widths: '750, 1100, 1500, 2000', sizes: '(min-width: 1400px) 1320px, 100vw', loading: 'lazy' }}
-      </div>
-    {%- endif -%}
-  </div>
-
-  <div class="portal-linha__produtos" id="produtos">
-    <p class="portal-eyebrow">{{ section.settings.products_eyebrow | escape }}</p>
-    <h2 class="portal-heading">{{ section.settings.products_heading | escape }}</h2>
   </div>
 </div>
 
@@ -137,18 +150,27 @@
       ],
       "default": "guardiao"
     },
-    { "type": "text", "id": "eyebrow", "label": "Sobretítulo", "default": "Defumador de ambiente" },
     { "type": "text", "id": "tagline", "label": "Frase da linha" },
     { "type": "text", "id": "cta", "label": "Texto do botão", "default": "Ver produtos da linha" },
-    { "type": "image_picker", "id": "art", "label": "Arte botânica", "info": "Opcional. Substitui a arte já incluída no tema." },
-    { "type": "product", "id": "product", "label": "Produto da linha", "info": "O frasco leva para este produto. Se a coleção estiver vazia, o botão também." },
-    { "type": "image_picker", "id": "bottle", "label": "Foto do frasco", "info": "Opcional. Use PNG ou WebP com fundo transparente. Substitui o frasco já incluído no tema." },
-    { "type": "header", "content": "O sentido da linha" },
-    { "type": "text", "id": "story_eyebrow", "label": "Sobretítulo", "default": "O sentido da linha" },
+    { "type": "image_picker", "id": "art", "label": "Foto do topo", "info": "Opcional. Substitui a foto já incluída no tema." },
+    { "type": "header", "content": "A história da linha" },
     { "type": "text", "id": "story_heading", "label": "Título" },
     { "type": "richtext", "id": "story", "label": "Texto" },
+    { "type": "image_picker", "id": "detail", "label": "Foto da história", "info": "Opcional. Formato vertical. Substitui a foto já incluída no tema." },
+    { "type": "header", "content": "As ervas" },
     { "type": "text", "id": "herbs_heading", "label": "Título das ervas", "default": "As ervas" },
     { "type": "image_picker", "id": "plate", "label": "Prancha botânica", "info": "Opcional. Formato vertical 4:5. Substitui a prancha já incluída no tema." },
+    { "type": "header", "content": "Produtos" },
+    { "type": "text", "id": "products_heading", "label": "Título", "default": "Produtos da linha" },
+    { "type": "product", "id": "product", "label": "Defumador da linha" },
+    { "type": "image_picker", "id": "bottle", "label": "Foto do defumador", "info": "Opcional. PNG ou WebP com fundo transparente." },
+    { "type": "text", "id": "spray_text", "label": "Texto do defumador" },
+    { "type": "product", "id": "oil_product", "label": "Óleo da linha", "info": "Sem produto escolhido, o óleo aparece como \"Em breve\"." },
+    { "type": "image_picker", "id": "oil_bottle", "label": "Foto do óleo", "info": "Opcional. PNG ou WebP com fundo transparente." },
+    { "type": "text", "id": "oil_title", "label": "Nome do óleo", "info": "Vazio esconde o óleo enquanto não houver produto." },
+    { "type": "text", "id": "oil_text", "label": "Texto do óleo" },
+    { "type": "richtext", "id": "oil_usage", "label": "Modo de uso do óleo" },
+    { "type": "richtext", "id": "oil_alert", "label": "Alerta de uso do óleo" },
     { "type": "header", "content": "Ficha da linha" },
     { "type": "text", "id": "composition_heading", "label": "Título da composição", "default": "Composição" },
     { "type": "richtext", "id": "composition", "label": "Composição" },
@@ -156,11 +178,7 @@
     { "type": "richtext", "id": "usage", "label": "Modo de uso" },
     { "type": "text", "id": "contact_heading", "label": "Título do contato", "default": "Contato" },
     { "type": "text", "id": "instagram", "label": "Instagram", "default": "@portaldohauxoficial" },
-    { "type": "text", "id": "phone", "label": "Telefone", "default": "+55 42 99164-0888" },
-    { "type": "image_picker", "id": "label_image", "label": "Rótulo completo", "info": "Opcional. Mostra a arte inteira do rótulo abaixo da ficha." },
-    { "type": "header", "content": "Produtos" },
-    { "type": "text", "id": "products_eyebrow", "label": "Sobretítulo", "default": "Para levar para casa" },
-    { "type": "text", "id": "products_heading", "label": "Título", "default": "Produtos da linha" }
+    { "type": "text", "id": "phone", "label": "Telefone", "default": "+55 42 99164-0888" }
   ],
   "blocks": [
     {
@@ -168,6 +186,7 @@
       "name": "Erva",
       "settings": [
         { "type": "text", "id": "name", "label": "Nome" },
+        { "type": "text", "id": "note", "label": "Sobre a erva" },
         {
           "type": "select",
           "id": "icon",

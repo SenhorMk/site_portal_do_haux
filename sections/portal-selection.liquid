@@ -3,11 +3,13 @@
   <div class="portal-selection__products">
     {% for block in section.blocks %}
       {% assign product = block.settings.product %}
-      <div {{ block.shopify_attributes }}>
-        {% if product != blank %}
-          <a class="portal-selection__product" href="{{ product.url }}"><div class="portal-selection__image">{% render 'portal-image', image: product.featured_image, sizes: '(min-width: 768px) 20vw, 33vw' %}</div><span>{{ product.title | escape }}</span></a>
-        {% else %}<div class="portal-selection__image portal-image-placeholder{% if request.design_mode %} portal-image-placeholder--editor{% endif %}" aria-hidden="true"></div><p class="portal-secondary">{{ 'portal.content.product_pending' | t }}</p>{% endif %}
-      </div>
+      {% if product != blank or request.design_mode %}
+        <div {{ block.shopify_attributes }}>
+          {% if product != blank %}
+            <a class="portal-selection__product" href="{{ product.url }}"><div class="portal-selection__image">{% render 'portal-image', image: product.featured_image, sizes: '(min-width: 768px) 20vw, 33vw' %}</div><span>{{ product.title | escape }}</span></a>
+          {% else %}<div class="portal-selection__image portal-image-placeholder portal-image-placeholder--editor" aria-hidden="true"></div><p class="portal-secondary">{{ 'portal.content.product_pending' | t }}</p>{% endif %}
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>

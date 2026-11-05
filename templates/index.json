@@ -153,13 +153,13 @@
         "b2": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "defumador-liquido-portal-da-luz"
           }
         },
         "b3": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "defumador-liquido-portal-da-purificacao"
           }
         }
       },
@@ -171,9 +171,9 @@
       "settings": {
         "eyebrow": "Seleção do Portal",
         "heading": "Para seguir o rito",
-        "text": "<p>Uma medicina, uma ferramenta e uma defumação. Cada item leva para a sua própria página.</p>",
-        "label": "Ver a seleção",
-        "link": ""
+        "text": "<p>Três defumadores para começar: um para firmar, um para clarear e um para limpar. Cada um leva para a sua própria página.</p>",
+        "label": "Ver os defumadores",
+        "link": "/collections/defumador"
       }
     },
     "pillars": {

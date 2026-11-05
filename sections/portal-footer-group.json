@@ -4,7 +4,9 @@
   "sections": {
     "footer": {
       "type": "portal-footer",
-      "settings": {},
+      "settings": {
+        "text": "<p>Rapés, kuripes, defumadores e ervas para quem cuida do próprio rito. No Portal do Haux, o que vai dentro está escrito no rótulo.</p>"
+      },
       "blocks": {
         "shop": {
           "type": "menu",

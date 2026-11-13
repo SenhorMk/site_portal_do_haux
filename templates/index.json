@@ -12,7 +12,7 @@
     "hero": {
       "type": "portal-hero",
       "settings": {
-        "image": "shopify://shop_images/fumaca_loop_leve.gif",
+        "video": "shopify://files/videos/fumaca_loop.mp4",
         "heading": "A floresta atravessa o Portal",
         "text": "Rapés, kuripes, tepis, defumadores, ervas e objetos de rito.",
         "label": "Ver a loja",

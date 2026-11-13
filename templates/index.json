@@ -14,11 +14,11 @@
       "settings": {
         "video": "shopify://files/videos/fumaca_loop.mp4",
         "heading": "A floresta atravessa o Portal",
-        "text": "Rapés, kuripes, tepis, defumadores, ervas e objetos de rito.",
+        "text": "Defumadores de ervas, rapés e ferramentas de rito, feitos em pequenos lotes.",
         "label": "Ver a loja",
         "link": "shopify://collections/all",
-        "secondary_label": "Conhecer as ferramentas",
-        "secondary_link": "",
+        "secondary_label": "Ver os defumadores",
+        "secondary_link": "shopify://collections/defumador",
         "overlay": "balanced",
         "alignment": "left",
         "graphics": true
@@ -145,7 +145,7 @@
     "products": {
       "type": "portal-product-grid",
       "settings": {
-        "collection": "rapes",
+        "collection": "defumador",
         "heading": "Chegaram ao Portal",
         "eyebrow": "Lote atual",
         "label": "Ver todos os itens",
@@ -186,7 +186,7 @@
         "image": "shopify://shop_images/Smoke_16x9_f25fab1a-e532-4e2f-90ac-8690096263c8.jpg",
         "eyebrow": "Defumação",
         "heading": "Limpar o ar sem acender nada",
-        "text": "<p>O defumador líquido leva as ervas para um borrifo. Sem fogo, sem fumaça e sem cinza, ele cabe no apartamento, no escritório e na rotina. São quatro linhas, cada uma com suas ervas e sua força.</p>",
+        "text": "<p>O defumador líquido leva as ervas para um borrifo. Não tem brasa, fumaça nem cinza, então dá para usar no apartamento, no escritório ou no carro. São quatro linhas, cada uma com as suas ervas.</p>",
         "label": "Ver defumadores",
         "link": "/collections/defumador",
         "graphics": true
@@ -222,7 +222,7 @@
       "settings": {
         "eyebrow": "Seleção do Portal",
         "heading": "Para seguir o rito",
-        "text": "<p>Três defumadores para começar: um para firmar, um para clarear e um para limpar. Cada um leva para a sua própria página.</p>",
+        "text": "<p>Se você não sabe por onde começar: o Guardião para firmar a casa, a Luz para clarear o dia e a Purificação para limpar depois de uma semana pesada.</p>",
         "label": "Ver os defumadores",
         "link": "/collections/defumador"
       }
@@ -389,9 +389,9 @@
     "experiences": {
       "type": "portal-experiences",
       "settings": {
-        "heading": "Experiências — em breve",
-        "text": "<p>Estamos preparando encontros presenciais. Deixe seu contato para saber primeiro.</p>",
-        "label": "Quero saber quando abrir",
+        "heading": "Experiências em breve",
+        "text": "<p>Estamos preparando encontros presenciais. Deixe seu e-mail e você fica sabendo antes de abrirmos as vagas.</p>",
+        "label": "Quero ser avisado",
         "link": ""
       }
     },
@@ -399,7 +399,7 @@
       "type": "portal-newsletter",
       "settings": {
         "heading": "Avisamos quando um lote novo chega",
-        "text": "<p>Um e-mail quando um lote novo chegar.</p>"
+        "text": "<p>Só escrevemos quando chega lote novo ou quando abrimos um encontro. Sem enxurrada de e-mails.</p>"
       }
     }
   },

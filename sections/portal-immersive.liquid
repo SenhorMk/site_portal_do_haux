@@ -1,5 +1,10 @@
 <portal-immersive class="portal-immersive" id="defumacao">
-  <div class="portal-immersive__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image %}{% render 'portal-ambient-video', video: section.settings.video %}</div>
+  <div class="portal-immersive__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image %}{%- liquid
+    assign video_poster = false
+    if section.settings.image == blank
+      assign video_poster = true
+    endif
+  -%}{% render 'portal-ambient-video', video: section.settings.video, poster: video_poster %}</div>
   {% if section.settings.graphics %}{% render 'portal-glyph', type: 'sopro-wide', class: 'portal-immersive__sopro' %}{% endif %}
   <div class="portal-immersive__content">{% render 'portal-editorial-copy', content: section.settings, button_class: 'portal-button portal-button--warm' %}</div>
 </portal-immersive>

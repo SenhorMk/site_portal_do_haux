@@ -212,7 +212,8 @@
     }
   }
 
-  // Animated still over a section image: plays while visible, never under reduced motion, pausable.
+  // Animated still over a section image: plays while visible and is pausable. Under reduced motion it
+  // starts paused on its first frame and the visitor can press play.
   class PortalAmbientVideo extends HTMLElement {
     connectedCallback() {
       this.video = this.querySelector('video');
@@ -223,26 +224,26 @@
       this.video.muted = true;
       this.video.removeAttribute('controls');
       this.video.addEventListener('playing', () => this.setAttribute('data-playing', ''), { signal });
+      this.setPaused = (paused) => {
+        this.paused = paused;
+        this.toggle.setAttribute('aria-pressed', paused);
+        this.toggle.querySelector('.visually-hidden').textContent = paused ? this.toggle.dataset.play : this.toggle.dataset.pause;
+      };
+      this.setPaused(reduced.matches);
+      this.toggle.hidden = false;
       this.update = () => {
-        const allowed = !reduced.matches && !this.paused;
-        this.toggle.hidden = reduced.matches;
+        const allowed = !this.paused;
         if (allowed && this.visible && !document.hidden) {
           this.video.preload = 'auto';
           this.video.play().catch(() => {});
         } else {
           this.video.pause();
         }
-        if (reduced.matches) this.removeAttribute('data-playing');
       };
-      this.toggle?.addEventListener('click', () => {
-        this.paused = !this.paused;
-        this.toggle.setAttribute('aria-pressed', this.paused);
-        this.toggle.querySelector('.visually-hidden').textContent = this.paused ? this.toggle.dataset.play : this.toggle.dataset.pause;
-        this.update();
-      }, { signal });
+      this.toggle.addEventListener('click', () => { this.setPaused(!this.paused); this.update(); }, { signal });
       this.observer = new IntersectionObserver(([entry]) => { this.visible = entry.isIntersecting; this.update(); });
       this.observer.observe(this);
-      reduced.addEventListener('change', this.update, { signal });
+      reduced.addEventListener('change', () => { this.setPaused(reduced.matches); this.update(); }, { signal });
       document.addEventListener('visibilitychange', this.update, { signal });
     }
     disconnectedCallback() { this.abort?.abort(); this.observer?.disconnect(); this.video?.pause(); }

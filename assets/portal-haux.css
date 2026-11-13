@@ -816,7 +816,7 @@
 /* Ambient video (animated still) over hero/immersive images. The image stays visible until the video really plays. */
 .portal-ambient { position: absolute; inset: 0; display: block; }
 .portal-ambient__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
-.portal-ambient[data-playing] .portal-ambient__video { opacity: 1; }
+.portal-ambient[data-playing] .portal-ambient__video, .portal-ambient--poster .portal-ambient__video { opacity: 1; }
 .portal-ambient__toggle { position: absolute; right: var(--portal-gutter); bottom: 2.4rem; z-index: 1; display: inline-flex; align-items: center; justify-content: center; width: 4.4rem; height: 4.4rem; padding: 0; border: 1px solid rgb(237 227 210 / 45%); border-radius: 50%; background: rgb(20 35 26 / 55%); color: var(--portal-pergaminho); cursor: pointer; }
 .portal-ambient__toggle svg { width: 1.4rem; height: 1.4rem; }
 .portal-ambient__toggle .portal-ambient__play, .portal-ambient__toggle[aria-pressed="true"] .portal-ambient__pause { display: none; }

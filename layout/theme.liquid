@@ -1,10 +1,24 @@
 <!doctype html>
 {%- liquid
   assign portal_template = false
+  assign portal_pages = false
   case template.name
     when 'index', 'collection', 'product', 'search', 'cart'
       assign portal_template = true
+    when 'page', 'blog', 'article', '404', 'list-collections'
+      assign portal_template = true
+      assign portal_pages = true
   endcase
+  if request.page_type == 'policy'
+    assign portal_template = true
+    assign portal_pages = true
+  endif
+  assign portal_body = template.name | default: request.page_type
+  if template.name == 'index'
+    assign portal_body = 'home'
+  elsif request.page_type == 'policy'
+    assign portal_body = 'policy'
+  endif
   # The Portal header runs on every template and opens the cart drawer.
   assign portal_drawer = true
   # The cart page already lists the cart; a Portal drawer there would load cart.js twice.
@@ -272,6 +286,9 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {% render 'portal-assets' %}
+    {%- if portal_pages -%}
+      {{ 'portal-pages.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {% unless portal_template %}
       {{ 'haux-legacy.css' | asset_url | stylesheet_tag }}
     {% endunless %}
@@ -317,7 +334,7 @@
     </script>
   </head>
 
-  <body class="{% if portal_template %}portal portal-{% if template.name == 'index' %}home{% else %}{{ template.name }}{% endif %} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body class="{% if portal_template %}portal portal-{{ portal_body }} {% endif %}gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

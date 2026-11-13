@@ -1,8 +1,125 @@
+{%- liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign whatsapp_digits = section.settings.whatsapp | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '+'
+  assign has_contact = false
+  if section.settings.whatsapp != blank or section.settings.email != blank or section.settings.hours != blank
+    assign has_contact = true
+  endif
+  assign socials = 'instagram,facebook,tiktok,youtube,pinterest' | split: ','
+-%}
 <footer class="portal-footer portal-pad" id="footer">
-  <div class="portal-footer__grid"><div class="portal-footer__brand"><a class="portal-logo" href="{{ routes.root_url }}">{% if settings.logo != blank %}{{ settings.logo | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '180px', loading: 'lazy', alt: shop.name }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="180" height="64" alt="{{ shop.name | escape }}" loading="lazy">{% endif %}</a><div class="portal-prose rte">{{ section.settings.text }}</div></div>
-    {% for block in section.blocks %}<div {{ block.shopify_attributes }}>{% if block.settings.menu.links.size > 0 %}<h2 class="portal-eyebrow">{{ block.settings.heading | escape }}</h2><nav aria-label="{{ block.settings.heading | escape }}"><ul role="list">{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul></nav>{% endif %}</div>{% endfor %}
+  <div class="portal-footer__grid">
+    <div class="portal-footer__brand">
+      <a class="portal-footer__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {%- if logo != blank -%}
+          {{ logo | image_url: width: 240 | image_tag: widths: '120, 240', sizes: '96px', loading: 'lazy', alt: shop.name }}
+        {%- else -%}
+          <img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="{{ shop.name | escape }}" loading="lazy">
+        {%- endif -%}
+      </a>
+      {%- if section.settings.text != blank -%}
+        <div class="portal-prose rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      <ul class="portal-footer__social" role="list">
+        {%- for network in socials -%}
+          {%- assign key = 'social_' | append: network | append: '_link' -%}
+          {%- if settings[key] != blank -%}
+            <li>
+              <a href="{{ settings[key] }}" target="_blank" rel="noopener" aria-label="{{ network | capitalize }}">
+                <span class="svg-wrapper" aria-hidden="true">{{- 'icon-' | append: network | append: '.svg' | inline_asset_content -}}</span>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if whatsapp_digits != blank -%}
+          <li>
+            <a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <span class="svg-wrapper" aria-hidden="true">{% render 'portal-icon-whatsapp' %}</span>
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    {%- if has_contact -%}
+      <div class="portal-footer__column">
+        <h2 class="portal-eyebrow">{{ section.settings.contact_heading | escape }}</h2>
+        <ul class="portal-footer__contact" role="list">
+          {%- if whatsapp_digits != blank -%}
+            <li><a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener"><span class="portal-footer__label">WhatsApp</span>{{ section.settings.whatsapp | escape }}</a></li>
+          {%- endif -%}
+          {%- if section.settings.hours != blank -%}
+            <li><span class="portal-footer__label">{{ section.settings.hours_label | escape }}</span>{{ section.settings.hours | escape }}</li>
+          {%- endif -%}
+          {%- if section.settings.email != blank -%}
+            <li><a href="mailto:{{ section.settings.email | escape }}"><span class="portal-footer__label">E-mail</span>{{ section.settings.email | escape }}</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.settings.menu.links.size > 0 -%}
+        <div class="portal-footer__column" {{ block.shopify_attributes }}>
+          <h2 class="portal-eyebrow">{{ block.settings.heading | escape }}</h2>
+          <nav aria-label="{{ block.settings.heading | escape }}">
+            <ul role="list">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if section.settings.show_newsletter -%}
+      <div class="portal-footer__newsletter">
+        <h2 class="portal-eyebrow">{{ section.settings.newsletter_heading | escape }}</h2>
+        {%- if section.settings.newsletter_text != blank -%}
+          <p class="portal-footer__note">{{ section.settings.newsletter_text | escape }}</p>
+        {%- endif -%}
+        {%- form 'customer', id: 'PortalFooterNewsletter', class: 'portal-footer__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="visually-hidden" for="PortalFooterNewsletterEmail">{{ 'newsletter.label' | t }}</label>
+          <div class="portal-footer__field">
+            <input
+              id="PortalFooterNewsletterEmail"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="{{ 'newsletter.label' | t }}"
+              required
+              {% if form.errors %}aria-invalid="true" aria-describedby="PortalFooterNewsletterStatus"{% endif %}
+            >
+            <button type="submit" class="portal-footer__submit">{{ section.settings.newsletter_button | escape }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="portal-footer__status" id="PortalFooterNewsletterStatus" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- elsif form.posted_successfully? -%}
+            <p class="portal-footer__status" id="PortalFooterNewsletterStatus" role="status">{{ 'newsletter.success' | t }}</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
   </div>
-  <div class="portal-footer__legal"><span>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if section.settings.registration != blank %} · {{ section.settings.registration | escape }}{% endif %}</span>{% if section.settings.legal != blank %}<span>{{ section.settings.legal | escape }}</span>{% endif %}{% if section.settings.payments %}<ul class="portal-footer__payments" role="list">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{% endfor %}</ul>{% endif %}</div>
+
+  <div class="portal-footer__legal">
+    <p>
+      © {{ 'now' | date: '%Y' }} {{ shop.name | escape }}
+      {%- if section.settings.registration != blank %} · CNPJ {{ section.settings.registration | escape }}{% endif -%}
+      {%- if section.settings.legal != blank %} · {{ section.settings.legal | escape }}{% endif -%}
+    </p>
+    {%- if section.settings.payments and shop.enabled_payment_types.size > 0 -%}
+      <ul class="portal-footer__payments" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
 </footer>
 {% schema %}
 {
@@ -10,26 +127,98 @@
   "class": "portal-section",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo do rodapé",
+      "info": "Opcional. Sem escolha, usa a logo do tema, sempre sobre o medalhão claro."
+    },
+    {
       "type": "richtext",
       "id": "text",
-      "label": "Texto",
-      "default": "<p>[DESCRIÇÃO INSTITUCIONAL A DEFINIR]</p>"
+      "label": "Texto"
+    },
+    {
+      "type": "header",
+      "content": "Atendimento"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Título",
+      "default": "Atendimento"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "WhatsApp",
+      "info": "Com DDI e DDD, ex.: +55 42 90000-0000. Também cria o ícone do WhatsApp."
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Rótulo do horário",
+      "default": "Horário"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Horário de atendimento"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "E-mail de atendimento"
+    },
+    {
+      "type": "paragraph",
+      "content": "Instagram e outras redes vêm de Configurações do tema → Mídias sociais."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Mostrar inscrição",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Título",
+      "default": "Receba as novidades"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Texto"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Botão",
+      "default": "Inscrever"
+    },
+    {
+      "type": "header",
+      "content": "Barra inferior"
     },
     {
       "type": "text",
       "id": "registration",
-      "label": "CNPJ confirmado"
+      "label": "CNPJ"
     },
     {
       "type": "text",
       "id": "legal",
-      "label": "Informação legal confirmada"
+      "label": "Informação legal complementar"
     },
     {
       "type": "checkbox",
       "id": "payments",
       "label": "Mostrar meios de pagamento ativos na Shopify",
-      "default": false
+      "default": true
     }
   ],
   "enabled_on": {

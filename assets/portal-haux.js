@@ -212,6 +212,97 @@
     }
   }
 
+  // Animated still over a section image: plays while visible, never under reduced motion, pausable.
+  class PortalAmbientVideo extends HTMLElement {
+    connectedCallback() {
+      this.video = this.querySelector('video');
+      this.toggle = this.querySelector('.portal-ambient__toggle');
+      if (!this.video) return;
+      this.abort = new AbortController();
+      const signal = this.abort.signal;
+      this.video.muted = true;
+      this.video.removeAttribute('controls');
+      this.video.addEventListener('playing', () => this.setAttribute('data-playing', ''), { signal });
+      this.update = () => {
+        const allowed = !reduced.matches && !this.paused;
+        this.toggle.hidden = reduced.matches;
+        if (allowed && this.visible && !document.hidden) {
+          this.video.preload = 'auto';
+          this.video.play().catch(() => {});
+        } else {
+          this.video.pause();
+        }
+        if (reduced.matches) this.removeAttribute('data-playing');
+      };
+      this.toggle?.addEventListener('click', () => {
+        this.paused = !this.paused;
+        this.toggle.setAttribute('aria-pressed', this.paused);
+        this.toggle.querySelector('.visually-hidden').textContent = this.paused ? this.toggle.dataset.play : this.toggle.dataset.pause;
+        this.update();
+      }, { signal });
+      this.observer = new IntersectionObserver(([entry]) => { this.visible = entry.isIntersecting; this.update(); });
+      this.observer.observe(this);
+      reduced.addEventListener('change', this.update, { signal });
+      document.addEventListener('visibilitychange', this.update, { signal });
+    }
+    disconnectedCallback() { this.abort?.abort(); this.observer?.disconnect(); this.video?.pause(); }
+  }
+
+  // WAI-ARIA tabs with automatic activation. Without JS, panels stay stacked under their headings.
+  class PortalTabs extends HTMLElement {
+    connectedCallback() {
+      this.list = this.querySelector('.portal-tabs__list');
+      this.tabs = this.list ? [...this.list.querySelectorAll('.portal-tabs__tab')] : [];
+      if (this.tabs.length < 2) return;
+      this.abort = new AbortController();
+      const signal = this.abort.signal;
+      this.list.setAttribute('role', 'tablist');
+      this.list.hidden = false;
+      this.tabs.forEach((tab, index) => {
+        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        tab.setAttribute('role', 'tab');
+        panel?.setAttribute('role', 'tabpanel');
+        panel?.setAttribute('aria-labelledby', tab.id);
+        panel?.setAttribute('tabindex', '0');
+        tab.addEventListener('click', () => this.select(index), { signal });
+      });
+      this.list.addEventListener('keydown', (event) => {
+        const current = this.tabs.indexOf(document.activeElement);
+        if (current < 0) return;
+        const last = this.tabs.length - 1;
+        const next = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: last }[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        this.select(next > last ? 0 : next < 0 ? last : next, true);
+      }, { signal });
+      // "Ler descrição completa" points at the details block: show the description tab first.
+      window.addEventListener('hashchange', () => { if (location.hash === `#${this.parentElement?.id}`) this.select(0); }, { signal });
+      document.addEventListener('shopify:block:select', (event) => {
+        const index = this.tabs.findIndex((tab) => tab.getAttribute('aria-controls')?.endsWith(event.detail?.blockId));
+        if (index >= 0) this.select(index);
+      }, { signal });
+      this.select(0);
+      this.setAttribute('data-ready', '');
+    }
+    select(index, focus = false) {
+      this.tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute('aria-selected', selected);
+        tab.tabIndex = selected ? 0 : -1;
+        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !selected;
+      });
+      const tab = this.tabs[index];
+      if (focus) tab.focus({ preventScroll: true });
+      // Keep the active tab visible in the scrollable row without moving the page.
+      const left = tab.offsetLeft - this.list.offsetLeft;
+      if (left < this.list.scrollLeft || left + tab.offsetWidth > this.list.scrollLeft + this.list.clientWidth) {
+        this.list.scrollTo({ left: Math.max(0, left - 16), behavior: reduced.matches ? 'instant' : 'smooth' });
+      }
+    }
+    disconnectedCallback() { this.abort?.abort(); }
+  }
+
   // Open the Shopify account sheet just below the header, whether transparent, solid or sticky.
   document.addEventListener('open', (event) => {
     const account = event.target;
@@ -220,7 +311,7 @@
     account.style.setProperty('--shopify-account-dialog-position-top', `${Math.max(0, Math.round(header.getBoundingClientRect().bottom))}px`);
   }, true);
 
-  for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel]]) {
+  for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel], ['portal-tabs', PortalTabs], ['portal-ambient-video', PortalAmbientVideo]]) {
     if (!customElements.get(name)) customElements.define(name, component);
   }
 })();

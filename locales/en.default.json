@@ -554,7 +554,9 @@
       "carousel": "carousel",
       "previous": "Previous video",
       "next": "Next video",
-      "browse": "Browse videos with the arrow keys"
+      "browse": "Browse videos with the arrow keys",
+      "pause": "Pause animation",
+      "play": "Play animation"
     },
     "cart": {
       "add": "Add"

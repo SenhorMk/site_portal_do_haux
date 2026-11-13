@@ -1,0 +1,77 @@
+/* Portal look for Rise content templates: pages, contact, blog, article, 404, collection list and policies.
+   Markup stays Rise's; only presentation changes here. */
+:is(.portal-page, .portal-blog, .portal-article, .portal-404, .portal-list-collections, .portal-policy) #MainContent { background: var(--portal-ceramica); }
+:is(.portal-page, .portal-blog, .portal-article, .portal-404, .portal-list-collections, .portal-policy) .page-width { max-width: 120rem; padding-inline: var(--portal-gutter); }
+:is(.portal-page, .portal-article, .portal-policy) .page-width--narrow { max-width: 80rem; }
+
+/* Titles: Fraunces light with the empty diamond from the brand seal above it. */
+:is(.portal-page .main-page-title, .portal-blog .title--primary, .portal-list-collections .title--primary, .portal-404 .title, .portal-article .article-template__title, .portal-policy .shopify-policy__title h1, .portal-page .contact .title) {
+  margin: 0 0 3.2rem; color: var(--portal-text); font: 300 clamp(3.2rem, 4.4vw, 5.6rem)/1.08 var(--portal-display); letter-spacing: 0; text-wrap: balance;
+}
+:is(.portal-page .main-page-title, .portal-blog .title--primary, .portal-list-collections .title--primary, .portal-404 .title, .portal-policy .shopify-policy__title h1)::before {
+  display: block; width: 1.2rem; height: 1.2rem; margin-block-end: 2.4rem; border: 1px solid var(--portal-barro); content: ''; transform: rotate(45deg);
+}
+.portal-404 .title::before, .portal-404 .title { margin-inline: auto; }
+
+/* Long-form text */
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) { color: var(--portal-text); font-size: 1.6rem; line-height: 1.8; }
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) :is(h2, h3) { margin: 4rem 0 1.2rem; color: var(--portal-text); font: 400 2.6rem/1.2 var(--portal-display); }
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) h4 { margin: 3.2rem 0 1rem; font: 500 1.2rem/1.5 var(--portal-body); letter-spacing: .18em; text-transform: uppercase; }
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) a { color: var(--portal-link); text-underline-offset: .3rem; }
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) :is(ul, ol) { padding-inline-start: 2.2rem; }
+:is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) li + li { margin-block-start: .6rem; }
+:is(.portal-page, .portal-article) .rte blockquote { margin: 3.2rem 0; padding: .4rem 0 .4rem 2.4rem; border-inline-start: 2px solid var(--portal-urucum); font: 300 2.2rem/1.45 var(--portal-display); }
+:is(.portal-page, .portal-article) .rte img { height: auto; }
+:is(.portal-page, .portal-article) .rte table { width: 100%; border-collapse: collapse; }
+:is(.portal-page, .portal-article) .rte :is(td, th) { padding: 1rem 1.2rem; border-bottom: 1px solid var(--portal-border); text-align: left; }
+
+/* Policies (Shopify renders them outside sections) */
+.portal-policy .shopify-policy__container { max-width: 80rem; margin: 0 auto; padding: var(--portal-section-space) var(--portal-gutter); }
+.portal-policy .shopify-policy__title { text-align: left; }
+
+/* Forms: contact and article comments */
+.portal :is(.contact, .article-template__comments) .field__input { min-height: 5.2rem; border-radius: 0; background: var(--portal-white); }
+.portal :is(.contact, .article-template__comments) .field::after { box-shadow: 0 0 0 1px var(--portal-sand); }
+.portal :is(.contact, .article-template__comments) .field:focus-within::after { box-shadow: 0 0 0 2px var(--portal-text); }
+.portal :is(.contact, .article-template__comments) .field__label { color: var(--portal-text-muted); font-size: 1.4rem; }
+.portal :is(.contact, .article-template__comments, .template-404, .article-template__back) .button {
+  min-height: 5.4rem; padding: 1.6rem 3.6rem; border-radius: 0; font: 500 1.25rem/1.6 var(--portal-body); letter-spacing: .2em; text-transform: uppercase;
+}
+.portal .contact .form-status { color: var(--portal-text); }
+.portal-page .contact { padding-block: 0 var(--portal-section-space); }
+
+/* 404 */
+.portal-404 .template-404 { padding-block: calc(var(--portal-section-space) * 1.4); text-align: center; }
+.portal-404 .template-404 > p:first-child { color: var(--portal-musgo); font-size: 1.2rem; letter-spacing: .22em; text-transform: uppercase; }
+
+/* Blog list: editorial cards */
+.portal-blog .main-blog { padding-block: var(--portal-section-space); }
+.portal-blog .blog-articles { gap: 4rem 2.4rem; }
+.portal :is(.blog-articles, .article-template) .article-card__image-wrapper, .portal .article-card .card__inner { border-radius: 0; }
+.portal .article-card .card__heading { font: 400 2.2rem/1.25 var(--portal-display); }
+.portal .article-card .card__heading a { color: var(--portal-text); text-decoration: none; }
+.portal .article-card .card__heading a:hover { color: var(--portal-link); }
+.portal .article-card__info { color: var(--portal-text-muted); font: 400 1.15rem/1.5 var(--portal-body); letter-spacing: .18em; text-transform: uppercase; }
+.portal .article-card__excerpt { color: var(--portal-text-secondary); font-size: 1.45rem; line-height: 1.7; }
+.portal .article-card .card { background: transparent; }
+.portal .article-card .card__content { padding-inline: 0; }
+
+/* Article */
+.portal-article .article-template { padding-block-end: var(--portal-section-space); }
+.portal-article .article-template__hero-container { max-width: 144rem; margin-inline: auto; }
+.portal-article .article-template header { margin-block-start: 5.6rem; }
+.portal-article .article-template header .caption-with-letter-spacing { color: var(--portal-musgo); letter-spacing: .2em; }
+.portal-article .article-template__back { margin-block-start: 5.6rem; }
+.portal-article .article-template__link { color: var(--portal-link); letter-spacing: .14em; text-transform: uppercase; font-size: 1.2rem; }
+
+/* Collection list */
+.portal-list-collections .page-width { padding-block: var(--portal-section-space); }
+.portal-list-collections .card__heading { font: 400 2rem/1.25 var(--portal-display); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .portal .article-card .card__heading a { transition: color 200ms var(--portal-ease); }
+}
+@media (max-width: 767px) {
+  :is(.portal-page, .portal-article, .portal-policy) :is(.rte, .shopify-policy__body) { font-size: 1.5rem; }
+  .portal-blog .blog-articles { gap: 3.2rem; }
+}

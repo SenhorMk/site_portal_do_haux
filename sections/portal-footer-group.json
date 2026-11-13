@@ -5,16 +5,17 @@
     "footer": {
       "type": "portal-footer",
       "settings": {
-        "text": "<p>Rapés, kuripes, defumadores e ervas para quem cuida do próprio rito. No Portal do Haux, o que vai dentro está escrito no rótulo.</p>"
+        "text": "<p>Rapés, kuripes, defumadores e ervas para quem cuida do próprio rito. No Portal do Haux, o que vai dentro está escrito no rótulo.</p>",
+        "contact_heading": "Atendimento",
+        "hours_label": "Horário",
+        "show_newsletter": true,
+        "newsletter_heading": "Receba as novidades",
+        "newsletter_text": "Lançamentos, linhas novas e textos do Diário do Portal. Sem excesso de e-mails.",
+        "newsletter_button": "Inscrever",
+        "registration": "65.626.993/0001-57",
+        "payments": true
       },
       "blocks": {
-        "shop": {
-          "type": "menu",
-          "settings": {
-            "heading": "Loja",
-            "menu": "main-menu"
-          }
-        },
         "help": {
           "type": "menu",
           "settings": {
@@ -22,17 +23,25 @@
             "menu": "footer"
           }
         },
-        "portal": {
+        "institutional": {
           "type": "menu",
           "settings": {
-            "heading": "O Portal"
+            "heading": "Institucional",
+            "menu": "institucional"
+          }
+        },
+        "terms": {
+          "type": "menu",
+          "settings": {
+            "heading": "Termos de uso",
+            "menu": "termos"
           }
         }
       },
       "block_order": [
-        "shop",
         "help",
-        "portal"
+        "institutional",
+        "terms"
       ]
     }
   },

@@ -1,9 +1,21 @@
 {%- liquid
-  assign plain = product.description | strip_html | strip_newlines | strip
-  assign show_about = false
-  if section.settings.show_description and plain.size > 240
-    assign show_about = true
+  assign description = product.description | strip
+  assign has_description = false
+  if section.settings.show_description and description != blank
+    assign has_description = true
   endif
+
+  # Headings inside the Admin description (h2–h4) become tabs, so every product gets them without extra fields.
+  assign sections_html = description | replace: '<h2', '<h3' | replace: '</h2>', '</h3>' | replace: '<h4', '<h3' | replace: '</h4>', '</h3>'
+  assign parts = sections_html | split: '<h3'
+  assign intro = sections_html
+  assign heading_count = 0
+  if section.settings.split_description and parts.size > 1
+    assign intro = parts | first
+    assign heading_count = parts.size | minus: 1
+  endif
+  assign intro_text = intro | strip_html | strip
+
   assign spec_count = 0
   assign panel_count = 0
   assign editorial_count = 0
@@ -23,41 +35,94 @@
         endif
     endcase
   endfor
+
+  assign tab_count = panel_count
+  if has_description
+    if intro_text != blank or heading_count == 0
+      assign tab_count = tab_count | plus: 1
+    endif
+    assign tab_count = tab_count | plus: heading_count
+  endif
+  if spec_count > 0
+    assign tab_count = tab_count | plus: 1
+  endif
+  assign uid = 'PortalTabs-' | append: section.id
 -%}
 
-{%- if show_about or spec_count > 0 or panel_count > 0 -%}
-  <div class="portal-product-details portal-pad">
-    {%- if show_about -%}
-      <section class="portal-product-details__group" id="PortalProductAbout" aria-labelledby="PortalProductAbout-{{ section.id }}">
-        <h2 class="portal-heading" id="PortalProductAbout-{{ section.id }}">{{ section.settings.description_heading | escape }}</h2>
-        <div class="portal-prose rte">{{ product.description }}</div>
-      </section>
-    {%- endif -%}
-
-    {%- if spec_count > 0 -%}
-      <section class="portal-product-details__group" aria-labelledby="PortalProductSpecs-{{ section.id }}">
-        <h2 class="portal-heading" id="PortalProductSpecs-{{ section.id }}">{{ section.settings.specs_heading | escape }}</h2>
-        <dl class="portal-specs">
+{%- if tab_count > 0 -%}
+  {{ 'portal-tabs.css' | asset_url | stylesheet_tag }}
+  <div class="portal-product-details portal-pad" id="PortalProductAbout">
+    <portal-tabs class="portal-tabs">
+      {%- if tab_count > 1 -%}
+        <div class="portal-tabs__list" aria-label="{{ section.settings.tabs_label | escape }}" hidden>
+          {%- if has_description -%}
+            {%- if intro_text != blank or heading_count == 0 -%}
+              <button type="button" class="portal-tabs__tab" id="{{ uid }}-tab-intro" aria-controls="{{ uid }}-intro">{{ section.settings.description_heading | escape }}</button>
+            {%- endif -%}
+            {%- for part in parts offset: 1 -%}
+              {%- if heading_count > 0 -%}
+                {%- assign title_html = part | split: '</h3>' | first -%}
+                {%- assign title = '<h3' | append: title_html | append: '</h3>' | strip_html | strip -%}
+                <button type="button" class="portal-tabs__tab" id="{{ uid }}-tab-h{{ forloop.index }}" aria-controls="{{ uid }}-h{{ forloop.index }}">{{ title | escape }}</button>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if spec_count > 0 -%}
+            <button type="button" class="portal-tabs__tab" id="{{ uid }}-tab-specs" aria-controls="{{ uid }}-specs">{{ section.settings.specs_heading | escape }}</button>
+          {%- endif -%}
           {%- for block in section.blocks -%}
-            {%- if block.type == 'attribute' and block.settings.value != blank -%}
-              <div class="portal-specs__row" {{ block.shopify_attributes }}>
-                <dt>{{ block.settings.label | escape }}</dt>
-                <dd>{{ block.settings.value }}</dd>
-              </div>
+            {%- if block.type == 'panel' and block.settings.content != blank -%}
+              <button type="button" class="portal-tabs__tab" id="{{ uid }}-tab-{{ block.id }}" aria-controls="{{ uid }}-{{ block.id }}">{{ block.settings.heading | escape }}</button>
             {%- endif -%}
           {%- endfor -%}
-        </dl>
-      </section>
-    {%- endif -%}
+        </div>
+      {%- endif -%}
 
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'panel' and block.settings.content != blank -%}
-        <section class="portal-product-details__group" aria-labelledby="PortalProductPanel-{{ block.id }}" {{ block.shopify_attributes }}>
-          <h2 class="portal-heading" id="PortalProductPanel-{{ block.id }}">{{ block.settings.heading | escape }}</h2>
-          <div class="portal-prose rte">{{ block.settings.content }}</div>
+      {%- if has_description -%}
+        {%- if intro_text != blank or heading_count == 0 -%}
+          <section class="portal-tabs__panel" id="{{ uid }}-intro" aria-labelledby="{{ uid }}-intro-title">
+            <h2 class="portal-tabs__title" id="{{ uid }}-intro-title">{{ section.settings.description_heading | escape }}</h2>
+            <div class="portal-prose rte">{{ intro }}</div>
+          </section>
+        {%- endif -%}
+        {%- for part in parts offset: 1 -%}
+          {%- if heading_count > 0 -%}
+            {%- assign title_html = part | split: '</h3>' | first -%}
+            {%- assign title = '<h3' | append: title_html | append: '</h3>' | strip_html | strip -%}
+            {%- assign body = part | remove_first: title_html | remove_first: '</h3>' -%}
+            <section class="portal-tabs__panel" id="{{ uid }}-h{{ forloop.index }}" aria-labelledby="{{ uid }}-h{{ forloop.index }}-title">
+              <h2 class="portal-tabs__title" id="{{ uid }}-h{{ forloop.index }}-title">{{ title | escape }}</h2>
+              <div class="portal-prose rte">{{ body }}</div>
+            </section>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if spec_count > 0 -%}
+        <section class="portal-tabs__panel" id="{{ uid }}-specs" aria-labelledby="{{ uid }}-specs-title">
+          <h2 class="portal-tabs__title" id="{{ uid }}-specs-title">{{ section.settings.specs_heading | escape }}</h2>
+          <dl class="portal-specs">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'attribute' and block.settings.value != blank -%}
+                <div class="portal-specs__row" {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.label | escape }}</dt>
+                  <dd>{{ block.settings.value }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
         </section>
       {%- endif -%}
-    {%- endfor -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'panel' and block.settings.content != blank -%}
+          <section class="portal-tabs__panel" id="{{ uid }}-{{ block.id }}" aria-labelledby="{{ uid }}-{{ block.id }}-title" {{ block.shopify_attributes }}>
+            <h2 class="portal-tabs__title" id="{{ uid }}-{{ block.id }}-title">{{ block.settings.heading | escape }}</h2>
+            <div class="portal-prose rte">{{ block.settings.content }}</div>
+          </section>
+        {%- endif -%}
+      {%- endfor -%}
+    </portal-tabs>
   </div>
 {%- endif -%}
 
@@ -97,20 +162,32 @@
       "type": "checkbox",
       "id": "show_description",
       "default": true,
-      "label": "Mostrar a descrição completa",
-      "info": "Descrições curtas já aparecem inteiras ao lado do botão de compra e não se repetem aqui."
+      "label": "Mostrar a descrição em abas"
+    },
+    {
+      "type": "checkbox",
+      "id": "split_description",
+      "default": true,
+      "label": "Separar a descrição pelos subtítulos",
+      "info": "Cada subtítulo da descrição do produto vira uma aba (ex.: Principais benefícios, Como utilizar)."
+    },
+    {
+      "type": "text",
+      "id": "tabs_label",
+      "label": "Nome do grupo de abas (leitores de tela)",
+      "default": "Informações do produto"
     },
     {
       "type": "text",
       "id": "description_heading",
       "label": "Título da descrição",
-      "default": "Sobre este produto"
+      "default": "Descrição"
     },
     {
       "type": "text",
       "id": "specs_heading",
       "label": "Título das características",
-      "default": "Características"
+      "default": "Especificações"
     }
   ],
   "blocks": [

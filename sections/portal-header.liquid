@@ -4,13 +4,15 @@
 <portal-header class="portal-header-shell"{% if template.name == 'index' %} data-overlay{% endif %}>
   <div class="header-wrapper portal-header-wrapper">
     <header class="portal-header">
-      {% render 'header-drawer', portal_drawer: true %}
+      <div class="portal-header__start">
+        {% render 'header-drawer', portal_drawer: true %}
+        {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
+      </div>
       <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
         {% if settings.logo != blank %}{{ settings.logo | image_url: width: 330 | image_tag: widths: '110, 220, 330', sizes: '110px', loading: 'eager' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="{{ shop.name | escape }}">{% endif %}
       </a>
       {% render 'portal-nav' %}
       <div class="portal-header__actions">
-        {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
         {%- if shop.customer_accounts_enabled -%}
           {%- liquid
             assign account_menu = section.settings.customer_account_menu.handle | default: 'customer-account-main-menu'

@@ -1,7 +1,6 @@
 {% doc %}
   Short description beside the buy box. Long descriptions are trimmed and linked to the
-  full text in portal-product-details; short ones are shown whole (and not repeated below).
-  Keep the 240 limit in sync with sections/portal-product-details.liquid.
+  tabs in portal-product-details, which always carry the full text.
 {% enddoc %}
 {%- liquid
   assign portal_plain = product.description | strip_html | strip_newlines | strip

@@ -1,0 +1,17 @@
+{% doc %}
+  Silent looping video laid over a section image (animated still). The image below stays
+  as poster and fallback; portal-haux.js plays it only while visible and never under
+  prefers-reduced-motion. A pause button satisfies WCAG 2.2.2.
+
+  @param {object} video - Shopify video from a `video` setting
+  @param {string} [class] - extra class
+{% enddoc %}
+{%- if video != blank -%}
+  <portal-ambient-video class="portal-ambient{% if class != blank %} {{ class }}{% endif %}">
+    {{ video | video_tag: image_size: '1600x', autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', class: 'portal-ambient__video', aria-hidden: 'true', tabindex: '-1' }}
+    <button type="button" class="portal-ambient__toggle" aria-pressed="false" data-pause="{{ 'portal.video.pause' | t }}" data-play="{{ 'portal.video.play' | t }}" hidden>
+      <span class="visually-hidden">{{ 'portal.video.pause' | t }}</span>
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path class="portal-ambient__pause" d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="1.6" fill="none"/><path class="portal-ambient__play" d="M5 3l8 5-8 5z" fill="currentColor"/></svg>
+    </button>
+  </portal-ambient-video>
+{%- endif -%}

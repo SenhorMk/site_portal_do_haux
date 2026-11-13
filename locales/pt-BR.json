@@ -566,7 +566,9 @@
       "carousel": "carrossel",
       "previous": "Vídeo anterior",
       "next": "Próximo vídeo",
-      "browse": "Navegue pelos vídeos com as setas"
+      "browse": "Navegue pelos vídeos com as setas",
+      "pause": "Pausar animação",
+      "play": "Retomar animação"
     },
     "cart": {
       "add": "Adicionar"

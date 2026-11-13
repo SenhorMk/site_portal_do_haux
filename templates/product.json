@@ -13,10 +13,6 @@
           "type": "title",
           "settings": {}
         },
-        "judge_me_reviews_preview_badge_nYxJkg": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        },
         "price": {
           "type": "price",
           "settings": {}
@@ -57,7 +53,6 @@
       "block_order": [
         "portal-eyebrow",
         "title",
-        "judge_me_reviews_preview_badge_nYxJkg",
         "price",
         "portal-excerpt",
         "variant-picker",
@@ -135,6 +130,12 @@
         "editorial": {
           "type": "editorial",
           "settings": {}
+        },
+        "observacoes": {
+          "type": "panel",
+          "settings": {
+            "heading": "Observações"
+          }
         }
       },
       "block_order": [
@@ -146,32 +147,15 @@
         "uso",
         "cuidados",
         "origem",
+        "observacoes",
         "editorial"
       ],
       "settings": {
         "show_description": true,
-        "description_heading": "Sobre este produto",
-        "specs_heading": "Características"
-      }
-    },
-    "1778521299568a4c07": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_BBQHBf": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_BBQHBf"
-      ],
-      "settings": {
-        "include_margins": true
+        "description_heading": "Descrição",
+        "specs_heading": "Especificações",
+        "split_description": true,
+        "tabs_label": "Informações do produto"
       }
     },
     "recommendations": {
@@ -187,7 +171,6 @@
   "order": [
     "main",
     "details",
-    "1778521299568a4c07",
     "recommendations"
   ]
 }

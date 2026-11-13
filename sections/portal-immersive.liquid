@@ -1,5 +1,5 @@
 <portal-immersive class="portal-immersive" id="defumacao">
-  <div class="portal-immersive__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image %}</div>
+  <div class="portal-immersive__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image %}{% render 'portal-ambient-video', video: section.settings.video %}</div>
   {% if section.settings.graphics %}{% render 'portal-glyph', type: 'sopro-wide', class: 'portal-immersive__sopro' %}{% endif %}
   <div class="portal-immersive__content">{% render 'portal-editorial-copy', content: section.settings, button_class: 'portal-button portal-button--warm' %}</div>
 </portal-immersive>
@@ -18,6 +18,12 @@
       "type": "image_picker",
       "id": "mobile_image",
       "label": "Imagem mobile"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vídeo em loop (opcional)",
+      "info": "Imagem animada, sem som, até 15 s. Fica por cima da imagem, que continua como capa e fallback."
     },
     {
       "type": "text",

@@ -1,0 +1,30 @@
+/* Product information tabs. Without JS every panel stays visible with its own heading. */
+.portal-product-details { background: var(--portal-ceramica); border-top: 1px solid var(--portal-border); scroll-margin-top: 14rem; }
+.portal-tabs { display: block; min-width: 0; max-width: 104rem; margin-inline: auto; }
+.portal-tabs__list { display: flex; gap: .4rem 2.8rem; margin-block-end: 3.2rem; overflow-x: auto; border-bottom: 1px solid var(--portal-border); scrollbar-width: none; scroll-snap-type: x proximity; }
+.portal-tabs__list::-webkit-scrollbar { display: none; }
+.portal-tabs__tab { position: relative; flex: none; min-height: 4.8rem; padding: 1.2rem 0; border: 0; background: none; color: var(--portal-text-muted); font: 500 1.2rem/1.4 var(--portal-body); letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; cursor: pointer; scroll-snap-align: start; }
+.portal-tabs__tab::after { position: absolute; inset: auto 0 -1px; height: 2px; content: ''; background: var(--portal-urucum); transform: scaleX(0); transform-origin: left; }
+.portal-tabs__tab:hover, .portal-tabs__tab[aria-selected="true"] { color: var(--portal-text); }
+.portal-tabs__tab[aria-selected="true"]::after { transform: scaleX(1); }
+.portal-tabs__tab:focus-visible { outline: .2rem solid currentColor; outline-offset: -.2rem; }
+.portal-tabs__panel { max-width: 72ch; min-width: 0; overflow-wrap: anywhere; }
+.portal-tabs__panel + .portal-tabs__panel { margin-block-start: 4.8rem; }
+.portal-tabs__title { margin: 0 0 1.6rem; font: 400 2.6rem/1.2 var(--portal-display); color: var(--portal-text); }
+.portal-tabs[data-ready] .portal-tabs__panel + .portal-tabs__panel { margin-block-start: 0; }
+.portal-tabs[data-ready] .portal-tabs__title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.portal-tabs__panel .rte ul { padding-inline-start: 2rem; }
+.portal-tabs__panel .rte li + li { margin-block-start: .8rem; }
+.portal-tabs__panel .rte li > p { display: inline; margin: 0; }
+.portal-tabs__panel .rte h3 { margin: 2.4rem 0 1rem; font: 500 1.2rem/1.5 var(--portal-body); letter-spacing: .18em; text-transform: uppercase; }
+.portal-tabs .portal-specs { margin: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .portal-tabs__tab { transition: color 200ms var(--portal-ease); }
+  .portal-tabs__tab::after { transition: transform 260ms var(--portal-ease); }
+  .portal-tabs[data-ready] .portal-tabs__panel:not([hidden]) { animation: portal-tab-in 320ms var(--portal-ease); }
+}
+@keyframes portal-tab-in { from { opacity: 0; transform: translateY(.8rem); } to { opacity: 1; transform: none; } }
+@media (max-width: 767px) {
+  .portal-tabs__list { gap: 2rem; margin-inline: calc(var(--portal-gutter) * -1); padding-inline: var(--portal-gutter); margin-block-end: 2.4rem; }
+  .portal-tabs__title { font-size: 2.2rem; }
+}

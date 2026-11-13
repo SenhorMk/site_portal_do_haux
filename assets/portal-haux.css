@@ -89,7 +89,16 @@
 .portal-header > .header__inline-menu { grid-area: 1 / 2; justify-self: stretch; }
 .portal-header > .portal-header__start { grid-area: 1 / 3; justify-self: end; display: flex; align-items: center; gap: .4rem; min-width: 0; }
 .portal-header > .portal-header__actions { grid-area: 1 / 4; justify-self: end; }
-.portal-header .portal-logo { display: block; width: auto; max-width: none; line-height: 0; }
+.portal-header .portal-logo { --portal-plate-x: 2rem; --portal-plate-r: 2.4rem; --portal-plate-ear: 1.6rem; position: relative; isolation: isolate; display: block; width: auto; max-width: none; line-height: 0; }
+.portal-header .portal-logo img { position: relative; z-index: 1; }
+.portal-header .portal-logo::before, .portal-header .portal-logo::after { position: absolute; z-index: 0; top: calc(var(--portal-header-pad) * -1); content: ''; opacity: 0; pointer-events: none; }
+.portal-header .portal-logo::before { left: calc(var(--portal-plate-x) * -1); right: calc(var(--portal-plate-x) * -1); bottom: -1.4rem; border-radius: 0 0 var(--portal-plate-r) var(--portal-plate-r); background: var(--portal-ceramica); box-shadow: 0 1.2rem 2.4rem rgb(20 35 26 / 28%); }
+.portal-header .portal-logo::after {
+  left: calc((var(--portal-plate-x) + var(--portal-plate-ear)) * -1); right: calc((var(--portal-plate-x) + var(--portal-plate-ear)) * -1); height: var(--portal-plate-ear);
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--portal-plate-ear) - .5px), var(--portal-ceramica) var(--portal-plate-ear)) left top / var(--portal-plate-ear) 100% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent calc(var(--portal-plate-ear) - .5px), var(--portal-ceramica) var(--portal-plate-ear)) right top / var(--portal-plate-ear) 100% no-repeat;
+}
+.portal-header-shell[data-overlay]:not(.is-sticky):not(:has(details[open])) .portal-logo::before, .portal-header-shell[data-overlay]:not(.is-sticky):not(:has(details[open])) .portal-logo::after { opacity: 1; }
 .portal-header .portal-logo img { display: block; width: auto; max-width: none; height: var(--portal-logo-h); object-fit: contain; }
 .portal-header .header__inline-menu { display: block; margin: 0; min-width: 0; }
 .portal-header .list-menu { margin: 0; padding: 0; list-style: none; }
@@ -98,8 +107,9 @@
 .portal-header summary.header__menu-item { padding-inline-end: 1.7rem; }
 .portal-header .header__submenu { background: var(--portal-ceramica); }
 .portal-header .header__submenu .header__menu-item { padding: 1rem 2rem; color: var(--portal-text); white-space: normal; opacity: 1; }
-/* Nav buttons sized to sit beside the logo: only the word at rest. Hover, focus, open and current
-   draw the frame up from the bottom, then flip the label while a skewed fill rises with its twin (portal-nav.liquid). */
+/* Nav buttons sized to sit beside the logo: only the word at rest. Hover, focus and open draw the frame
+   up from the bottom, then flip the label while a skewed fill rises with its twin (portal-nav.liquid).
+   The current page keeps the word with a thin rule under it. */
 .portal-header .portal-nav .list-menu--inline { gap: .8rem; }
 .portal-header .portal-nav .portal-nav__item {
   --portal-nav-fill: var(--portal-mata); --portal-nav-on-fill: var(--portal-pergaminho);
@@ -110,15 +120,16 @@
 .portal-header .portal-nav .portal-nav__item .portal-nav__face--back { grid-area: auto; position: absolute; inset: 0; justify-content: center; color: var(--portal-nav-on-fill); transform: translateY(101%); }
 .portal-nav__fill { position: absolute; inset: 0; background: var(--portal-nav-fill); transform: translateY(100%) skewY(12deg) scale(1, 0); }
 .portal-nav__face-text { position: relative; display: inline-flex; align-items: center; gap: .7rem; }
+.portal-header .portal-nav .portal-nav__item:is([aria-current="page"], :has(.header__active-menu-item)) > .portal-nav__face:not(.portal-nav__face--back) { padding-block: .4rem; background: linear-gradient(currentColor, currentColor) left bottom / 100% 1px no-repeat; }
 .portal-header .portal-nav__item .icon-caret { position: static; flex: none; width: 1rem; height: .6rem; transform: none; }
 .portal-header details[open] > summary.portal-nav__item .icon-caret { transform: rotate(180deg); }
 .portal-header .portal-nav .portal-nav__item::after { position: absolute; inset: 0; z-index: 1; border: 1px solid var(--portal-nav-fill); clip-path: inset(100% 0 0 0); content: ''; pointer-events: none; }
-.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item))::after, .portal-header .portal-nav details[open] > .portal-nav__item::after { clip-path: inset(0); }
-.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)) > .portal-nav__face:not(.portal-nav__face--back),
+.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible)::after, .portal-header .portal-nav details[open] > .portal-nav__item::after { clip-path: inset(0); }
+.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible) > .portal-nav__face:not(.portal-nav__face--back),
 .portal-header .portal-nav details[open] > .portal-nav__item > .portal-nav__face:not(.portal-nav__face--back) { transform: translateY(-150%); }
-.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)) > .portal-nav__face--back,
+.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible) > .portal-nav__face--back,
 .portal-header .portal-nav details[open] > .portal-nav__item > .portal-nav__face--back { transform: none; }
-.portal-header .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)) .portal-nav__fill,
+.portal-header .portal-nav__item:is(:hover, :focus-visible) .portal-nav__fill,
 .portal-header details[open] > .portal-nav__item .portal-nav__fill { transform: translateY(0) skewY(12deg) scale(1.5, 2.5); }
 /* Dropdowns open from the header's bottom edge; an invisible bridge keeps hover alive across the gap. */
 .portal-header .portal-nav { --portal-nav-btn-h: 4.8rem; --portal-nav-drop: calc((var(--portal-logo-h) - var(--portal-nav-btn-h)) / 2 + var(--portal-header-pad)); }
@@ -210,11 +221,20 @@
 @media (prefers-reduced-motion: no-preference) {
   .portal-header-wrapper { transition: background-color 240ms var(--portal-ease), border-color 240ms var(--portal-ease), color 240ms var(--portal-ease); }
   .portal-header .portal-logo img { transition: height 260ms var(--portal-ease); }
+  .portal-header .portal-logo::before, .portal-header .portal-logo::after { transition: opacity 240ms var(--portal-ease); }
   .portal-header :is(.header__menu-item, .header__icon) { transition: opacity 200ms var(--portal-ease), color 240ms var(--portal-ease); }
   .portal-header :is(.header__menu-item > span, .portal-header__label, .portal-header__cart-label, .portal-header__account-label) { transition: background-size 200ms var(--portal-ease); }
   .portal-header-shell[data-overlay].is-sticky .portal-header-wrapper { animation: portal-header-in 260ms var(--portal-ease); }
   .portal-header .portal-nav .portal-nav__item :is(.portal-nav__face, .portal-nav__fill) { transition: transform 500ms var(--portal-ease); }
   .portal-header .portal-nav .portal-nav__item::after { transition: clip-path 320ms var(--portal-ease); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal-header .portal-nav .portal-nav__item .portal-nav__face, .portal-header .portal-nav .portal-nav__item .portal-nav__fill,
+  .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible) > .portal-nav__face:not(.portal-nav__face--back), .portal-header .portal-nav details[open] > .portal-nav__item > .portal-nav__face:not(.portal-nav__face--back),
+  .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible) .portal-nav__fill, .portal-header .portal-nav details[open] > .portal-nav__item .portal-nav__fill { transform: none; }
+  .portal-header .portal-nav .portal-nav__item .portal-nav__face--back, .portal-header .portal-nav .portal-nav__item::after { opacity: 0; clip-path: none; transition: opacity 220ms ease; }
+  .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible) > .portal-nav__face--back, .portal-header .portal-nav details[open] > .portal-nav__item > .portal-nav__face--back,
+  .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible)::after, .portal-header .portal-nav details[open] > .portal-nav__item::after { opacity: 1; }
 }
 @keyframes portal-header-in { from { transform: translateY(-100%); } to { transform: none; } }
 

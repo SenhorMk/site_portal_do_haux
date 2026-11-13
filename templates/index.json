@@ -12,7 +12,7 @@
     "hero": {
       "type": "portal-hero",
       "settings": {
-        "image": "shopify://shop_images/Feixe_oca.jpg",
+        "image": "shopify://shop_images/fumaca_loop_leve.gif",
         "heading": "A floresta atravessa o Portal",
         "text": "Rapés, kuripes, tepis, defumadores, ervas e objetos de rito.",
         "label": "Ver a loja",
@@ -89,6 +89,57 @@
         "heading": "Categorias",
         "label": "Ver a loja inteira",
         "link": "shopify://collections/all"
+      }
+    },
+    "linhas": {
+      "type": "portal-linhas",
+      "blocks": {
+        "portal-do-guardiao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal do Guardião",
+            "tagline": "Proteção, firmeza e força ancestral",
+            "linha": "guardiao",
+            "handle": "portal-do-guardiao"
+          }
+        },
+        "portal-da-luz": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Luz",
+            "tagline": "Elevação, clareza e conexão espiritual",
+            "linha": "luz",
+            "handle": "portal-da-luz"
+          }
+        },
+        "portal-da-harmonia": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Harmonia",
+            "tagline": "Serenidade, equilíbrio e harmonização",
+            "linha": "harmonia",
+            "handle": "portal-da-harmonia"
+          }
+        },
+        "portal-da-purificacao": {
+          "type": "linha",
+          "settings": {
+            "title": "Portal da Purificação",
+            "tagline": "Limpeza, descarrego e renovação",
+            "linha": "purificacao",
+            "handle": "portal-da-purificacao"
+          }
+        }
+      },
+      "block_order": [
+        "portal-do-guardiao",
+        "portal-da-luz",
+        "portal-da-harmonia",
+        "portal-da-purificacao"
+      ],
+      "settings": {
+        "eyebrow": "Linhas de defumação",
+        "heading": "Escolha o seu portal"
       }
     },
     "products": {
@@ -349,57 +400,6 @@
       "settings": {
         "heading": "Avisamos quando um lote novo chega",
         "text": "<p>Um e-mail quando um lote novo chegar.</p>"
-      }
-    },
-    "linhas": {
-      "type": "portal-linhas",
-      "blocks": {
-        "portal-do-guardiao": {
-          "type": "linha",
-          "settings": {
-            "title": "Portal do Guardião",
-            "tagline": "Proteção, firmeza e força ancestral",
-            "linha": "guardiao",
-            "handle": "portal-do-guardiao"
-          }
-        },
-        "portal-da-luz": {
-          "type": "linha",
-          "settings": {
-            "title": "Portal da Luz",
-            "tagline": "Elevação, clareza e conexão espiritual",
-            "linha": "luz",
-            "handle": "portal-da-luz"
-          }
-        },
-        "portal-da-harmonia": {
-          "type": "linha",
-          "settings": {
-            "title": "Portal da Harmonia",
-            "tagline": "Serenidade, equilíbrio e harmonização",
-            "linha": "harmonia",
-            "handle": "portal-da-harmonia"
-          }
-        },
-        "portal-da-purificacao": {
-          "type": "linha",
-          "settings": {
-            "title": "Portal da Purificação",
-            "tagline": "Limpeza, descarrego e renovação",
-            "linha": "purificacao",
-            "handle": "portal-da-purificacao"
-          }
-        }
-      },
-      "block_order": [
-        "portal-do-guardiao",
-        "portal-da-luz",
-        "portal-da-harmonia",
-        "portal-da-purificacao"
-      ],
-      "settings": {
-        "eyebrow": "Linhas de defumação",
-        "heading": "Escolha o seu portal"
       }
     }
   },

@@ -5,9 +5,10 @@
 
   @param {object} video - Shopify video from a `video` setting
   @param {string} [class] - extra class
+  @param {boolean} [poster] - no section image below: the video's own first frame stays visible as the still
 {% enddoc %}
 {%- if video != blank -%}
-  <portal-ambient-video class="portal-ambient{% if class != blank %} {{ class }}{% endif %}">
+  <portal-ambient-video class="portal-ambient{% if poster %} portal-ambient--poster{% endif %}{% if class != blank %} {{ class }}{% endif %}">
     {{ video | video_tag: image_size: '1600x', autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', class: 'portal-ambient__video', aria-hidden: 'true', tabindex: '-1' }}
     <button type="button" class="portal-ambient__toggle" aria-pressed="false" data-pause="{{ 'portal.video.pause' | t }}" data-play="{{ 'portal.video.play' | t }}" hidden>
       <span class="visually-hidden">{{ 'portal.video.pause' | t }}</span>

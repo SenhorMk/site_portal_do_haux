@@ -1,5 +1,10 @@
 <div class="portal-hero portal-hero--{{ section.settings.alignment }} portal-hero--overlay-{{ section.settings.overlay }}">
-  <div class="portal-hero__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image, priority: true %}{% render 'portal-ambient-video', video: section.settings.video %}</div>
+  <div class="portal-hero__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image, priority: true %}{%- liquid
+    assign video_poster = false
+    if section.settings.image == blank
+      assign video_poster = true
+    endif
+  -%}{% render 'portal-ambient-video', video: section.settings.video, poster: video_poster %}</div>
   {% if section.settings.graphics %}{% render 'portal-glyph', type: 'tapestry', class: 'portal-hero__tapestry' %}{% endif %}
   <div class="portal-hero__content">
     <h1 class="portal-heading portal-hero__heading">{{ section.settings.heading | escape }}</h1>

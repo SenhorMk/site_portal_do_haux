@@ -98,21 +98,22 @@
 .portal-header summary.header__menu-item { padding-inline-end: 1.7rem; }
 .portal-header .header__submenu { background: var(--portal-ceramica); }
 .portal-header .header__submenu .header__menu-item { padding: 1rem 2rem; color: var(--portal-text); white-space: normal; opacity: 1; }
-/* Nav buttons sized to sit beside the logo. Hover, focus, open and current flip the label up
-   while a skewed fill rises with its twin label (portal-nav.liquid). */
+/* Nav buttons sized to sit beside the logo: only the word at rest. Hover, focus, open and current
+   draw the frame up from the bottom, then flip the label while a skewed fill rises with its twin (portal-nav.liquid). */
 .portal-header .portal-nav .list-menu--inline { gap: .8rem; }
 .portal-header .portal-nav .portal-nav__item {
-  --portal-nav-line: color-mix(in srgb, var(--portal-header-fg) 30%, transparent); --portal-nav-fill: var(--portal-mata); --portal-nav-on-fill: var(--portal-pergaminho);
+  --portal-nav-fill: var(--portal-mata); --portal-nav-on-fill: var(--portal-pergaminho);
   position: relative; display: grid; place-items: center; box-sizing: border-box; min-height: var(--portal-nav-btn-h); padding: 0 1.8rem; overflow: hidden;
-  border: 1px solid var(--portal-nav-line); color: var(--portal-header-fg); font: 500 1.3rem/1 var(--portal-body); letter-spacing: .12em; opacity: 1; cursor: pointer;
+  border: 0; color: var(--portal-header-fg); font: 500 1.3rem/1 var(--portal-body); letter-spacing: .12em; opacity: 1; cursor: pointer;
 }
 .portal-header .portal-nav .portal-nav__item .portal-nav__face { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: .7rem; padding: 0; background: none; }
-.portal-header .portal-nav .portal-nav__item .portal-nav__face--back { position: absolute; inset: 0; justify-content: center; color: var(--portal-nav-on-fill); transform: translateY(101%); }
+.portal-header .portal-nav .portal-nav__item .portal-nav__face--back { grid-area: auto; position: absolute; inset: 0; justify-content: center; color: var(--portal-nav-on-fill); transform: translateY(101%); }
 .portal-nav__fill { position: absolute; inset: 0; background: var(--portal-nav-fill); transform: translateY(100%) skewY(12deg) scale(1, 0); }
 .portal-nav__face-text { position: relative; display: inline-flex; align-items: center; gap: .7rem; }
 .portal-header .portal-nav__item .icon-caret { position: static; flex: none; width: 1rem; height: .6rem; transform: none; }
 .portal-header details[open] > summary.portal-nav__item .icon-caret { transform: rotate(180deg); }
-.portal-header .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)), .portal-header details[open] > .portal-nav__item { border-color: var(--portal-nav-fill); }
+.portal-header .portal-nav .portal-nav__item::after { position: absolute; inset: 0; z-index: 1; border: 1px solid var(--portal-nav-fill); clip-path: inset(100% 0 0 0); content: ''; pointer-events: none; }
+.portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item))::after, .portal-header .portal-nav details[open] > .portal-nav__item::after { clip-path: inset(0); }
 .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)) > .portal-nav__face:not(.portal-nav__face--back),
 .portal-header .portal-nav details[open] > .portal-nav__item > .portal-nav__face:not(.portal-nav__face--back) { transform: translateY(-150%); }
 .portal-header .portal-nav .portal-nav__item:is(:hover, :focus-visible, [aria-current="page"], :has(.header__active-menu-item)) > .portal-nav__face--back,
@@ -213,7 +214,7 @@
   .portal-header :is(.header__menu-item > span, .portal-header__label, .portal-header__cart-label, .portal-header__account-label) { transition: background-size 200ms var(--portal-ease); }
   .portal-header-shell[data-overlay].is-sticky .portal-header-wrapper { animation: portal-header-in 260ms var(--portal-ease); }
   .portal-header .portal-nav .portal-nav__item :is(.portal-nav__face, .portal-nav__fill) { transition: transform 500ms var(--portal-ease); }
-  .portal-header .portal-nav .portal-nav__item { transition: border-color 300ms var(--portal-ease), color 240ms var(--portal-ease); }
+  .portal-header .portal-nav .portal-nav__item::after { transition: clip-path 320ms var(--portal-ease); }
 }
 @keyframes portal-header-in { from { transform: translateY(-100%); } to { transform: none; } }
 

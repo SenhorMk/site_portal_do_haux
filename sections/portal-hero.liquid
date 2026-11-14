@@ -1,7 +1,13 @@
 <div class="portal-hero portal-hero--{{ section.settings.alignment }} portal-hero--overlay-{{ section.settings.overlay }}">
-  <div class="portal-hero__media">{% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image, priority: true %}{%- liquid
+  <div class="portal-hero__media">
+    {%- if section.settings.image != blank or section.settings.mobile_image != blank -%}
+      {% render 'portal-image', image: section.settings.image, mobile_image: section.settings.mobile_image, priority: true %}
+    {%- else -%}
+      <img class="portal-image" src="{{ 'portal-linha-cena-purificacao.webp' | asset_url }}" width="1920" height="1280" alt="" loading="eager" fetchpriority="high">
+    {%- endif -%}
+    {%- liquid
     assign video_poster = false
-    if section.settings.image == blank
+    if section.settings.image == blank and section.settings.mobile_image == blank
       assign video_poster = true
     endif
   -%}{% render 'portal-ambient-video', video: section.settings.video, poster: video_poster %}</div>

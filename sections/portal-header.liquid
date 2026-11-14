@@ -9,7 +9,10 @@
         {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
       </div>
       <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        {% if settings.logo != blank %}{{ settings.logo | image_url: width: 330 | image_tag: widths: '110, 220, 330', sizes: '110px', loading: 'eager' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="{{ shop.name | escape }}">{% endif %}
+        <span class="portal-logo__mark">
+          {% if settings.logo != blank %}{{ settings.logo | image_url: width: 192 | image_tag: widths: '64, 128, 192', sizes: '52px', loading: 'eager', alt: '' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="">{% endif %}
+        </span>
+        <span class="portal-logo__wordmark" aria-hidden="true">Portal do Haux</span>
       </a>
       {% render 'portal-nav' %}
       <div class="portal-header__actions">

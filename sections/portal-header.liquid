@@ -4,17 +4,16 @@
 <portal-header class="portal-header-shell"{% if template.name == 'index' %} data-overlay{% endif %}>
   <div class="header-wrapper portal-header-wrapper">
     <header class="portal-header">
+      <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        <span class="portal-logo__mark">
+          {% if settings.logo != blank %}{{ settings.logo | image_url: width: 480 | image_tag: widths: '128, 240, 320, 480', sizes: '(max-width: 767px) 68px, (max-width: 1023px) 82px, 102px', loading: 'eager', alt: '' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="">{% endif %}
+        </span>
+      </a>
+      {% render 'portal-nav' %}
       <div class="portal-header__start">
         {% render 'header-drawer', portal_drawer: true %}
         {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
       </div>
-      <a class="portal-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        <span class="portal-logo__mark">
-          {% if settings.logo != blank %}{{ settings.logo | image_url: width: 192 | image_tag: widths: '64, 128, 192', sizes: '56px', loading: 'eager', alt: '' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="">{% endif %}
-        </span>
-        <span class="portal-logo__wordmark" aria-hidden="true">{{ shop.name | escape }}</span>
-      </a>
-      {% render 'portal-nav' %}
       <div class="portal-header__actions">
         {%- if shop.customer_accounts_enabled -%}
           {%- liquid

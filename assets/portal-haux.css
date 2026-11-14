@@ -83,6 +83,8 @@
   --portal-brand-w: 19.2rem;
   --portal-header-height: 12rem;
   --portal-header-pad: .9rem;
+  --portal-header-inline: var(--portal-gutter);
+  --portal-brand-curve: clamp(6.4rem,6vw,9.6rem);
   --portal-header-fg: var(--portal-pergaminho);
   display: block;
 }
@@ -93,7 +95,7 @@
 .portal-header {
   display: grid; grid-template-columns: var(--portal-brand-w) minmax(0,1fr) auto auto;
   align-items: center; column-gap: clamp(1rem,1.8vw,2.4rem);
-  position: relative; z-index: 1; min-height: var(--portal-header-height); padding: 0 var(--portal-gutter);
+  position: relative; z-index: 1; min-height: var(--portal-header-height); padding: 0 var(--portal-header-inline);
 }
 .portal-header > .portal-logo { grid-area: 1 / 1; }
 .portal-header > .header__inline-menu { grid-area: 1 / 2; justify-self: stretch; }
@@ -102,16 +104,19 @@
 .portal-header .portal-logo {
   position: relative; z-index: 1; isolation: isolate; align-self: stretch;
   display: flex; align-items: center; justify-content: center; box-sizing: border-box;
-  width: var(--portal-brand-w); min-width: 0; padding: var(--portal-header-pad) 1.6rem;
+  /* The panel bleeds to the viewport's left edge; the negative margin keeps the logo in its grid column. */
+  width: calc(var(--portal-brand-w) + var(--portal-header-inline)); min-width: 0;
+  margin-inline-start: calc(-1 * var(--portal-header-inline));
+  padding: var(--portal-header-pad) 1.6rem var(--portal-header-pad) calc(1.6rem + var(--portal-header-inline));
   background: var(--portal-ceramica); color: var(--portal-mata); text-decoration: none;
-  border-radius: 0 0 0 1.4rem;
 }
-/* Smooth quarter-curve: Cerâmica is wide at the top and melts into the hero below. */
+/* Soft S-curve from the panel's bottom edge up into the Cerâmica strip at the top (flat at both ends). */
 .portal-header .portal-logo::after {
   position: absolute; z-index: -1; inset: 0 auto 0 calc(100% - 1px);
-  width: clamp(3.2rem,4.4vw,5.8rem); content: '';
+  width: var(--portal-brand-curve); content: '';
   background: var(--portal-ceramica);
-  border-bottom-right-radius: 100% 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H100C55 0 45 100 0 100Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H100C55 0 45 100 0 100Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
   pointer-events: none;
 }
 .portal-header .portal-logo__mark { display: grid; place-items: center; width: var(--portal-logo-h); height: var(--portal-logo-h); flex: none; }
@@ -288,7 +293,7 @@
 .portal-header-shell[data-layout="compact"] .portal-header > .portal-logo { grid-area: 1 / 1; justify-self: start; }
 .portal-header-shell[data-layout="compact"] .portal-header > .portal-header__start { grid-area: 1 / 2; justify-self: end; }
 .portal-header-shell[data-layout="compact"] .portal-header > .portal-header__actions { grid-area: 1 / 3; justify-self: end; }
-.portal-header-shell[data-layout="compact"] .portal-header .portal-logo::after { width: 3.2rem; }
+.portal-header-shell[data-layout="compact"] { --portal-brand-curve: 5.6rem; }
 
 .portal-header-shell[data-layout="compact"] header-drawer { display: block; }
 .portal-header-shell[data-layout="compact"] .header__inline-menu { display: none; }
@@ -513,10 +518,9 @@
   .portal-header-shell[data-overlay] { --portal-header-height: 8.6rem; }
   .portal-header-shell[data-overlay].is-sticky { --portal-logo-h: 5.8rem; --portal-brand-w: 10.8rem; --portal-header-height: 7.6rem; }
   .portal-home { --portal-header-offset: 8.6rem; }
-  .portal-header { column-gap: .4rem; padding-inline: 1.2rem; }
-  .portal-header .portal-logo { padding-inline: .6rem; }
-  .portal-header .portal-logo::after { width: 2.6rem; }
-  .portal-header-shell[data-layout="compact"] .portal-header .portal-logo::after { width: 2.6rem; }
+  .portal-header-shell, .portal-header-shell[data-layout="compact"] { --portal-header-inline: 1.2rem; --portal-brand-curve: 4.4rem; }
+  .portal-header { column-gap: .4rem; }
+  .portal-header .portal-logo { padding-inline: calc(.6rem + var(--portal-header-inline)) .6rem; }
   .portal-header__actions, .portal-header-shell[data-layout] .portal-header__actions { gap: 0; }
   .portal-header-shell:not([data-layout]) .header__icon--account { display: none; }
   .portal-announcement { padding: 1rem; letter-spacing: .12em; }
@@ -585,9 +589,7 @@
 @media (max-width: 359px) {
   .portal-header-shell { --portal-logo-h: 6rem; --portal-brand-w: 10.4rem; }
   .portal-header-shell[data-overlay].is-sticky { --portal-logo-h: 5.4rem; --portal-brand-w: 9.6rem; }
-  .portal-header { padding-inline: .8rem; }
-  .portal-header .portal-logo::after { width: 2rem; }
-  .portal-header-shell[data-layout="compact"] .portal-header .portal-logo::after { width: 2rem; }
+  .portal-header-shell, .portal-header-shell[data-layout="compact"] { --portal-header-inline: .8rem; --portal-brand-curve: 3.6rem; }
 }
 
 /* Motion is enhancement only; uninitialized sections remain visible. */

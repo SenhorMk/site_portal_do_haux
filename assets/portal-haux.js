@@ -102,11 +102,22 @@
           delete details.dataset.hoverOpened;
         }, { signal });
       });
+      // A full-bleed mega menu must also close when the visitor clicks outside or
+      // tabs away. Keep Escape support and native details interactions.
+      document.addEventListener('pointerdown', (event) => {
+        if (this.contains(event.target)) return;
+        menus.forEach((menu) => { menu.open = false; delete menu.dataset.hoverOpened; });
+      }, { signal });
+      this.addEventListener('focusout', (event) => {
+        if (event.relatedTarget && this.contains(event.relatedTarget)) return;
+        menus.forEach((menu) => { menu.open = false; delete menu.dataset.hoverOpened; });
+      }, { signal });
       this.addEventListener('keydown', (event) => {
         if (event.key !== 'Escape') return;
         const open = menus.find((menu) => menu.open);
         if (!open) return;
         open.open = false;
+        delete open.dataset.hoverOpened;
         open.querySelector('summary').focus();
       }, { signal });
     }

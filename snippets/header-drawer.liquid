@@ -21,6 +21,52 @@
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
+              {%- if portal_drawer -%}
+                <li>
+                  <a href="{{ routes.root_url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset"{% if template.name == 'index' %} aria-current="page"{% endif %}>INÍCIO</a>
+                </li>
+                {%- for menu_group in (1..2) -%}
+                  {%- liquid
+                    if menu_group == 1
+                      assign group_title = 'PRODUTOS'
+                      assign group_key = 'products'
+                    else
+                      assign group_title = 'EVENTOS'
+                      assign group_key = 'events'
+                    endif
+                  -%}
+                  <li>
+                    <details id="Details-PortalDrawer-{{ group_key }}">
+                      <summary id="PortalDrawer-{{ group_key }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
+                        {{ group_title }}
+                        <span class="svg-wrapper">{{- 'icon-arrow.svg' | inline_asset_content -}}</span>
+                        <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+                      </summary>
+                      <div id="PortalDrawerPanel-{{ group_key }}" class="menu-drawer__submenu has-submenu gradient motion-reduce" tabindex="-1">
+                        <div class="menu-drawer__inner-submenu">
+                          <button type="button" class="menu-drawer__close-button link link--text focus-inset" aria-expanded="true">
+                            <span class="svg-wrapper">{{- 'icon-arrow.svg' | inline_asset_content -}}</span>
+                            {{ group_title }}
+                          </button>
+                          <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+                            {% render 'portal-menu-items', kind: group_key, mobile: true, menu_settings: menu_settings %}
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+                  </li>
+                {%- endfor -%}
+                <li>
+                  <a href="{{ portal_blog_url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset"{% if template.name == 'blog' or template.name == 'article' %} aria-current="page"{% endif %}>BLOG</a>
+                </li>
+                <li>
+                  {%- if menu_settings.nav_outros != blank -%}
+                    <a href="{{ menu_settings.nav_outros }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset">OUTROS</a>
+                  {%- else -%}
+                    <span class="menu-drawer__menu-item portal-drawer__pending" title="Em preparação">OUTROS</span>
+                  {%- endif -%}
+                </li>
+              {%- else -%}
               {%- for link in section.settings.menu.links -%}
                 <li>
                   {%- if link.links != blank -%}
@@ -133,6 +179,7 @@
                   {%- endif -%}
                 </li>
               {%- endfor -%}
+              {%- endif -%}
             </ul>
           </nav>
           <div class="menu-drawer__utility-links">

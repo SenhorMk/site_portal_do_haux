@@ -1,6 +1,16 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
 {{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign portal_blog = section.settings.nav_blog
+  if portal_blog == blank
+    assign portal_blog = blogs['news']
+  endif
+  if portal_blog == blank
+    assign portal_blog = blogs['diario-do-portal']
+  endif
+  assign portal_blog_url = portal_blog.url | default: '/blogs/news'
+-%}
 <portal-header class="portal-header-shell"{% if template.name == 'index' %} data-overlay{% endif %}>
   <div class="header-wrapper portal-header-wrapper">
     <header class="portal-header">
@@ -9,9 +19,9 @@
           {% if settings.logo != blank %}{{ settings.logo | image_url: width: 480 | image_tag: widths: '128, 240, 320, 480', sizes: '(max-width: 767px) 68px, (max-width: 1023px) 82px, 102px', loading: 'eager', alt: '' }}{% else %}<img src="{{ 'portal-logo.png' | asset_url }}" width="668" height="666" alt="">{% endif %}
         </span>
       </a>
-      {% render 'portal-nav' %}
+      {% render 'portal-nav', blog_url: portal_blog_url, menu_settings: section.settings %}
       <div class="portal-header__start">
-        {% render 'header-drawer', portal_drawer: true %}
+        {% render 'header-drawer', portal_drawer: true, portal_blog_url: portal_blog_url, menu_settings: section.settings %}
         {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
       </div>
       <div class="portal-header__actions">
@@ -42,6 +52,81 @@
   "name": "Portal · Header",
   "class": "section-header portal-header-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Navegação Portal"
+    },
+    {
+      "type": "blog",
+      "id": "nav_blog",
+      "label": "Blog no cabeçalho",
+      "info": "Escolha o blog publicado. Se vazio, tenta o blog padrão news."
+    },
+    {
+      "type": "url",
+      "id": "nav_vestuario",
+      "label": "Produtos · Vestuário"
+    },
+    {
+      "type": "url",
+      "id": "nav_medicinas",
+      "label": "Produtos · Medicinas"
+    },
+    {
+      "type": "url",
+      "id": "nav_defumacao",
+      "label": "Produtos · Defumação",
+      "default": "/collections/defumador"
+    },
+    {
+      "type": "url",
+      "id": "nav_incensario",
+      "label": "Produtos · Incensário"
+    },
+    {
+      "type": "url",
+      "id": "nav_artesanatos",
+      "label": "Produtos · Artesanatos"
+    },
+    {
+      "type": "url",
+      "id": "nav_acessorios",
+      "label": "Produtos · Acessórios"
+    },
+    {
+      "type": "url",
+      "id": "nav_naturais",
+      "label": "Produtos · Produtos naturais"
+    },
+    {
+      "type": "url",
+      "id": "nav_tabacaria",
+      "label": "Produtos · Tabacaria"
+    },
+    {
+      "type": "url",
+      "id": "nav_fotos",
+      "label": "Eventos · Biblioteca de fotos"
+    },
+    {
+      "type": "url",
+      "id": "nav_relatos",
+      "label": "Eventos · Relatos"
+    },
+    {
+      "type": "url",
+      "id": "nav_calendario",
+      "label": "Eventos · Calendário"
+    },
+    {
+      "type": "url",
+      "id": "nav_outros",
+      "label": "Outros · Destino futuro"
+    },
+    {
+      "type": "header",
+      "content": "Configurações existentes"
+    },
     {
       "type": "link_list",
       "id": "menu",

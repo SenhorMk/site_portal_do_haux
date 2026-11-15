@@ -134,12 +134,12 @@
         + Math.max(0, items.length - 1) * gap;
       const navRect = this.nav.getBoundingClientRect();
       const brandRect = this.querySelector('.portal-logo')?.getBoundingClientRect();
-      const searchRect = this.querySelector('.portal-header__start')?.getBoundingClientRect();
+      const utilitiesRect = this.querySelector('.portal-header__actions')?.getBoundingClientRect();
       const curve = parseFloat(getComputedStyle(this).getPropertyValue('--portal-brand-curve')) || 0;
       // A nominally fitting menu must not visually overlap the cream S-curve,
       // nor intrude into the 52px search/profile/cart controls.
       const clearsBrand = !brandRect || navRect.left >= brandRect.right + curve * .57 - 8;
-      const clearsUtilities = !searchRect || navRect.right <= searchRect.left - 5;
+      const clearsUtilities = !utilitiesRect || navRect.right <= utilitiesRect.left - 5;
       return needed + 16 <= navRect.width && clearsBrand && clearsUtilities;
     }
 

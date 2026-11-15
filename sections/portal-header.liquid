@@ -20,11 +20,9 @@
         </span>
       </a>
       {% render 'portal-nav', blog_url: portal_blog_url, menu_settings: section.settings %}
-      <div class="portal-header__start">
+      <div class="portal-header__actions">
         {% render 'header-drawer', portal_drawer: true, portal_blog_url: portal_blog_url, menu_settings: section.settings %}
         {% render 'header-search', input_id: 'PortalSearch', portal_label: true %}
-      </div>
-      <div class="portal-header__actions">
         {%- if shop.customer_accounts_enabled -%}
           {%- liquid
             assign account_menu = section.settings.customer_account_menu.handle | default: 'customer-account-main-menu'

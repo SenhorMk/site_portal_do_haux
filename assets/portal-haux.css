@@ -168,6 +168,16 @@
 .portal-header .portal-nav .portal-nav__item:focus-visible { outline: 2px solid var(--portal-pergaminho); outline-offset: 2px; }
 .portal-header .portal-nav__item .icon-caret { position: static; flex: none; width: 1rem; height: .6rem; }
 .portal-header details[open] > summary.portal-nav__item .icon-caret { transform: rotate(180deg); }
+/* Dropdowns open from the header's bottom edge; an invisible bridge keeps hover alive across the gap. */
+.portal-header .portal-nav { --portal-nav-btn-h: 4.8rem; --portal-nav-drop: calc((var(--portal-header-height) - var(--portal-nav-btn-h)) / 2); }
+.portal-header .list-menu--inline > li, .portal-header .list-menu--inline header-menu, .portal-header .list-menu--inline details { display: block; }
+.portal-header { position: relative; }
+.portal-header .portal-nav .list-menu--inline > li { position: relative; }
+.portal-header .portal-nav .list-menu--inline > li:has(.portal-nav__panel--wide,.portal-nav__panel--mega),
+.portal-header .portal-nav li:has(.portal-nav__panel--wide,.portal-nav__panel--mega) :is(header-menu, details) { position: static; }
+.portal-header .portal-nav__panel { position: absolute; top: calc(100% + var(--portal-nav-drop)); left: 0; z-index: 2; width: max-content; min-width: 24rem; max-width: 62rem; padding: 1rem; border: 1px solid var(--portal-border); border-top: 2px solid var(--portal-urucum); background: var(--portal-ceramica); box-shadow: 0 1.6rem 3.2rem rgb(36 26 20 / 14%); }
+.portal-header .portal-nav__panel::before { position: absolute; inset: auto 0 100%; height: calc(var(--portal-nav-drop) + 2px); content: ''; }
+.portal-header .portal-nav__panel--wide { top: 100%; left: 0; right: 0; width: auto; max-width: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 26rem)); justify-content: center; align-items: start; gap: 2.4rem 3.2rem; padding: 3.2rem var(--portal-gutter) 4rem; border-inline: 0; }
 /* Editorial full-bleed panels. Both mega menus span the header viewport width, not
    the width of their triggering words. The existing details/summary stay keyboard-native. */
 .portal-header .portal-nav .portal-nav__item--pending {
@@ -216,19 +226,9 @@ a.portal-mega__category:focus-visible { outline: 2px solid var(--portal-mata); o
   .portal-header .portal-mega__items { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .8rem 1.8rem; }
 }
 @media (max-width: 989px) {
-  .portal-header .portal-nav__panel--mega { display: none; }
+  .portal-header .portal-nav__panel--mega { grid-template-columns: 1fr; gap: 2.2rem; max-height: calc(100dvh - var(--portal-header-height)); overflow-y: auto; }
+  .portal-header .portal-mega__items { grid-template-columns: repeat(3,minmax(0,1fr)); }
 }
-
-/* Dropdowns open from the header's bottom edge; an invisible bridge keeps hover alive across the gap. */
-.portal-header .portal-nav { --portal-nav-btn-h: 4.8rem; --portal-nav-drop: calc((var(--portal-header-height) - var(--portal-nav-btn-h)) / 2); }
-.portal-header .list-menu--inline > li, .portal-header .list-menu--inline header-menu, .portal-header .list-menu--inline details { display: block; }
-.portal-header { position: relative; }
-.portal-header .portal-nav .list-menu--inline > li { position: relative; }
-.portal-header .portal-nav .list-menu--inline > li:has(.portal-nav__panel--wide,.portal-nav__panel--mega),
-.portal-header .portal-nav li:has(.portal-nav__panel--wide,.portal-nav__panel--mega) :is(header-menu, details) { position: static; }
-.portal-header .portal-nav__panel { position: absolute; top: calc(100% + var(--portal-nav-drop)); left: 0; z-index: 2; width: max-content; min-width: 24rem; max-width: 62rem; padding: 1rem; border: 1px solid var(--portal-border); border-top: 2px solid var(--portal-urucum); background: var(--portal-ceramica); box-shadow: 0 1.6rem 3.2rem rgb(36 26 20 / 14%); }
-.portal-header .portal-nav__panel::before { position: absolute; inset: auto 0 100%; height: calc(var(--portal-nav-drop) + 2px); content: ''; }
-.portal-header .portal-nav__panel--wide { top: 100%; left: 0; right: 0; width: auto; max-width: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 26rem)); justify-content: center; align-items: start; gap: 2.4rem 3.2rem; padding: 3.2rem var(--portal-gutter) 4rem; border-inline: 0; }
 .portal-nav__panel--wide > li:not(.portal-nav__group) { align-self: start; }
 .portal-nav__group { padding-inline-start: 1.6rem; border-inline-start: 1px solid var(--portal-border); }
 .portal-nav__group-title { display: block; margin: 0; padding: 1rem 1.2rem .6rem; color: var(--portal-text-muted); font: 500 1.1rem/1.5 var(--portal-body); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }

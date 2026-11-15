@@ -1,0 +1,58 @@
+{% doc %}
+  Inline search bar for the Portal header, shown beside the navigation on desktop and tablet.
+  The compact layout keeps the icon + modal from header-search.liquid. Uses Rise's
+  <predictive-search> when predictive search is enabled, otherwise a plain search form.
+
+  @example
+  {% render 'portal-header-search' %}
+{% enddoc %}
+{%- if settings.predictive_search_enabled -%}
+  {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+<div class="portal-search">
+  {%- if settings.predictive_search_enabled -%}
+    <predictive-search class="portal-search__component" data-loading-text="{{ 'accessibility.loading' | t }}">
+  {%- else -%}
+    <search-form class="portal-search__component">
+  {%- endif -%}
+  <form action="{{ routes.search_url }}" method="get" role="search" class="search portal-search__form">
+    <label class="visually-hidden" for="PortalSearchBar">{{ 'general.search.search' | t }}</label>
+    <input
+      class="search__input portal-search__input"
+      id="PortalSearchBar"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'portal.header.search' | t }}"
+      {%- if settings.predictive_search_enabled -%}
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="predictive-search-results"
+        aria-controls="predictive-search-results"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+      {%- endif -%}
+    >
+    <input type="hidden" name="options[prefix]" value="last">
+    {%- comment -%} Required by Rise's SearchForm (it toggles .hidden on it); kept invisible. {%- endcomment -%}
+    <button type="reset" class="hidden portal-search__reset" tabindex="-1" aria-hidden="true"></button>
+    <button type="submit" class="portal-search__submit" aria-label="{{ 'general.search.search' | t }}">
+      {%- render 'portal-header-icon', name: 'search' -%}
+    </button>
+    {%- if settings.predictive_search_enabled -%}
+      <div class="predictive-search predictive-search--header portal-search__results" tabindex="-1" data-predictive-search>
+        {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+      </div>
+      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+    {%- endif -%}
+  </form>
+  {%- if settings.predictive_search_enabled -%}
+    </predictive-search>
+  {%- else -%}
+    </search-form>
+  {%- endif -%}
+</div>

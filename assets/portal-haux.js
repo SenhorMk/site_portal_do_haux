@@ -109,7 +109,8 @@
         menus.forEach((menu) => { menu.open = false; delete menu.dataset.hoverOpened; });
       }, { signal });
       this.addEventListener('focusout', (event) => {
-        if (event.relatedTarget && this.contains(event.relatedTarget)) return;
+        // Leaving the navigation for search/cart should close the mega panel too.
+        if (event.relatedTarget && this.nav?.contains(event.relatedTarget)) return;
         menus.forEach((menu) => { menu.open = false; delete menu.dataset.hoverOpened; });
       }, { signal });
       this.addEventListener('keydown', (event) => {

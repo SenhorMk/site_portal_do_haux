@@ -18,7 +18,7 @@
     >
       <span>
         <span class="svg-wrapper">
-          {{- 'icon-search.svg' | inline_asset_content -}}
+          {%- if portal_label -%}{% render 'portal-header-icon', name: 'search' %}{%- else -%}{{- 'icon-search.svg' | inline_asset_content -}}{%- endif -%}
         </span>
         <span class="svg-wrapper header__icon-close">
           {{- 'icon-close.svg' | inline_asset_content -}}

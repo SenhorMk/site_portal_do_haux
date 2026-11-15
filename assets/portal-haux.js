@@ -93,7 +93,7 @@
           this.menuTimer = setTimeout(() => {
             details.open = false;
             delete details.dataset.hoverOpened;
-          }, 160);
+          }, 280);
         }, { signal });
         summary.addEventListener('click', (event) => {
           // The first click on a panel opened by hover must not close it under the pointer.
@@ -113,13 +113,15 @@
         if (event.relatedTarget && this.nav?.contains(event.relatedTarget)) return;
         menus.forEach((menu) => { menu.open = false; delete menu.dataset.hoverOpened; });
       }, { signal });
-      this.addEventListener('keydown', (event) => {
+      // Escape is heard on the document: a panel opened by mouse hover leaves focus on <body>.
+      document.addEventListener('keydown', (event) => {
         if (event.key !== 'Escape') return;
         const open = menus.find((menu) => menu.open);
         if (!open) return;
+        const hadFocus = open.contains(document.activeElement);
         open.open = false;
         delete open.dataset.hoverOpened;
-        open.querySelector('summary').focus();
+        if (hadFocus) open.querySelector('summary').focus();
       }, { signal });
     }
 
@@ -135,10 +137,13 @@
       const navRect = this.nav.getBoundingClientRect();
       const brandRect = this.querySelector('.portal-logo')?.getBoundingClientRect();
       const utilitiesRect = this.querySelector('.portal-header__actions')?.getBoundingClientRect();
-      const curve = parseFloat(getComputedStyle(this).getPropertyValue('--portal-brand-curve')) || 0;
-      // A nominally fitting menu must not visually overlap the cream S-curve,
-      // nor intrude into the 52px search/profile/cart controls.
-      const clearsBrand = !brandRect || navRect.left >= brandRect.right + curve * .57 - 8;
+      // The custom property is an unresolved calc(); the drawn curve gives its real width.
+      const logo = this.querySelector('.portal-logo');
+      const curve = logo ? parseFloat(getComputedStyle(logo, '::after').width) || 0 : 0;
+      const clear = parseFloat(getComputedStyle(this).getPropertyValue('--portal-nav-clear')) || .7;
+      // A nominally fitting menu must not overlap the Cerâmica curve,
+      // nor intrude into the search/profile/cart controls.
+      const clearsBrand = !brandRect || navRect.left >= brandRect.right + curve * clear - 24;
       const clearsUtilities = !utilitiesRect || navRect.right <= utilitiesRect.left - 5;
       return needed + 16 <= navRect.width && clearsBrand && clearsUtilities;
     }

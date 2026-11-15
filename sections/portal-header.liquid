@@ -28,7 +28,7 @@
             assign account_menu = section.settings.customer_account_menu.handle | default: 'customer-account-main-menu'
             capture account_content
               echo '<span class="svg-wrapper" aria-hidden="true">'
-              echo 'icon-account.svg' | inline_asset_content
+              render 'portal-header-icon', name: 'account'
               echo '</span><span class="portal-header__account-label">'
               echo 'customer.account.title' | t
               echo '</span>'

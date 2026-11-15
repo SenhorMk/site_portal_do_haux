@@ -1,7 +1,9 @@
 {% comment %}
-  Portal shared navigation entries for desktop mega panels and mobile drawer.
-  Links are only created once a destination is configured in the theme editor.
-  Usage: render 'portal-menu-items', kind: 'products', mobile: false, menu_settings: section.settings
+  Shared mega-menu / mobile-drawer category entries.
+  A configured Shopify URL wins. Known existing collection handles are tried next.
+  If a collection is missing, point to an actual Shopify product search instead of a dead link.
+  In desktop mega panels, show up to two LIVE products drawn from that collection.
+  No fake products or non-existing collection URLs.
 {% endcomment %}
 {%- liquid
   if kind == 'events'
@@ -12,37 +14,84 @@
 -%}
 {%- for title in titles -%}
   {%- liquid
-    assign destination = ''
+    assign destination = blank
+    assign collection_handle = blank
+    assign search_query = blank
+    assign category_collection = blank
+    assign page_handle = blank
+
     case title
       when 'VESTUÁRIO'
         assign destination = menu_settings.nav_vestuario
+        assign collection_handle = 'roupas'
+        assign search_query = 'roupa'
       when 'MEDICINAS'
         assign destination = menu_settings.nav_medicinas
+        assign collection_handle = 'rapes'
+        assign search_query = 'rapé'
       when 'DEFUMAÇÃO'
         assign destination = menu_settings.nav_defumacao
+        assign collection_handle = 'defumador'
+        assign search_query = 'defumador'
       when 'INCENSÁRIO'
         assign destination = menu_settings.nav_incensario
+        assign collection_handle = 'incensarios'
+        assign search_query = 'incensário'
       when 'ARTESANATOS'
         assign destination = menu_settings.nav_artesanatos
+        assign collection_handle = 'artesanatos'
+        assign search_query = 'artesanato'
       when 'ACESSÓRIOS'
         assign destination = menu_settings.nav_acessorios
+        assign collection_handle = 'kuripes'
+        assign search_query = 'kuripe'
       when 'PRODUTOS NATURAIS'
         assign destination = menu_settings.nav_naturais
+        assign collection_handle = 'produtos-naturais'
+        assign search_query = 'banho de ervas'
       when 'TABACARIA'
         assign destination = menu_settings.nav_tabacaria
+        assign collection_handle = 'tabacaria'
+        assign search_query = 'tabaco'
       when 'BIBLIOTECA DE FOTOS'
         assign destination = menu_settings.nav_fotos
+        assign page_handle = 'biblioteca-de-fotos'
       when 'RELATOS'
         assign destination = menu_settings.nav_relatos
+        assign page_handle = 'relatos'
       when 'CALENDÁRIO'
         assign destination = menu_settings.nav_calendario
+        assign page_handle = 'calendario'
     endcase
+
+    if collection_handle != blank
+      assign category_collection = collections[collection_handle]
+      if destination == blank and category_collection != blank
+        assign destination = category_collection.url
+      endif
+      if destination == blank
+        assign encoded_query = search_query | url_encode
+        assign destination = routes.search_url | append: '?type=product&q=' | append: encoded_query
+      endif
+    elsif destination == blank and page_handle != blank
+      assign category_page = pages[page_handle]
+      if category_page != blank
+        assign destination = category_page.url
+      endif
+    endif
   -%}
-  <li class="portal-mega__cell">
+  <li class="portal-mega__cell{% if category_collection != blank and category_collection.products_count > 0 %} portal-mega__cell--has-products{% endif %}">
     {%- if destination != blank -%}
       <a class="{% if mobile %}menu-drawer__menu-item link link--text list-menu__item focus-inset portal-drawer__category{% else %}portal-mega__category{% endif %}" href="{{ destination }}">{{ title | escape }}</a>
     {%- else -%}
-      <span class="{% if mobile %}menu-drawer__menu-item portal-drawer__category{% else %}portal-mega__category{% endif %} portal-mega__category--pending">{{ title | escape }}</span>
+      <span class="{% if mobile %}menu-drawer__menu-item portal-drawer__category{% else %}portal-mega__category{% endif %} portal-mega__category--pending" aria-label="{{ title | escape }} — em preparação">{{ title | escape }} <span class="portal-mega__soon">Em breve</span></span>
+    {%- endif -%}
+    {%- if mobile == false and kind == 'products' and category_collection != blank and category_collection.products_count > 0 -%}
+      <ul class="portal-mega__products" role="list">
+        {%- for product in category_collection.products limit: 2 -%}
+          <li><a href="{{ product.url }}">{{ product.title | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
     {%- endif -%}
   </li>
 {%- endfor -%}

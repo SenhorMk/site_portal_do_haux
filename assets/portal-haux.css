@@ -260,6 +260,7 @@ a.portal-mega__category:focus-visible { outline: 2px solid var(--portal-mata); o
 .portal-header .header__icon--account { color: var(--portal-header-fg); }
 .portal-header .header__icon--search .portal-header__label { width: 1px; height: 1px; position: absolute; }
 .portal-header .header__icon--account .svg-wrapper { display: none; }
+.portal-header .portal-header__account-fallback .svg-wrapper { display: inline-flex; width: 2.35rem; height: 2.35rem; }
 .portal-header .header__icon--cart { position: relative; }
 .portal-header .header__icon--cart > .svg-wrapper { width: 2.35rem; height: 2.35rem; }
 .portal-header .header__icon--cart svg { width: 100%; height: 100%; }
@@ -313,6 +314,7 @@ a.portal-mega__category:focus-visible { outline: 2px solid var(--portal-mata); o
 }
 .portal-header-shell[data-overlay].is-sticky {
   --portal-logo-h: 6.8rem; --portal-brand-w: 15.2rem; --portal-header-height: 8.6rem;
+  --portal-brand-curve: clamp(7rem, 7vw, 10rem);
 }
 .portal-home { --portal-header-offset: 12rem; }
 .portal-home .portal-hero { min-height: calc(70rem + var(--portal-header-offset)); padding-top: var(--portal-header-offset); }

@@ -1,13 +1,13 @@
 {% comment %}
   Portal editorial navigation: five fixed top-level items. The two mega menus share
-  category entries with the native Shopify mobile drawer. Visual back faces are aria-hidden.
+  category entries with the native Shopify mobile drawer. Back faces and fills are decorative (aria-hidden); see the button-6 notes in portal-haux.css.
 {% endcomment %}
 <nav class="header__inline-menu portal-nav" aria-label="Menu principal">
   <ul class="list-menu list-menu--inline" role="list">
     <li>
       <a id="PortalNav-Inicio" href="{{ routes.root_url }}" class="header__menu-item list-menu__item link focus-inset portal-nav__item"{% if template.name == 'index' %} aria-current="page"{% endif %}>
         <span class="portal-nav__face portal-nav__face--front">INÍCIO</span>
-        <span class="portal-nav__face portal-nav__face--back" aria-hidden="true"><span class="portal-nav__fill"></span>INÍCIO</span>
+        <span class="portal-nav__fill" aria-hidden="true"></span><span class="portal-nav__face portal-nav__face--back" aria-hidden="true">INÍCIO</span>
       </a>
     </li>
     <li class="portal-nav__mega-root">
@@ -15,7 +15,7 @@
         <details id="Details-PortalNav-Produtos">
           <summary id="PortalNav-Produtos" class="header__menu-item list-menu__item link focus-inset portal-nav__item" aria-controls="PortalMega-Produtos">
             <span class="portal-nav__face portal-nav__face--front">PRODUTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
-            <span class="portal-nav__face portal-nav__face--back" aria-hidden="true"><span class="portal-nav__fill"></span>PRODUTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            <span class="portal-nav__fill" aria-hidden="true"></span><span class="portal-nav__face portal-nav__face--back" aria-hidden="true">PRODUTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
           </summary>
           <div id="PortalMega-Produtos" class="portal-nav__panel portal-nav__panel--mega" tabindex="-1">
             <div class="portal-mega__heading">
@@ -35,7 +35,7 @@
         <details id="Details-PortalNav-Eventos">
           <summary id="PortalNav-Eventos" class="header__menu-item list-menu__item link focus-inset portal-nav__item" aria-controls="PortalMega-Eventos">
             <span class="portal-nav__face portal-nav__face--front">EVENTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
-            <span class="portal-nav__face portal-nav__face--back" aria-hidden="true"><span class="portal-nav__fill"></span>EVENTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            <span class="portal-nav__fill" aria-hidden="true"></span><span class="portal-nav__face portal-nav__face--back" aria-hidden="true">EVENTOS {{- 'icon-caret.svg' | inline_asset_content -}}</span>
           </summary>
           <div id="PortalMega-Eventos" class="portal-nav__panel portal-nav__panel--mega portal-nav__panel--events" tabindex="-1">
             <div class="portal-mega__heading">
@@ -53,14 +53,14 @@
     <li>
       <a id="PortalNav-Blog" href="{{ blog_url }}" class="header__menu-item list-menu__item link focus-inset portal-nav__item"{% if template.name == 'blog' or template.name == 'article' %} aria-current="page"{% endif %}>
         <span class="portal-nav__face portal-nav__face--front">BLOG</span>
-        <span class="portal-nav__face portal-nav__face--back" aria-hidden="true"><span class="portal-nav__fill"></span>BLOG</span>
+        <span class="portal-nav__fill" aria-hidden="true"></span><span class="portal-nav__face portal-nav__face--back" aria-hidden="true">BLOG</span>
       </a>
     </li>
     <li>
       {%- if menu_settings.nav_outros != blank -%}
         <a id="PortalNav-Outros" href="{{ menu_settings.nav_outros }}" class="header__menu-item list-menu__item link focus-inset portal-nav__item">
           <span class="portal-nav__face portal-nav__face--front">OUTROS</span>
-          <span class="portal-nav__face portal-nav__face--back" aria-hidden="true"><span class="portal-nav__fill"></span>OUTROS</span>
+          <span class="portal-nav__fill" aria-hidden="true"></span><span class="portal-nav__face portal-nav__face--back" aria-hidden="true">OUTROS</span>
         </a>
       {%- else -%}
         <span class="portal-nav__item portal-nav__item--pending" title="Em preparação">OUTROS</span>

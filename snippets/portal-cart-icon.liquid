@@ -1,6 +1,6 @@
 {% doc %}
   Native cart trigger content, also returned by the cart-icon-bubble section.
 {% enddoc %}
-<span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+<span class="svg-wrapper">{% render 'portal-header-icon', name: 'cart' %}</span>
 <span class="visually-hidden">{{ 'templates.cart.cart' | t }} — {{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
 {% if cart.item_count > 0 %}<div class="cart-count-bubble"><span aria-hidden="true">{{ cart.item_count }}</span></div>{% endif %}

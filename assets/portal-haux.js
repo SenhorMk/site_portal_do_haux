@@ -144,8 +144,15 @@
       // A nominally fitting menu must not overlap the Cerâmica curve,
       // nor intrude into the search/profile/cart controls.
       const clearsBrand = !brandRect || navRect.left >= brandRect.right + curve * clear - 24;
-      const clearsUtilities = !utilitiesRect || navRect.right <= utilitiesRect.left - 5;
-      return needed + 16 <= navRect.width && clearsBrand && clearsUtilities;
+      // The search bar sits right after the menu and needs room for a usable field (16rem; 14rem on tablet) before the
+      // controls; the legacy start group (older section markup) counts as a control when it has width.
+      const searchRect = this.querySelector('.portal-search')?.getBoundingClientRect();
+      const startRect = this.querySelector('.portal-header__start')?.getBoundingClientRect();
+      const controlsLeft = Math.min(utilitiesRect?.left ?? Infinity, startRect?.width ? startRect.left : Infinity);
+      const headerRight = this.querySelector('.portal-header').getBoundingClientRect().right;
+      const clearsSearch = !searchRect || (searchRect.width >= (this.dataset.layout === 'tablet' ? 140 : 160) && searchRect.left >= navRect.right && searchRect.right <= controlsLeft + 1);
+      const clearsUtilities = !utilitiesRect || (navRect.right <= controlsLeft - 5 && utilitiesRect.right <= headerRight + 1);
+      return needed <= navRect.width + 1 && clearsBrand && clearsSearch && clearsUtilities;
     }
 
     reserve() {

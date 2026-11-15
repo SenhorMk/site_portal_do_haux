@@ -130,8 +130,17 @@
       if (!menu) return true;
       const items = [...menu.children];
       const gap = parseFloat(getComputedStyle(menu).columnGap) || 0;
-      const needed = items.reduce((total, item) => total + item.getBoundingClientRect().width, 0) + Math.max(0, items.length - 1) * gap;
-      return needed + 24 <= this.nav.getBoundingClientRect().width;
+      const needed = items.reduce((total, item) => total + item.getBoundingClientRect().width, 0)
+        + Math.max(0, items.length - 1) * gap;
+      const navRect = this.nav.getBoundingClientRect();
+      const brandRect = this.querySelector('.portal-logo')?.getBoundingClientRect();
+      const searchRect = this.querySelector('.portal-header__start')?.getBoundingClientRect();
+      const curve = parseFloat(getComputedStyle(this).getPropertyValue('--portal-brand-curve')) || 0;
+      // A nominally fitting menu must not visually overlap the cream S-curve,
+      // nor intrude into the 52px search/profile/cart controls.
+      const clearsBrand = !brandRect || navRect.left >= brandRect.right + curve * .57 - 8;
+      const clearsUtilities = !searchRect || navRect.right <= searchRect.left - 5;
+      return needed + 16 <= navRect.width && clearsBrand && clearsUtilities;
     }
 
     reserve() {

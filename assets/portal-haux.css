@@ -989,3 +989,85 @@ a.portal-mega__category:focus-visible { outline: 2px solid var(--portal-mata); o
 .portal-ambient__toggle { pointer-events: auto; }
 @media (prefers-reduced-motion: no-preference) { .portal-ambient__video { transition: opacity 600ms var(--portal-ease); } }
 .portal-home:has(.portal-newsletter) .portal-footer__newsletter { display: none; }
+
+/* Biblioteca de fotos: opening + index, one section per event, mosaic gallery and the shared viewer. */
+.portal-event-intro { padding: calc(var(--portal-section-space) * .75) var(--portal-gutter) calc(var(--portal-section-space) * .5); background: var(--portal-ceramica); }
+.portal-event-intro__inner, .portal-event__inner { max-width: 128rem; margin-inline: auto; }
+.portal-event-intro__title { margin-block: 1rem 1.6rem; }
+.portal-event-intro__text { max-width: 56ch; color: var(--portal-text-secondary); }
+.portal-event-index { display: block; margin-block-start: 3.2rem; }
+.portal-event-index[hidden] { display: none; }
+.portal-event-index__label { margin-block-end: 1.2rem; }
+.portal-event-index__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr)); gap: 0 3.2rem; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--portal-border); }
+.portal-event-index__link { display: grid; align-content: center; gap: .4rem; min-height: 5.2rem; padding-block: 1.2rem; border-bottom: 1px solid var(--portal-border); color: var(--portal-text); text-decoration: none; }
+.portal-event-index__date { color: var(--portal-musgo); font: 500 1.2rem/1.4 var(--portal-body); letter-spacing: .16em; text-transform: uppercase; }
+.portal-event-index__name { font: 400 1.9rem/1.25 var(--portal-display); }
+.portal-event-index__link:is(:hover, :focus-visible) .portal-event-index__name { color: var(--portal-link); text-decoration: underline; text-underline-offset: .35rem; text-decoration-thickness: 1px; }
+
+.portal-event { padding: calc(var(--portal-section-space) * .75) var(--portal-gutter); scroll-margin-top: 10rem; }
+.portal-event-section + .portal-event-section .portal-event { border-top: 1px solid var(--portal-border); }
+.portal-event__head { display: grid; gap: 1.2rem; max-width: 72rem; margin-block-end: 3.2rem; }
+.portal-event__meta { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; }
+.portal-event__meta > span + span::before { content: ''; display: inline-block; width: .4rem; height: .4rem; margin-inline-end: 1.6rem; border-radius: 50%; background: currentColor; vertical-align: middle; opacity: .6; }
+.portal-event__title { max-width: 24ch; }
+.portal-event__text { max-width: 60ch; color: var(--portal-text-secondary); }
+.portal-event__text p { margin: 0; }
+.portal-event__empty { padding: 3.2rem; border: 1px dashed var(--portal-border); color: var(--portal-text-muted); text-align: center; }
+
+/* Mosaic: a dense grid; each photo's format sets its span. "Automático" repeats a seven-photo rhythm
+   (one feature, one tall, one wide, four small) that fills exactly 4 columns x 3 rows. */
+.portal-gallery { display: block; }
+.portal-gallery__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(12rem, 13vw, 19rem); grid-auto-flow: dense; gap: clamp(.8rem, 1vw, 1.4rem); margin: 0; padding: 0; list-style: none; }
+.portal-gallery__item { position: relative; min-width: 0; overflow: hidden; border-radius: .6rem; background: var(--portal-pergaminho); }
+.portal-gallery__item--auto:nth-child(7n + 1), .portal-gallery__item--feature { grid-column: span 2; grid-row: span 2; }
+.portal-gallery__item--auto:nth-child(7n + 3), .portal-gallery__item--tall { grid-row: span 2; }
+.portal-gallery__item--auto:nth-child(7n + 5), .portal-gallery__item--wide { grid-column: span 2; }
+.portal-gallery__link { display: block; height: 100%; color: var(--portal-pergaminho); cursor: zoom-in; }
+.portal-gallery__image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.portal-gallery__caption { position: absolute; inset: auto 0 0; padding: 3.2rem 1.4rem 1.2rem; background: linear-gradient(transparent, rgb(20 35 26 / 82%)); font: 400 1.35rem/1.4 var(--portal-body); opacity: 0; }
+.portal-gallery__link:is(:hover, :focus-visible) .portal-gallery__caption { opacity: 1; }
+.portal-gallery__link:focus-visible { outline: 2px solid var(--portal-mata); outline-offset: 3px; }
+@media (hover: none) { .portal-gallery__caption { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .portal-gallery__image { transition: transform 600ms var(--portal-ease); }
+  .portal-gallery__caption { transition: opacity 240ms var(--portal-ease); }
+  .portal-gallery__link:is(:hover, :focus-visible) .portal-gallery__image { transform: scale(1.035); }
+}
+@media (max-width: 989px) { .portal-gallery__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: clamp(12rem, 22vw, 18rem); } }
+@media (max-width: 599px) {
+  .portal-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 36vw; }
+}
+
+/* Viewer: native modal <dialog>; the page behind does not scroll while it is open. */
+.portal-lightbox-open { overflow: hidden; }
+.portal-lightbox { box-sizing: border-box; width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(20 35 26 / 96%); color: var(--portal-pergaminho); }
+.portal-lightbox[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; }
+.portal-lightbox::backdrop { background: rgb(20 35 26 / 60%); }
+.portal-lightbox__stage { display: grid; place-items: center; min-height: 0; padding: 6.4rem 7.2rem 1.6rem; }
+.portal-lightbox__image { width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 21rem); object-fit: contain; border-radius: .4rem; box-shadow: 0 2.4rem 6rem rgb(0 0 0 / 35%); }
+.portal-lightbox__caption { display: flex; justify-content: center; gap: 1.6rem; min-height: 2.4rem; margin: 0; padding: 0 2.4rem 1.2rem; font: 400 1.4rem/1.5 var(--portal-body); text-align: center; }
+.portal-lightbox__count { color: var(--portal-leaf-muted); font-weight: 500; letter-spacing: .16em; }
+.portal-lightbox__thumbs { display: flex; gap: .8rem; justify-content: safe center; overflow-x: auto; margin: 0; padding: 0 2.4rem 2.4rem; list-style: none; scrollbar-width: thin; }
+.portal-lightbox__thumbs[hidden] { display: none; }
+.portal-lightbox__thumb { display: block; width: 5.6rem; height: 5.6rem; padding: 0; overflow: hidden; border: 1px solid rgb(237 227 210 / 25%); border-radius: .4rem; background: none; opacity: .55; cursor: pointer; }
+.portal-lightbox__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.portal-lightbox__thumb[aria-current], .portal-lightbox__thumb:is(:hover, :focus-visible) { border-color: var(--portal-pergaminho); opacity: 1; }
+.portal-lightbox__nav, .portal-lightbox__close { position: absolute; display: grid; place-items: center; width: 4.8rem; height: 4.8rem; padding: 0; border: 1px solid rgb(237 227 210 / 30%); border-radius: 50%; background: rgb(20 35 26 / 55%); color: var(--portal-pergaminho); cursor: pointer; }
+.portal-lightbox__nav[hidden] { display: none; }
+.portal-lightbox__nav svg, .portal-lightbox__close svg { width: 2.2rem; height: 2.2rem; }
+.portal-lightbox__nav:is(:hover, :focus-visible), .portal-lightbox__close:is(:hover, :focus-visible) { border-color: var(--portal-pergaminho); background: rgb(237 227 210 / 14%); }
+.portal-lightbox :focus-visible { outline: 2px solid var(--portal-pergaminho); outline-offset: 2px; }
+.portal-lightbox__nav { top: 50%; transform: translateY(-50%); }
+.portal-lightbox__nav--prev { left: 1.6rem; }
+.portal-lightbox__nav--next { right: 1.6rem; }
+.portal-lightbox__close { top: 1.6rem; right: 1.6rem; }
+@media (max-width: 599px) {
+  .portal-lightbox__stage { padding: 6.4rem 1.2rem 1.2rem; }
+  .portal-lightbox__image { max-height: calc(100dvh - 26rem); }
+  .portal-lightbox__nav { top: auto; bottom: 9.6rem; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .portal-lightbox[open] { animation: portal-lightbox-in 220ms var(--portal-ease); }
+  .portal-lightbox__image { animation: portal-lightbox-in 260ms var(--portal-ease); }
+}
+@keyframes portal-lightbox-in { from { opacity: 0; } to { opacity: 1; } }

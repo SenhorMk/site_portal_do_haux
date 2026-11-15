@@ -1,0 +1,50 @@
+{%- comment -%}
+  Opening of the Biblioteca de fotos: title, intro and an index of the event sections below
+  (built from their data-event-* attributes, so it follows the order set in the editor).
+{%- endcomment -%}
+<section class="portal-event-intro" aria-labelledby="EventIndexTitle-{{ section.id }}">
+  <div class="portal-event-intro__inner">
+    {%- if section.settings.eyebrow != blank -%}<p class="portal-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h1 id="EventIndexTitle-{{ section.id }}" class="portal-heading portal-heading--editorial portal-event-intro__title">{{ section.settings.title | default: page.title | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<div class="portal-prose portal-event-intro__text">{{ section.settings.intro }}</div>{%- endif -%}
+    <portal-event-index class="portal-event-index" hidden>
+      <h2 class="portal-eyebrow portal-event-index__label">Eventos</h2>
+      <ol class="portal-event-index__list" role="list"></ol>
+    </portal-event-index>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Portal · Abertura eventos",
+  "tag": "div",
+  "class": "portal-event-intro-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Chamada",
+      "default": "Memórias e encontros"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "info": "Vazio usa o título da página."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Texto de abertura"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Portal · Abertura eventos"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

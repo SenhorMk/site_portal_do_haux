@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "intro": {
+      "type": "portal-event-index",
+      "settings": {
+        "eyebrow": "Memórias e encontros",
+        "title": "",
+        "intro": "<p>Registros dos encontros do Portal do Haux, organizados por data.</p>"
+      }
+    },
+    "evento-1": {
+      "type": "portal-event-gallery",
+      "blocks": {
+        "foto-1": { "type": "photo", "settings": { "shape": "auto" } },
+        "foto-2": { "type": "photo", "settings": { "shape": "auto" } },
+        "foto-3": { "type": "photo", "settings": { "shape": "auto" } },
+        "foto-4": { "type": "photo", "settings": { "shape": "auto" } }
+      },
+      "block_order": ["foto-1", "foto-2", "foto-3", "foto-4"],
+      "settings": {
+        "event_name": "",
+        "event_date": "",
+        "event_place": ""
+      }
+    }
+  },
+  "order": ["intro", "evento-1"]
+}

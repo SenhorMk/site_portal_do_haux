@@ -337,6 +337,123 @@
     disconnectedCallback() { this.abort?.abort(); }
   }
 
+  // Biblioteca de fotos. One shared <dialog> viewer for every gallery on the page, created on first use.
+  // Without JS each photo link simply opens the full image.
+  const lightbox = {
+    get() {
+      if (this.dialog) return this.dialog;
+      const icon = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`;
+      const dialog = document.createElement('dialog');
+      dialog.className = 'portal-lightbox';
+      dialog.innerHTML = `
+        <div class="portal-lightbox__stage"><img class="portal-lightbox__image" alt="" decoding="async"></div>
+        <p class="portal-lightbox__caption" aria-live="polite"><span class="portal-lightbox__count"></span><span class="portal-lightbox__text"></span></p>
+        <button type="button" class="portal-lightbox__nav portal-lightbox__nav--prev" aria-label="Foto anterior">${icon('M15 5l-7 7 7 7')}</button>
+        <button type="button" class="portal-lightbox__nav portal-lightbox__nav--next" aria-label="Próxima foto">${icon('M9 5l7 7-7 7')}</button>
+        <button type="button" class="portal-lightbox__close" aria-label="Fechar">${icon('M6 6l12 12M18 6 6 18')}</button>
+        <ol class="portal-lightbox__thumbs" role="list"></ol>`;
+      document.body.append(dialog);
+      dialog.querySelector('.portal-lightbox__close').addEventListener('click', () => dialog.close());
+      dialog.querySelector('.portal-lightbox__nav--prev').addEventListener('click', () => this.show(this.index - 1));
+      dialog.querySelector('.portal-lightbox__nav--next').addEventListener('click', () => this.show(this.index + 1));
+      // A click on the backdrop (outside the photo and controls) closes the viewer.
+      dialog.addEventListener('click', (event) => { if (event.target === dialog || event.target.classList.contains('portal-lightbox__stage')) dialog.close(); });
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') { event.preventDefault(); this.show(this.index - 1); }
+        if (event.key === 'ArrowRight') { event.preventDefault(); this.show(this.index + 1); }
+      });
+      let startX = null;
+      dialog.addEventListener('pointerdown', (event) => { if (event.pointerType !== 'mouse') startX = event.clientX; });
+      dialog.addEventListener('pointerup', (event) => {
+        if (startX === null) return;
+        const dx = event.clientX - startX; startX = null;
+        if (Math.abs(dx) > 48) this.show(this.index + (dx < 0 ? 1 : -1));
+      });
+      dialog.addEventListener('close', () => { document.documentElement.classList.remove('portal-lightbox-open'); this.trigger?.focus({ preventScroll: true }); });
+      this.dialog = dialog;
+      return dialog;
+    },
+    // Shopify CDN URLs take a width parameter: a responsive srcset is built from the 2000px source.
+    sized(url, width) { return url.replace(/([?&])width=\d+/, `$1width=${width}`); },
+    open(items, index, title, trigger) {
+      const dialog = this.get();
+      this.items = items; this.trigger = trigger;
+      dialog.setAttribute('aria-label', title);
+      const thumbs = dialog.querySelector('.portal-lightbox__thumbs');
+      thumbs.replaceChildren(...items.map((item, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<button type="button" class="portal-lightbox__thumb" aria-label="Foto ${i + 1} de ${items.length}"><img src="${this.sized(item.full, 160)}" alt="" loading="lazy" decoding="async" width="80" height="80"></button>`;
+        li.firstElementChild.addEventListener('click', () => this.show(i));
+        return li;
+      }));
+      thumbs.hidden = items.length < 2;
+      dialog.querySelectorAll('.portal-lightbox__nav').forEach((button) => { button.hidden = items.length < 2; });
+      document.documentElement.classList.add('portal-lightbox-open');
+      if (!dialog.open) dialog.showModal();
+      this.show(index);
+    },
+    show(index) {
+      const count = this.items.length;
+      this.index = (index + count) % count;
+      const item = this.items[this.index];
+      const dialog = this.dialog;
+      const img = dialog.querySelector('.portal-lightbox__image');
+      img.removeAttribute('src');
+      img.srcset = [800, 1200, 1600, 2000].map((w) => `${this.sized(item.full, w)} ${w}w`).join(', ');
+      img.sizes = '100vw';
+      img.src = this.sized(item.full, 1200);
+      img.alt = item.alt;
+      dialog.querySelector('.portal-lightbox__count').textContent = `${this.index + 1} / ${count}`;
+      dialog.querySelector('.portal-lightbox__text').textContent = item.caption;
+      dialog.querySelectorAll('.portal-lightbox__thumb').forEach((thumb, i) => {
+        thumb.toggleAttribute('aria-current', i === this.index);
+        if (i === this.index) thumb.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduced.matches ? 'instant' : 'smooth' });
+      });
+      // Warm up the neighbours so arrow navigation feels instant.
+      if (count > 1) for (const step of [1, -1]) new Image().src = this.sized(this.items[(this.index + step + count) % count].full, 1200);
+    },
+  };
+
+  class PortalGallery extends HTMLElement {
+    connectedCallback() {
+      this.abort = new AbortController();
+      this.addEventListener('click', (event) => {
+        const link = event.target.closest('.portal-gallery__link');
+        if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+        event.preventDefault();
+        const links = [...this.querySelectorAll('.portal-gallery__link')];
+        const items = links.map((a) => ({ full: a.dataset.full, caption: a.dataset.caption || '', alt: a.querySelector('img')?.alt || '' }));
+        lightbox.open(items, links.indexOf(link), this.dataset.title || '', link);
+      }, { signal: this.abort.signal });
+    }
+    disconnectedCallback() { this.abort?.abort(); }
+  }
+
+  // Index of the event sections on the page, in editor order (date + name, linking to each event).
+  class PortalEventIndex extends HTMLElement {
+    connectedCallback() {
+      this.abort = new AbortController();
+      this.build = () => {
+        const events = [...document.querySelectorAll('.portal-event[data-event-name]')];
+        const list = this.querySelector('.portal-event-index__list');
+        list.replaceChildren(...events.map((event) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.className = 'portal-event-index__link';
+          a.href = `#${event.id}`;
+          const date = document.createElement('span'); date.className = 'portal-event-index__date'; date.textContent = event.dataset.eventDate || '';
+          const name = document.createElement('span'); name.className = 'portal-event-index__name'; name.textContent = event.dataset.eventName;
+          a.append(date, name); li.append(a);
+          return li;
+        }));
+        this.hidden = events.length < 2;
+      };
+      for (const type of ['shopify:section:load', 'shopify:section:unload', 'shopify:section:reorder']) document.addEventListener(type, () => requestAnimationFrame(this.build), { signal: this.abort.signal });
+      this.build();
+    }
+    disconnectedCallback() { this.abort?.abort(); }
+  }
+
   // Open the Shopify account sheet just below the header, whether transparent, solid or sticky.
   document.addEventListener('open', (event) => {
     const account = event.target;
@@ -345,7 +462,7 @@
     account.style.setProperty('--shopify-account-dialog-position-top', `${Math.max(0, Math.round(header.getBoundingClientRect().bottom))}px`);
   }, true);
 
-  for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel], ['portal-tabs', PortalTabs], ['portal-ambient-video', PortalAmbientVideo]]) {
+  for (const [name, component] of [['portal-reveal', PortalReveal], ['portal-header', PortalHeader], ['portal-immersive', PortalImmersive], ['portal-carousel', PortalCarousel], ['portal-tabs', PortalTabs], ['portal-ambient-video', PortalAmbientVideo], ['portal-gallery', PortalGallery], ['portal-event-index', PortalEventIndex]]) {
     if (!customElements.get(name)) customElements.define(name, component);
   }
 })();

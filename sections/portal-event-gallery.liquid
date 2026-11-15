@@ -1,0 +1,140 @@
+{%- comment -%}
+  One event of the Biblioteca de fotos: date, name, place, text and a mosaic of photos (one block per photo).
+  Add one section per event. Empty events stay hidden on the storefront and show a hint in the editor.
+{%- endcomment -%}
+{%- liquid
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign photo_count = 0
+  for block in photos
+    if block.settings.image != blank
+      assign photo_count = photo_count | plus: 1
+    endif
+  endfor
+  assign event_name = section.settings.event_name | default: 'Evento'
+-%}
+{%- if photo_count > 0 or request.design_mode -%}
+  <section
+    id="evento-{{ section.id }}"
+    class="portal-event"
+    aria-labelledby="EventTitle-{{ section.id }}"
+    data-event-name="{{ event_name | escape }}"
+    data-event-date="{{ section.settings.event_date | escape }}"
+  >
+    <div class="portal-event__inner">
+      <header class="portal-event__head">
+        <p class="portal-eyebrow portal-event__meta">
+          {%- if section.settings.event_date != blank -%}<span>{{ section.settings.event_date | escape }}</span>{%- endif -%}
+          {%- if section.settings.event_place != blank -%}<span>{{ section.settings.event_place | escape }}</span>{%- endif -%}
+          {%- if photo_count > 0 -%}<span>{{ photo_count }} {% if photo_count == 1 %}foto{% else %}fotos{% endif %}</span>{%- endif -%}
+        </p>
+        <h2 id="EventTitle-{{ section.id }}" class="portal-heading portal-heading--editorial portal-event__title">{{ event_name | escape }}</h2>
+        {%- if section.settings.event_text != blank -%}
+          <div class="portal-prose portal-event__text">{{ section.settings.event_text }}</div>
+        {%- endif -%}
+      </header>
+
+      {%- if photo_count > 0 -%}
+        <portal-gallery class="portal-gallery" data-title="{{ event_name | escape }}">
+          <ul class="portal-gallery__grid" role="list">
+            {%- for block in photos -%}
+              {%- if block.settings.image != blank -%}
+                {%- liquid
+                  assign image = block.settings.image
+                  assign caption = block.settings.caption
+                  assign alt = image.alt | default: caption | default: event_name
+                  assign full = image | image_url: width: 2000
+                -%}
+                <li class="portal-gallery__item portal-gallery__item--{{ block.settings.shape }}" {{ block.shopify_attributes }}>
+                  <a class="portal-gallery__link" href="{{ full }}" data-full="{{ full }}" data-caption="{{ caption | escape }}">
+                    {{- image | image_url: width: 1200 | image_tag: widths: '360, 540, 720, 960, 1200', sizes: 'auto, (min-width: 990px) 50vw, 100vw', loading: 'lazy', class: 'portal-gallery__image', alt: alt -}}
+                    {%- if caption != blank -%}<span class="portal-gallery__caption">{{ caption | escape }}</span>{%- endif -%}
+                    <span class="visually-hidden">— ampliar foto</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </portal-gallery>
+      {%- else -%}
+        <p class="portal-event__empty">Adicione fotos a este evento com o botão “Adicionar bloco”. Eventos sem fotos não aparecem na loja.</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Portal · Evento (fotos)",
+  "tag": "div",
+  "class": "portal-event-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "event_name",
+      "label": "Nome do evento"
+    },
+    {
+      "type": "text",
+      "id": "event_date",
+      "label": "Data",
+      "info": "Como deve aparecer no site. Ex.: 12 de outubro de 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_place",
+      "label": "Local (opcional)"
+    },
+    {
+      "type": "richtext",
+      "id": "event_text",
+      "label": "Texto (opcional)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Foto",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Foto"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Legenda (opcional)"
+        },
+        {
+          "type": "select",
+          "id": "shape",
+          "label": "Formato no mosaico",
+          "options": [
+            { "value": "auto", "label": "Automático" },
+            { "value": "tall", "label": "Vertical" },
+            { "value": "wide", "label": "Horizontal" },
+            { "value": "feature", "label": "Destaque" },
+            { "value": "square", "label": "Pequena" }
+          ],
+          "default": "auto"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Portal · Evento (fotos)",
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

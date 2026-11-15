@@ -210,7 +210,7 @@
   position: absolute; top: 100%; right: 0; left: 0; z-index: 8;
   display: grid; grid-template-columns: minmax(20rem, .78fr) minmax(0, 2.1fr);
   align-items: start; gap: clamp(3rem,5vw,8rem); width: auto; max-width: none; min-width: 0;
-  padding: clamp(3.2rem,4vw,6rem) max(var(--portal-gutter),4vw);
+  padding: clamp(2.4rem,3vw,4rem) max(var(--portal-gutter),4vw);
   border: 0; border-top: 1px solid rgb(20 35 26 / 12%);
   background: var(--portal-ceramica); color: var(--portal-mata);
   box-shadow: 0 2.4rem 4rem rgb(20 35 26 / 22%);
@@ -234,10 +234,19 @@
 .portal-header .portal-mega__products { display: flex; flex-direction: column; gap: .65rem; margin: 1rem 0 1.8rem; padding: 0; list-style: none; }
 .portal-mega__products a { display: block; padding: .3rem 0; color: var(--portal-text-secondary); font: 400 1.33rem/1.5 var(--portal-body); text-decoration: none; }
 .portal-mega__products a:is(:hover,:focus-visible) { color: var(--portal-link); text-decoration: underline; text-underline-offset: .3rem; }
+/* Subcategories under each category (mega panel and mobile drawer). */
+.portal-header .portal-mega__subs { display: flex; flex-direction: column; gap: 0; margin: .6rem 0 1.2rem; padding: 0; list-style: none; }
+/* Long lists (Vestuário) flow into two columns so the panel stays within one screen. */
+.portal-header .portal-mega__subs--cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.6rem; }
+.portal-mega__subs a { display: flex; align-items: center; min-height: 2.8rem; color: var(--portal-text-secondary); font: 400 1.4rem/1.4 var(--portal-body); letter-spacing: .01em; text-decoration: none; }
+.portal-mega__subs a:is(:hover, :focus-visible), .portal-mega__subs a[aria-current="page"] { color: var(--portal-link); text-decoration: underline; text-underline-offset: .3rem; }
+.portal-mega__subs a:focus-visible { outline: 2px solid var(--portal-mata); outline-offset: 2px; }
+.portal-header .portal-drawer__subs { gap: 0; margin: -.4rem 0 1.2rem; padding-inline-start: 4.4rem; }
+.portal-drawer__subs a { min-height: 4.4rem; font-size: 1.5rem; }
 .portal-mega__soon { margin-inline-start: .35rem; color: var(--portal-text-muted); font: 400 1rem/1 var(--portal-body); letter-spacing: normal; text-transform: none; }
 .portal-mega__category {
-  display: inline-flex; align-items: center; width: 100%; min-height: 5.8rem;
-  padding: 1.2rem 0; border-bottom: 1px solid rgb(20 35 26 / 20%);
+  display: inline-flex; align-items: center; width: 100%; min-height: 4.4rem;
+  padding: .8rem 0; border-bottom: 1px solid rgb(20 35 26 / 20%);
   color: var(--portal-mata); font: 600 1.45rem/1.35 var(--portal-body);
   letter-spacing: .045em; text-decoration: none; overflow-wrap: anywhere;
 }

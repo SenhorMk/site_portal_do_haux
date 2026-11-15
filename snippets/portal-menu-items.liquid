@@ -1,97 +1,86 @@
 {% comment %}
-  Shared mega-menu / mobile-drawer category entries.
-  A configured Shopify URL wins. Known existing collection handles are tried next.
-  If a collection is missing, point to an actual Shopify product search instead of a dead link.
-  In desktop mega panels, show up to two LIVE products drawn from that collection.
-  No fake products or non-existing collection URLs.
+  Shared mega-menu / mobile-drawer category entries for Produtos and Eventos.
+
+  Produtos, in order of preference:
+  1. A Shopify navigation menu with the handle "menu-produtos" (Admin › Conteúdo › Menus): each top-level
+     link is a category and its nested links are the subcategories. The store owner edits it there.
+  2. The default structure below. Each destination is the configured Shopify URL (categories only), then
+     an existing collection, then a real product search for the term. No dead links, no fake products.
 {% endcomment %}
 {%- liquid
-  if kind == 'events'
-    assign titles = 'BIBLIOTECA DE FOTOS|RELATOS|CALENDÁRIO' | split: '|'
-  else
-    assign titles = 'VESTUÁRIO|MEDICINAS|DEFUMAÇÃO|INCENSÁRIO|ARTESANATOS|ACESSÓRIOS|PRODUTOS NATURAIS|TABACARIA' | split: '|'
+  assign product_menu = linklists['menu-produtos']
+  assign use_menu = false
+  if kind == 'products' and product_menu.links.size > 0
+    assign use_menu = true
   endif
--%}
-{%- for title in titles -%}
-  {%- liquid
+
+  if kind == 'events'
+    assign tree = 'BIBLIOTECA DE FOTOS^nav_fotos^^^^biblioteca-de-fotos|RELATOS^nav_relatos^^^^relatos|CALENDÁRIO^nav_calendario^^^^calendario'
+  else
+    capture tree
+      echo 'VESTUÁRIO^nav_vestuario^roupas^roupa^Bolsas~bolsas~bolsa;Ponchos & blusas~ponchos-e-blusas~poncho;Camisetas & camisas~camisetas-e-camisas~camiseta;Calças, shorts & bermudas~calcas-shorts-e-bermudas~calça;Acessórios~acessorios~acessório'
+      echo '|MEDICINAS^nav_medicinas^rapes^rapé^Rapé~rapes~rapé;Kumbaia~kumbaia~kumbaia'
+      echo '|DEFUMAÇÃO^nav_defumacao^defumador^defumador^Defumador líquido~defumador~defumador;Defumação completa~defumacao-completa~defumação'
+      echo '|INCENSÁRIO^nav_incensario^incensarios^incensário^Incensos~incensos~incenso;Base para incensos~base-para-incensos~incensário'
+      echo '|ARTESANATOS^nav_artesanatos^artesanatos^artesanato^Decorações~decoracoes~decoração;Instrumentos musicais~instrumentos-musicais~instrumento'
+      echo '|AROMATERAPIA^^aromaterapia^aromaterapia^Colônias~colonias~colônia;Sprays de ambiente~sprays-de-ambiente~spray;Óleos essenciais~oleos-essenciais~óleo essencial;Velas aromáticas~velas-aromaticas~vela;Escalda-pés~escalda-pes~escalda'
+      echo '|PRODUTOS NATURAIS^nav_naturais^produtos-naturais^natural^Ervas & chás~ervas-e-chas~ervas;Saúde & beleza~saude-e-beleza~beleza;Especiarias~especiarias~especiaria'
+      echo '|TABACARIA^nav_tabacaria^tabacaria^tabaco^Tabaco in natura~tabaco-in-natura~tabaco;Kuripes (aplicadores)~kuripes~kuripe;Cachimbos~cachimbos~cachimbo'
+    endcapture
+  endif
+  assign product_search = routes.search_url | append: '?type=product&q='
+  assign rows = tree | split: '|'
+  if use_menu
+    assign rows = '' | split: '|'
+    for link in product_menu.links
+      assign category_title = link.title | upcase
+      render 'portal-menu-category', title: category_title, url: link.url, links: link.links, mobile: mobile
+    endfor
+  endif
+
+  for row in rows
+    assign cell = row | split: '^'
+    assign category_title = cell[0]
     assign destination = blank
-    assign collection_handle = blank
-    assign search_query = blank
-    assign category_collection = blank
-    assign page_handle = blank
-
-    case title
-      when 'VESTUÁRIO'
-        assign destination = menu_settings.nav_vestuario
-        assign collection_handle = 'roupas'
-        assign search_query = 'roupa'
-      when 'MEDICINAS'
-        assign destination = menu_settings.nav_medicinas
-        assign collection_handle = 'rapes'
-        assign search_query = 'rapé'
-      when 'DEFUMAÇÃO'
-        assign destination = menu_settings.nav_defumacao
-        assign collection_handle = 'defumador'
-        assign search_query = 'defumador'
-      when 'INCENSÁRIO'
-        assign destination = menu_settings.nav_incensario
-        assign collection_handle = 'incensarios'
-        assign search_query = 'incensário'
-      when 'ARTESANATOS'
-        assign destination = menu_settings.nav_artesanatos
-        assign collection_handle = 'artesanatos'
-        assign search_query = 'artesanato'
-      when 'ACESSÓRIOS'
-        assign destination = menu_settings.nav_acessorios
-        assign collection_handle = 'kuripes'
-        assign search_query = 'kuripe'
-      when 'PRODUTOS NATURAIS'
-        assign destination = menu_settings.nav_naturais
-        assign collection_handle = 'produtos-naturais'
-        assign search_query = 'banho de ervas'
-      when 'TABACARIA'
-        assign destination = menu_settings.nav_tabacaria
-        assign collection_handle = 'tabacaria'
-        assign search_query = 'tabaco'
-      when 'BIBLIOTECA DE FOTOS'
-        assign destination = menu_settings.nav_fotos
-        assign page_handle = 'biblioteca-de-fotos'
-      when 'RELATOS'
-        assign destination = menu_settings.nav_relatos
-        assign page_handle = 'relatos'
-      when 'CALENDÁRIO'
-        assign destination = menu_settings.nav_calendario
-        assign page_handle = 'calendario'
-    endcase
-
-    if collection_handle != blank
-      assign category_collection = collections[collection_handle]
-      if destination == blank and category_collection != blank
+    if cell[1] != blank
+      assign destination = menu_settings[cell[1]]
+    endif
+    if destination == blank and cell[2] != blank
+      assign category_collection = collections[cell[2]]
+      if category_collection != blank
         assign destination = category_collection.url
+      else
+        assign destination = product_search | append: cell[3] | url_encode | prepend: ''
+        assign encoded = cell[3] | url_encode
+        assign destination = product_search | append: encoded
       endif
-      if destination == blank
-        assign encoded_query = search_query | url_encode
-        assign destination = routes.search_url | append: '?type=product&q=' | append: encoded_query
-      endif
-    elsif destination == blank and page_handle != blank
-      assign category_page = pages[page_handle]
+    endif
+    if destination == blank and cell[5] != blank
+      assign category_page = pages[cell[5]]
       if category_page != blank
         assign destination = category_page.url
       endif
     endif
-  -%}
-  <li class="portal-mega__cell{% if category_collection != blank and category_collection.products_count > 0 %} portal-mega__cell--has-products{% endif %}">
-    {%- if destination != blank -%}
-      <a class="{% if mobile %}menu-drawer__menu-item link link--text list-menu__item focus-inset portal-drawer__category{% else %}portal-mega__category{% endif %}" href="{{ destination }}">{{ title | escape }}</a>
-    {%- else -%}
-      <span class="{% if mobile %}menu-drawer__menu-item portal-drawer__category{% else %}portal-mega__category{% endif %} portal-mega__category--pending" aria-label="{{ title | escape }} — em preparação">{{ title | escape }} <span class="portal-mega__soon">Em breve</span></span>
-    {%- endif -%}
-    {%- if mobile == false and kind == 'products' and category_collection != blank and category_collection.products_count > 0 -%}
-      <ul class="portal-mega__products" role="list">
-        {%- for product in category_collection.products limit: 2 -%}
-          <li><a href="{{ product.url }}">{{ product.title | escape }}</a></li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  </li>
-{%- endfor -%}
+
+    assign subs = ''
+    if cell[4] != blank
+      assign entries = cell[4] | split: ';'
+      for entry in entries
+        assign part = entry | split: '~'
+        assign sub_collection = collections[part[1]]
+        if sub_collection != blank
+          assign sub_url = sub_collection.url
+        else
+          assign encoded = part[2] | url_encode
+          assign sub_url = product_search | append: encoded
+        endif
+        assign subs = subs | append: part[0] | append: '~' | append: sub_url
+        unless forloop.last
+          assign subs = subs | append: ';'
+        endunless
+      endfor
+    endif
+
+    render 'portal-menu-category', title: category_title, url: destination, subs: subs, mobile: mobile
+  endfor
+-%}

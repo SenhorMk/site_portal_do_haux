@@ -1,0 +1,41 @@
+{% doc %}
+  One category of the Produtos/Eventos menus (desktop mega panel or mobile drawer), with its subcategories.
+
+  @param {string} title - Category label
+  @param {string} [url] - Category destination; without it the category shows as "Em breve"
+  @param {object[]} [links] - Subcategory links from a Shopify navigation menu (link.title, link.url)
+  @param {string} [subs] - Default subcategories as "Label~url;Label~url" (used when links is empty)
+  @param {boolean} mobile - true inside the mobile drawer
+{% enddoc %}
+{%- liquid
+  assign sub_entries = subs | split: ';'
+  assign has_subs = false
+  assign sub_count = links.size | default: 0
+  if sub_count == 0
+    assign sub_count = sub_entries.size
+  endif
+  if sub_count > 0
+    assign has_subs = true
+  endif
+-%}
+<li class="portal-mega__cell{% if has_subs %} portal-mega__cell--has-subs{% endif %}">
+  {%- if url != blank -%}
+    <a class="{% if mobile %}menu-drawer__menu-item link link--text list-menu__item focus-inset portal-drawer__category{% else %}portal-mega__category{% endif %}" href="{{ url }}">{{ title | escape }}</a>
+  {%- else -%}
+    <span class="{% if mobile %}menu-drawer__menu-item portal-drawer__category{% else %}portal-mega__category{% endif %} portal-mega__category--pending" aria-label="{{ title | escape }} — em preparação">{{ title | escape }} <span class="portal-mega__soon">Em breve</span></span>
+  {%- endif -%}
+  {%- if has_subs -%}
+    <ul class="portal-mega__subs{% if mobile %} portal-drawer__subs{% elsif sub_count > 6 %} portal-mega__subs--cols{% endif %}" role="list">
+      {%- if links.size > 0 -%}
+        {%- for link in links -%}
+          <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for entry in sub_entries -%}
+          {%- assign parts = entry | split: '~' -%}
+          <li><a href="{{ parts[1] }}">{{ parts[0] | escape }}</a></li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  {%- endif -%}
+</li>

@@ -1,0 +1,48 @@
+{% comment %}
+  Portal shared navigation entries for desktop mega panels and mobile drawer.
+  Links are only created once a destination is configured in the theme editor.
+  Usage: render 'portal-menu-items', kind: 'products', mobile: false, menu_settings: section.settings
+{% endcomment %}
+{%- liquid
+  if kind == 'events'
+    assign titles = 'BIBLIOTECA DE FOTOS|RELATOS|CALENDÁRIO' | split: '|'
+  else
+    assign titles = 'VESTUÁRIO|MEDICINAS|DEFUMAÇÃO|INCENSÁRIO|ARTESANATOS|ACESSÓRIOS|PRODUTOS NATURAIS|TABACARIA' | split: '|'
+  endif
+-%}
+{%- for title in titles -%}
+  {%- liquid
+    assign destination = ''
+    case title
+      when 'VESTUÁRIO'
+        assign destination = menu_settings.nav_vestuario
+      when 'MEDICINAS'
+        assign destination = menu_settings.nav_medicinas
+      when 'DEFUMAÇÃO'
+        assign destination = menu_settings.nav_defumacao
+      when 'INCENSÁRIO'
+        assign destination = menu_settings.nav_incensario
+      when 'ARTESANATOS'
+        assign destination = menu_settings.nav_artesanatos
+      when 'ACESSÓRIOS'
+        assign destination = menu_settings.nav_acessorios
+      when 'PRODUTOS NATURAIS'
+        assign destination = menu_settings.nav_naturais
+      when 'TABACARIA'
+        assign destination = menu_settings.nav_tabacaria
+      when 'BIBLIOTECA DE FOTOS'
+        assign destination = menu_settings.nav_fotos
+      when 'RELATOS'
+        assign destination = menu_settings.nav_relatos
+      when 'CALENDÁRIO'
+        assign destination = menu_settings.nav_calendario
+    endcase
+  -%}
+  <li class="portal-mega__cell">
+    {%- if destination != blank -%}
+      <a class="{% if mobile %}menu-drawer__menu-item link link--text list-menu__item focus-inset portal-drawer__category{% else %}portal-mega__category{% endif %}" href="{{ destination }}">{{ title | escape }}</a>
+    {%- else -%}
+      <span class="{% if mobile %}menu-drawer__menu-item portal-drawer__category{% else %}portal-mega__category{% endif %} portal-mega__category--pending">{{ title | escape }}</span>
+    {%- endif -%}
+  </li>
+{%- endfor -%}

@@ -1,0 +1,21 @@
+{%- comment -%}
+  Chat de atendimento do Portal do Haux (Chatwoot do ORBITA, atendimento humano).
+  O endereço é público e estável (Tailscale Funnel) e só expõe o widget. O website_token é público por desenho.
+  Não carrega no editor de temas. O Chatwoot só aceita ser incorporado em portaldohaux.com e subdomínios.
+{%- endcomment -%}
+{%- unless request.design_mode -%}
+  <script>
+    window.chatwootSettings = { locale: 'pt_BR', position: 'right', type: 'standard', launcherTitle: 'Fale com a gente' };
+    (function (d, t) {
+      var BASE_URL = 'https://orbita-chat.tail02fea0.ts.net';
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = BASE_URL + '/packs/js/sdk.js';
+      g.async = true;
+      g.defer = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function () {
+        window.chatwootSDK.run({ websiteToken: '2qfyFjzAGB9c5VEgde8UUk32', baseUrl: BASE_URL });
+      };
+    })(document, 'script');
+  </script>
+{%- endunless -%}
